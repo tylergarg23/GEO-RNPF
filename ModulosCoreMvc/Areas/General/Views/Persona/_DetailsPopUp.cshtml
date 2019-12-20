@@ -1,0 +1,137 @@
+﻿@model SERFOR.Component.DTEntities.General.PersonaDetailDTe
+
+@using System.Text
+
+<link href="~/Content/cardperson.css" rel="stylesheet" />
+<link href="~/Content/progressBar.css" rel="stylesheet" />
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card hovercard">
+            <div class="cardheader">
+            </div>
+            <div class="avatar">
+                @if (Model.EsJuridica)
+                {
+                    <img src="/Content/images/company_placeholder.png" width="100">
+                }
+                else
+                {
+                    if (Model.Sexo == "Masculino")
+                    {
+                        <img src="/Content/images/persona_placeholder.png" width="100">
+                    }
+                    else
+                    {
+                        <img src="/Content/images/personafeme_placeholder.png" width="100">
+                    }
+                }
+            </div>
+            <div class="info">
+                <div class="title">
+                    <a target="_blank" href="mailto:@Model.Email">@Model.NombreCompleto</a>
+                </div>
+                @{
+                    var resumen = new StringBuilder("Persona ");
+                    if (Model.EsJuridica)
+                    {
+                        resumen.Append(Model.TipoPersona);
+                        resumen.AppendFormat(" con {0}", Model.Documento);
+                    }
+                    else
+                    {
+                        resumen.AppendFormat(" identificada con documento {0} de género {1}, nacida el {2:dd/MM/yyyy}", Model.Documento, Model.Sexo, Model.FechaNacimiento);
+                    }
+
+                    if (!string.IsNullOrEmpty(Model.Direccion))
+                    {
+                        resumen.AppendFormat(" con domicilio registrado en {0}",  Model.Direccion);
+                    }
+                    else
+                    {
+                        resumen.AppendFormat(" sin domicilio registrado");
+                    }
+
+                    resumen.AppendFormat(" y ubicado en el departamento de {0} provincia de {1} y distrito de {2}.", Model.Departamento, Model.Provincia, Model.Distrito);
+
+                    resumen.AppendLine(string.Format(" {0} por el usuario {1}", Model.RegistroLargo, Model.UsuarioCreacion));
+                    if (!Model.FechaCreacion.Equals(Convert.ToDateTime(Model.FechaModificacion)))
+                    {
+                        resumen.AppendFormat("y {0} por el usuario {1}", Model.ModificacionLargo, Model.UsuarioModificacion);
+                    }
+
+                    <p>@resumen .</p>
+                }
+            </div>
+            <div class="bottom">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            <span class="glyphicon glyphicon-earphone"></span>&nbsp;Información de contacto
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <h5><span class="glyphicon glyphicon-envelope"></span>&nbsp;Email:&nbsp;@Model.Email</h5>
+                                        <h5><span class="glyphicon glyphicon-phone-alt"></span>&nbsp;Teléfono fijo:&nbsp;@Model.Telefono</h5>
+                                        <h5><span class="glyphicon glyphicon-phone"></span>&nbsp;Celular: @Model.Celular</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingTwo">
+                                    <h4 class="panel-title">
+                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                            <span class="glyphicon glyphicon-globe"></span>&nbsp;Dirección y ubicación geográfica
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                    <div class="panel-body">
+                                        <h5><span class="glyphicon glyphicon-map-marker"></span>&nbsp;Dirección:&nbsp;@Model.Direccion </h5>
+                                        <h5><span class="glyphicon glyphicon-globe"></span>&nbsp;Departamento: @Model.Departamento</h5>
+                                        <h5><span class="glyphicon glyphicon-globe"></span>&nbsp;Provincia: @Model.Provincia</h5>
+                                        <h5><span class="glyphicon glyphicon-globe"></span>&nbsp;Distrito: @Model.Distrito</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingThree">
+                                    <h4 class="panel-title">
+                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                            <span class="glyphicon glyphicon-file"></span> Datos de registro
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                    <div class="panel-body">
+                                        <h5><span class="glyphicon glyphicon-calendar"></span>&nbsp;@Model.RegistroLargo</h5>
+                                        <h5><span class="glyphicon glyphicon-user"></span>&nbsp;Usuario de registro: @Model.UsuarioCreacion</h5>
+                                        <h5><span class="glyphicon glyphicon-calendar"></span>&nbsp;@Model.ModificacionLargo</h5>
+                                        <h5><span class="glyphicon glyphicon-user"></span>&nbsp;Usuario de modificación: @Model.UsuarioModificacion</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-@Model.ProgresoNivel" role="progressbar" aria-valuenow="@Model.ProgresoRegistro" aria-valuemin="0" aria-valuemax="100" style="width: @Model.ProgresoRegistro%">
+                                <span class="sr-only">@Model.ProgresoNivel% Completo (@Model.ProgresoNivel)</span>
+                            </div>
+                            <span class="progress-type">Completado</span>
+                            <span class="progress-completed">@Model.ProgresoRegistro%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

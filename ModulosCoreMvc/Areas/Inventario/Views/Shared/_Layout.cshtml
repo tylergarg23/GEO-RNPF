@@ -1,0 +1,66 @@
+﻿@using Modulos_Core_MVC.Helpers
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="width:100%; height: 100%; margin:0px">
+    @RenderBody()
+</div>
+
+
+@section menu{
+    <li><a href="@Url.Action("Create", "Interesado", new { area= "Plantaciones", id = 0})">INGRESO DE<strong>INTERESADO</strong></a></li>
+    <li><a href="@Url.Action("Index", "Interesado", new { area= "Plantaciones"})">GESTIÓN DE<strong>INTERESADOS</strong></a></li>
+    <li><a href="@Url.Action("Create", "Plantacion", new { area= "Plantaciones", id = 0})">INGRESO DE<strong>PLANTACIÓN</strong></a></li>
+    <li><a href="@Url.Action("Index", "Plantacion", new { area= "Plantaciones"})">GESTIÓN DE<strong>PLANTACIONES</strong></a></li>
+    <li><a href="@Url.Action("Index", "RNP", new { area= "Plantaciones"})">REGISTRO NACIONAL<strong>DE PLANTACIONES</strong></a></li>
+
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" href="#">
+            REPORTES DE
+            <span class="caret"></span>
+            <strong>PLANTACIONES</strong>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="@Url.Action("ReportSummary", "Reportes", new { area= "Plantaciones"})">Resumen de Plantaciones (Dashboard mode)</a></li>
+            <li><a href="@Url.Action("ReportDepartment", "Reportes", new { area= "Plantaciones"})">Información por Departamento</a></li>
+            <li><a href="@Url.Action("ReportOficial", "Reportes", new { area= "Plantaciones"})">Lista oficial de Plantaciones</a></li>
+            <li class="divider"></li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" href="#">Reportes Dinámicos<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="https://app.powerbi.com/view?r=eyJrIjoiMDg2NTY1MDQtYzhhNy00NTJiLTgyNTEtZmM5Y2RlNjdlMzI2IiwidCI6IjY4ZjZmMjRjLTA4YjktNGQxYS05MzMxLTFkMTE3ZjU0ZGE5NyIsImMiOjR9"
+                           target="_blank">Número de Plantaciones y Área Plantada por Departamento</a>
+                    </li>
+                    <li>
+                        <a href="https://app.powerbi.com/view?r=eyJrIjoiMmI1ODc4MDYtMmY4Yy00YTFkLTkzOGUtN2NmZjAyN2M2MzBkIiwidCI6IjY4ZjZmMjRjLTA4YjktNGQxYS05MzMxLTFkMTE3ZjU0ZGE5NyIsImMiOjR9"
+                           target="_blank">MINAGRI - Detalle de Plantaciones</a>
+                    </li>
+                    <li>
+                        <a href="https://app.powerbi.com/view?r=eyJrIjoiNTVlNjJhNGEtNjU5NS00ZDZlLThhMjQtMGM5MmM5M2NjODlkIiwidCI6IjY4ZjZmMjRjLTA4YjktNGQxYS05MzMxLTFkMTE3ZjU0ZGE5NyIsImMiOjR9"
+                           target="_blank">Línea de tiempo - Área plantada y Número de plantaciones</a>
+                    </li>
+                    <li>
+                        <a href="https://app.powerbi.com/view?r=eyJrIjoiYzFlNDkzM2ItOGI2Ny00MWEwLTkwYmMtMDRlNTQyNzMwY2NiIiwidCI6IjY4ZjZmMjRjLTA4YjktNGQxYS05MzMxLTFkMTE3ZjU0ZGE5NyIsImMiOjR9"
+                           target="_blank">Detalle de Plantaciones - Ubicación Geográfica</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+
+    <li>
+        <a id="helpButton" type="submit" target="_blank"
+           style="width:55px;height: 55px;padding:5px 5px;font-size:40px;line-height:1.33;border-radius:35px;"
+           href="//e.issuu.com/embed.html#30236279/50566019" class="btn btn-default btn-circle btn-xl"><i class="glyphicon glyphicon-question-sign"></i></a>
+    </li>
+}
+
+
+@section scripts{
+
+    @Html.RenderScripts()
+    @RenderSection("scripts", required: false)
+
+}

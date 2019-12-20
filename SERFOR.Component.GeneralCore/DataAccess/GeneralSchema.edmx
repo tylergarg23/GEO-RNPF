@@ -1,0 +1,1260 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Especie">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FamiliaEspecie_Id" Type="tinyint" Nullable="false" />
+          <Property Name="Codigo" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioModificacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+          <Property Name="Fuente" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'CALI-DIR.EspecieForestal.Sinonimo' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="Sinonimo">
+          <Key>
+            <PropertyRef Name="Tipo" />
+            <PropertyRef Name="Nombre" />
+            <PropertyRef Name="Especie_Id" />
+          </Key>
+          <Property Name="Tipo" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Especie_Id" Type="int" Nullable="false" />
+          <Property Name="Fuente" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="AutoridadForestal">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Codigo" Type="char" MaxLength="3" />
+          <Property Name="NombreContacto" Type="varchar" MaxLength="150" />
+          <Property Name="UriStorageLogo" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="EsGobiernoRegional" Type="bit" Nullable="false" />
+          <Property Name="DireccionContacto" Type="varchar" MaxLength="150" />
+          <Property Name="TelefonoContacto" Type="varchar" MaxLength="15" />
+          <Property Name="EmailContacto" Type="varchar" MaxLength="150" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioModificacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cargo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="smallint" Nullable="false" />
+          <Property Name="CargoSup_Id" Type="smallint" />
+          <Property Name="Nombre" Type="varchar" MaxLength="250" />
+          <Property Name="Descripcion" Type="text" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Directorio">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Persona_Id" Type="int" />
+          <Property Name="SedeATFFS_Id" Type="smallint" />
+          <Property Name="Cargo_Id" Type="smallint" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="150" />
+          <Property Name="EsResponsable" Type="bit" Nullable="false" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioModificacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SedeAutoridadForestal">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="smallint" Nullable="false" />
+          <Property Name="AT_Id" Type="tinyint" Nullable="false" />
+          <Property Name="TipoSede_Id" Type="smallint" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="40" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="150" />
+          <Property Name="Direccion" Type="varchar" MaxLength="150" />
+          <Property Name="Telefono" Type="varchar" MaxLength="30" />
+          <Property Name="LatitudDec" Type="decimal" Precision="10" Scale="8" />
+          <Property Name="LongitudDec" Type="decimal" Precision="10" Scale="8" />
+          <Property Name="CodigoUA" Type="char" MaxLength="3" Nullable="false" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipoSede">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EsPrincipal" Type="bit" Nullable="false" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioModificacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EstadoCivil">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioModificacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Persona">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TipoDocumento_Id" Type="tinyint" Nullable="false" />
+          <Property Name="NumeroDocumento" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="Nombres" Type="varchar" MaxLength="150" />
+          <Property Name="ApellidoPaterno" Type="varchar" MaxLength="150" />
+          <Property Name="ApellidoMaterno" Type="varchar" MaxLength="150" />
+          <Property Name="Ubigeo_Id" Type="smallint" Nullable="false" />
+          <Property Name="Direccion" Type="varchar" MaxLength="250" />
+          <Property Name="FechaNacimiento" Type="date" />
+          <Property Name="Sexo" Type="char" MaxLength="1" />
+          <Property Name="EstadoCivil" Type="char" MaxLength="1" />
+          <Property Name="Telefono" Type="varchar" MaxLength="15" />
+          <Property Name="Celular" Type="varchar" MaxLength="15" />
+          <Property Name="Email" Type="varchar" MaxLength="250" />
+          <Property Name="EsJuridica" Type="bit" Nullable="false" />
+          <Property Name="EsTrabajador" Type="bit" />
+          <Property Name="EsAdministrado" Type="bit" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioModificacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sexo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioModificacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipoDocumento">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Acronimo" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioModificacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CodigoDerechoSemilla">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ATFFS_Id" Type="tinyint" />
+          <Property Name="Annio" Type="smallint" />
+          <Property Name="Correlativo" Type="smallint" />
+          <Property Name="UsuarioRegistro" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SistemaPlantacion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="Tipo" Type="varchar" MaxLength="5" />
+        </EntityType>
+        <EntityType Name="TipoAutorizacion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="TipoComunidad">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="150" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioModificacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipoFinalidad">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipoPlantacion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipoZona">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="150" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioModificacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UnidadMedida">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Simbolo" Type="varchar" MaxLength="5" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Ubigeo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Codigo" Type="char" MaxLength="6" Nullable="false" />
+          <Property Name="CodigoDepartamento" Type="char" MaxLength="2" Nullable="false" />
+          <Property Name="NombreDepartamento" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CodigoProvincia" Type="char" MaxLength="2" Nullable="false" />
+          <Property Name="NombreProvincia" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CodigoDistrito" Type="char" MaxLength="2" Nullable="false" />
+          <Property Name="NombreDistrito" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Region" Type="varchar" MaxLength="100" />
+          <Property Name="LatitudDec" Type="decimal" Precision="9" Scale="6" />
+          <Property Name="LongitudDec" Type="decimal" Precision="9" Scale="6" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioModificacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+          <Property Name="ARFFS_Id" Type="tinyint" />
+        </EntityType>
+        <Association Name="FK_EspecieForestal_Sinonimo_Especie">
+          <End Role="Especie" Type="Self.Especie" Multiplicity="1" />
+          <End Role="Sinonimo" Type="Self.Sinonimo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Especie">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sinonimo">
+              <PropertyRef Name="Especie_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Organizacion_Cargo_Cargo">
+          <End Role="Cargo" Type="Self.Cargo" Multiplicity="0..1" />
+          <End Role="Cargo1" Type="Self.Cargo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cargo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cargo1">
+              <PropertyRef Name="CargoSup_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Organizacion_Directorio_Cargo">
+          <End Role="Cargo" Type="Self.Cargo" Multiplicity="1" />
+          <End Role="Directorio" Type="Self.Directorio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cargo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Directorio">
+              <PropertyRef Name="Cargo_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Organizacion_Directorio_Persona">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="0..1" />
+          <End Role="Directorio" Type="Self.Directorio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Directorio">
+              <PropertyRef Name="Persona_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Organizacion_Directorio_Sede_Administracion_Tecnica">
+          <End Role="SedeAutoridadForestal" Type="Self.SedeAutoridadForestal" Multiplicity="0..1" />
+          <End Role="Directorio" Type="Self.Directorio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SedeAutoridadForestal">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Directorio">
+              <PropertyRef Name="SedeATFFS_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Organizacion_SedeAutoridadForestal_AutoridadForestal">
+          <End Role="AutoridadForestal" Type="Self.AutoridadForestal" Multiplicity="1" />
+          <End Role="SedeAutoridadForestal" Type="Self.SedeAutoridadForestal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AutoridadForestal">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SedeAutoridadForestal">
+              <PropertyRef Name="AT_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Organizacion_SedeAutoridadForestal_TipoSede">
+          <End Role="TipoSede" Type="Self.TipoSede" Multiplicity="1" />
+          <End Role="SedeAutoridadForestal" Type="Self.SedeAutoridadForestal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoSede">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SedeAutoridadForestal">
+              <PropertyRef Name="TipoSede_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Persona_Persona_TipoDocumento">
+          <End Role="TipoDocumento" Type="Self.TipoDocumento" Multiplicity="1" />
+          <End Role="Persona" Type="Self.Persona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoDocumento">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Persona">
+              <PropertyRef Name="TipoDocumento_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Persona_Persona_Ubigeo">
+          <End Role="Ubigeo" Type="Self.Ubigeo" Multiplicity="1" />
+          <End Role="Persona" Type="Self.Persona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ubigeo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Persona">
+              <PropertyRef Name="Ubigeo_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RNP_CodigoDerechoSemilla_AutoridadForestal">
+          <End Role="AutoridadForestal" Type="Self.AutoridadForestal" Multiplicity="0..1" />
+          <End Role="CodigoDerechoSemilla" Type="Self.CodigoDerechoSemilla" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AutoridadForestal">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CodigoDerechoSemilla">
+              <PropertyRef Name="ATFFS_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Shared_Ubigeo_Autoridad_ARFFS_ID">
+          <End Role="AutoridadForestal" Type="Self.AutoridadForestal" Multiplicity="0..1" />
+          <End Role="Ubigeo" Type="Self.Ubigeo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AutoridadForestal">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Ubigeo">
+              <PropertyRef Name="ARFFS_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="Especie" EntityType="Self.Especie" Schema="EspecieForestal" store:Type="Tables" />
+          <EntitySet Name="AutoridadForestal" EntityType="Self.AutoridadForestal" Schema="Organizacion" store:Type="Tables" />
+          <EntitySet Name="Cargo" EntityType="Self.Cargo" Schema="Organizacion" store:Type="Tables" />
+          <EntitySet Name="Directorio" EntityType="Self.Directorio" Schema="Organizacion" store:Type="Tables" />
+          <EntitySet Name="SedeAutoridadForestal" EntityType="Self.SedeAutoridadForestal" Schema="Organizacion" store:Type="Tables" />
+          <EntitySet Name="TipoSede" EntityType="Self.TipoSede" Schema="Organizacion" store:Type="Tables" />
+          <EntitySet Name="EstadoCivil" EntityType="Self.EstadoCivil" Schema="Persona" store:Type="Tables" />
+          <EntitySet Name="Persona" EntityType="Self.Persona" Schema="Persona" store:Type="Tables" />
+          <EntitySet Name="Sexo" EntityType="Self.Sexo" Schema="Persona" store:Type="Tables" />
+          <EntitySet Name="TipoDocumento" EntityType="Self.TipoDocumento" Schema="Persona" store:Type="Tables" />
+          <EntitySet Name="CodigoDerechoSemilla" EntityType="Self.CodigoDerechoSemilla" Schema="RNP" store:Type="Tables" />
+          <EntitySet Name="SistemaPlantacion" EntityType="Self.SistemaPlantacion" Schema="RNP" store:Type="Tables" />
+          <EntitySet Name="TipoAutorizacion" EntityType="Self.TipoAutorizacion" Schema="RNP" store:Type="Tables" />
+          <EntitySet Name="TipoComunidad" EntityType="Self.TipoComunidad" Schema="RNP" store:Type="Tables" />
+          <EntitySet Name="TipoFinalidad" EntityType="Self.TipoFinalidad" Schema="RNP" store:Type="Tables" />
+          <EntitySet Name="TipoPlantacion" EntityType="Self.TipoPlantacion" Schema="RNP" store:Type="Tables" />
+          <EntitySet Name="TipoZona" EntityType="Self.TipoZona" Schema="RNP" store:Type="Tables" />
+          <EntitySet Name="UnidadMedida" EntityType="Self.UnidadMedida" Schema="RNP" store:Type="Tables" />
+          <EntitySet Name="Ubigeo" EntityType="Self.Ubigeo" Schema="Shared" store:Type="Tables" />
+          <EntitySet Name="Sinonimo" EntityType="Self.Sinonimo" store:Type="Tables" store:Schema="EspecieForestal">
+            <DefiningQuery>SELECT 
+    [Sinonimo].[Tipo] AS [Tipo], 
+    [Sinonimo].[Nombre] AS [Nombre], 
+    [Sinonimo].[Especie_Id] AS [Especie_Id], 
+    [Sinonimo].[Fuente] AS [Fuente]
+    FROM [EspecieForestal].[Sinonimo] AS [Sinonimo]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_EspecieForestal_Sinonimo_Especie" Association="Self.FK_EspecieForestal_Sinonimo_Especie">
+            <End Role="Especie" EntitySet="Especie" />
+            <End Role="Sinonimo" EntitySet="Sinonimo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Organizacion_Cargo_Cargo" Association="Self.FK_Organizacion_Cargo_Cargo">
+            <End Role="Cargo" EntitySet="Cargo" />
+            <End Role="Cargo1" EntitySet="Cargo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Organizacion_Directorio_Cargo" Association="Self.FK_Organizacion_Directorio_Cargo">
+            <End Role="Cargo" EntitySet="Cargo" />
+            <End Role="Directorio" EntitySet="Directorio" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Organizacion_Directorio_Persona" Association="Self.FK_Organizacion_Directorio_Persona">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="Directorio" EntitySet="Directorio" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Organizacion_Directorio_Sede_Administracion_Tecnica" Association="Self.FK_Organizacion_Directorio_Sede_Administracion_Tecnica">
+            <End Role="SedeAutoridadForestal" EntitySet="SedeAutoridadForestal" />
+            <End Role="Directorio" EntitySet="Directorio" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Organizacion_SedeAutoridadForestal_AutoridadForestal" Association="Self.FK_Organizacion_SedeAutoridadForestal_AutoridadForestal">
+            <End Role="AutoridadForestal" EntitySet="AutoridadForestal" />
+            <End Role="SedeAutoridadForestal" EntitySet="SedeAutoridadForestal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Organizacion_SedeAutoridadForestal_TipoSede" Association="Self.FK_Organizacion_SedeAutoridadForestal_TipoSede">
+            <End Role="TipoSede" EntitySet="TipoSede" />
+            <End Role="SedeAutoridadForestal" EntitySet="SedeAutoridadForestal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Persona_Persona_TipoDocumento" Association="Self.FK_Persona_Persona_TipoDocumento">
+            <End Role="TipoDocumento" EntitySet="TipoDocumento" />
+            <End Role="Persona" EntitySet="Persona" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Persona_Persona_Ubigeo" Association="Self.FK_Persona_Persona_Ubigeo">
+            <End Role="Ubigeo" EntitySet="Ubigeo" />
+            <End Role="Persona" EntitySet="Persona" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RNP_CodigoDerechoSemilla_AutoridadForestal" Association="Self.FK_RNP_CodigoDerechoSemilla_AutoridadForestal">
+            <End Role="AutoridadForestal" EntitySet="AutoridadForestal" />
+            <End Role="CodigoDerechoSemilla" EntitySet="CodigoDerechoSemilla" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Shared_Ubigeo_Autoridad_ARFFS_ID" Association="Self.FK_Shared_Ubigeo_Autoridad_ARFFS_ID">
+            <End Role="AutoridadForestal" EntitySet="AutoridadForestal" />
+            <End Role="Ubigeo" EntitySet="Ubigeo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="GeneralSchema" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Directorio" EntityType="Model.Directorio" />
+          <EntitySet Name="EstadoCivil" EntityType="Model.EstadoCivil" />
+          <EntitySet Name="Persona" EntityType="Model.Persona" />
+          <EntitySet Name="Sexo" EntityType="Model.Sexo" />
+          <EntitySet Name="TipoDocumento" EntityType="Model.TipoDocumento" />
+          <EntitySet Name="TipoAutorizacion" EntityType="Model.TipoAutorizacion" />
+          <EntitySet Name="TipoComunidad" EntityType="Model.TipoComunidad" />
+          <AssociationSet Name="FK_Organizacion_Directorio_Persona" Association="Model.FK_Organizacion_Directorio_Persona">
+            <End Role="Persona1" EntitySet="Persona" />
+            <End Role="Directorio1" EntitySet="Directorio" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Persona_Persona_TipoDocumento1" Association="Model.FK_Persona_Persona_TipoDocumento">
+            <End Role="TipoDocumento1" EntitySet="TipoDocumento" />
+            <End Role="Persona1" EntitySet="Persona" />
+          </AssociationSet>
+          <EntitySet Name="Especie" EntityType="Model.Especie" />
+          <EntitySet Name="Cargo" EntityType="Model.Cargo" />
+          <EntitySet Name="SedeAutoridadForestal" EntityType="Model.SedeAutoridadForestal" />
+          <EntitySet Name="TipoSede" EntityType="Model.TipoSede" />
+          <EntitySet Name="CodigoDerechoSemilla" EntityType="Model.CodigoDerechoSemilla" />
+          <EntitySet Name="SistemaPlantacion" EntityType="Model.SistemaPlantacion" />
+          <EntitySet Name="TipoFinalidad" EntityType="Model.TipoFinalidad" />
+          <EntitySet Name="TipoPlantacion" EntityType="Model.TipoPlantacion" />
+          <EntitySet Name="UnidadMedida" EntityType="Model.UnidadMedida" />
+          <EntitySet Name="Sinonimo" EntityType="Model.Sinonimo" />
+          <AssociationSet Name="FK_EspecieForestal_Sinonimo_Especie" Association="Model.FK_EspecieForestal_Sinonimo_Especie">
+            <End Role="Especie" EntitySet="Especie" />
+            <End Role="Sinonimo" EntitySet="Sinonimo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Organizacion_Cargo_Cargo" Association="Model.FK_Organizacion_Cargo_Cargo">
+            <End Role="Cargo" EntitySet="Cargo" />
+            <End Role="Cargo1" EntitySet="Cargo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Organizacion_Directorio_Cargo" Association="Model.FK_Organizacion_Directorio_Cargo">
+            <End Role="Cargo" EntitySet="Cargo" />
+            <End Role="Directorio1" EntitySet="Directorio" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Organizacion_Directorio_Sede_Administracion_Tecnica" Association="Model.FK_Organizacion_Directorio_Sede_Administracion_Tecnica">
+            <End Role="SedeAutoridadForestal" EntitySet="SedeAutoridadForestal" />
+            <End Role="Directorio1" EntitySet="Directorio" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Organizacion_SedeAutoridadForestal_TipoSede" Association="Model.FK_Organizacion_SedeAutoridadForestal_TipoSede">
+            <End Role="TipoSede" EntitySet="TipoSede" />
+            <End Role="SedeAutoridadForestal" EntitySet="SedeAutoridadForestal" />
+          </AssociationSet>
+          <EntitySet Name="TipoZona" EntityType="Model.TipoZona" />
+          <EntitySet Name="AutoridadForestal" EntityType="Model.AutoridadForestal" />
+          <EntitySet Name="Ubigeo" EntityType="Model.Ubigeo" />
+          <AssociationSet Name="FK_Organizacion_SedeAutoridadForestal_AutoridadForestal" Association="Model.FK_Organizacion_SedeAutoridadForestal_AutoridadForestal">
+            <End Role="AutoridadForestal" EntitySet="AutoridadForestal" />
+            <End Role="SedeAutoridadForestal" EntitySet="SedeAutoridadForestal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RNP_CodigoDerechoSemilla_AutoridadForestal" Association="Model.FK_RNP_CodigoDerechoSemilla_AutoridadForestal">
+            <End Role="AutoridadForestal" EntitySet="AutoridadForestal" />
+            <End Role="CodigoDerechoSemilla" EntitySet="CodigoDerechoSemilla" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Shared_Ubigeo_Autoridad_ARFFS_ID" Association="Model.FK_Shared_Ubigeo_Autoridad_ARFFS_ID">
+            <End Role="AutoridadForestal" EntitySet="AutoridadForestal" />
+            <End Role="Ubigeo" EntitySet="Ubigeo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Persona_Persona_Ubigeo" Association="Model.FK_Persona_Persona_Ubigeo">
+            <End Role="Ubigeo" EntitySet="Ubigeo" />
+            <End Role="Persona" EntitySet="Persona" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Directorio">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Persona_Id" Type="Int32" />
+          <Property Name="SedeATFFS_Id" Type="Int16" />
+          <Property Name="Cargo_Id" Type="Int16" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="EsResponsable" Type="Boolean" Nullable="false" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioModificacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Persona" Relationship="Model.FK_Organizacion_Directorio_Persona" FromRole="Directorio1" ToRole="Persona1" />
+          <NavigationProperty Name="Cargo" Relationship="Model.FK_Organizacion_Directorio_Cargo" FromRole="Directorio1" ToRole="Cargo" />
+          <NavigationProperty Name="SedeAutoridadForestal" Relationship="Model.FK_Organizacion_Directorio_Sede_Administracion_Tecnica" FromRole="Directorio1" ToRole="SedeAutoridadForestal" />
+        </EntityType>
+        <EntityType Name="EstadoCivil">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioModificacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="Persona">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TipoDocumento_Id" Type="Byte" Nullable="false" />
+          <Property Name="NumeroDocumento" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Nombres" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="ApellidoPaterno" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="ApellidoMaterno" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Ubigeo_Id" Type="Int16" Nullable="false" />
+          <Property Name="Direccion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="FechaNacimiento" Type="DateTime" Precision="0" />
+          <Property Name="Sexo" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="EstadoCivil" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Telefono" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Celular" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="EsJuridica" Type="Boolean" Nullable="false" />
+          <Property Name="EsTrabajador" Type="Boolean" />
+          <Property Name="EsAdministrado" Type="Boolean" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioModificacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Directorio" Relationship="Model.FK_Organizacion_Directorio_Persona" FromRole="Persona1" ToRole="Directorio1" />
+          <NavigationProperty Name="TipoDocumento" Relationship="Model.FK_Persona_Persona_TipoDocumento" FromRole="Persona1" ToRole="TipoDocumento1" />
+          <NavigationProperty Name="Ubigeo" Relationship="Model.FK_Persona_Persona_Ubigeo" FromRole="Persona" ToRole="Ubigeo" />
+        </EntityType>
+        <EntityType Name="Sexo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioModificacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="TipoDocumento">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Acronimo" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioModificacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Persona" Relationship="Model.FK_Persona_Persona_TipoDocumento" FromRole="TipoDocumento1" ToRole="Persona1" />
+        </EntityType>
+        <EntityType Name="TipoAutorizacion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="TipoComunidad">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioModificacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <Association Name="FK_Organizacion_Directorio_Persona">
+          <End Type="Model.Persona" Role="Persona1" Multiplicity="0..1" />
+          <End Type="Model.Directorio" Role="Directorio1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persona1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Directorio1">
+              <PropertyRef Name="Persona_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Persona_Persona_TipoDocumento">
+          <End Type="Model.TipoDocumento" Role="TipoDocumento1" Multiplicity="1" />
+          <End Type="Model.Persona" Role="Persona1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoDocumento1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Persona1">
+              <PropertyRef Name="TipoDocumento_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Especie">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FamiliaEspecie_Id" Type="Byte" Nullable="false" />
+          <Property Name="Codigo" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioModificacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Fuente" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Sinonimo" Relationship="Model.FK_EspecieForestal_Sinonimo_Especie" FromRole="Especie" ToRole="Sinonimo" />
+        </EntityType>
+        <EntityType Name="Cargo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int16" Nullable="false" />
+          <Property Name="CargoSup_Id" Type="Int16" />
+          <Property Name="Nombre" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Cargo1" Relationship="Model.FK_Organizacion_Cargo_Cargo" FromRole="Cargo" ToRole="Cargo1" />
+          <NavigationProperty Name="Cargo2" Relationship="Model.FK_Organizacion_Cargo_Cargo" FromRole="Cargo1" ToRole="Cargo" />
+          <NavigationProperty Name="Directorio" Relationship="Model.FK_Organizacion_Directorio_Cargo" FromRole="Cargo" ToRole="Directorio1" />
+        </EntityType>
+        <EntityType Name="SedeAutoridadForestal">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int16" Nullable="false" />
+          <Property Name="AT_Id" Type="Byte" Nullable="false" />
+          <Property Name="TipoSede_Id" Type="Int16" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Direccion" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Telefono" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="LatitudDec" Type="Decimal" Precision="10" Scale="8" />
+          <Property Name="LongitudDec" Type="Decimal" Precision="10" Scale="8" />
+          <Property Name="CodigoUA" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="false" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Directorio" Relationship="Model.FK_Organizacion_Directorio_Sede_Administracion_Tecnica" FromRole="SedeAutoridadForestal" ToRole="Directorio1" />
+          <NavigationProperty Name="TipoSede" Relationship="Model.FK_Organizacion_SedeAutoridadForestal_TipoSede" FromRole="SedeAutoridadForestal" ToRole="TipoSede" />
+          <NavigationProperty Name="AutoridadForestal" Relationship="Model.FK_Organizacion_SedeAutoridadForestal_AutoridadForestal" FromRole="SedeAutoridadForestal" ToRole="AutoridadForestal" />
+        </EntityType>
+        <EntityType Name="TipoSede">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EsPrincipal" Type="Boolean" Nullable="false" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioModificacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="SedeAutoridadForestal" Relationship="Model.FK_Organizacion_SedeAutoridadForestal_TipoSede" FromRole="TipoSede" ToRole="SedeAutoridadForestal" />
+        </EntityType>
+        <EntityType Name="CodigoDerechoSemilla">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ATFFS_Id" Type="Byte" />
+          <Property Name="Annio" Type="Int16" />
+          <Property Name="Correlativo" Type="Int16" />
+          <Property Name="UsuarioRegistro" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="AutoridadForestal" Relationship="Model.FK_RNP_CodigoDerechoSemilla_AutoridadForestal" FromRole="CodigoDerechoSemilla" ToRole="AutoridadForestal" />
+        </EntityType>
+        <EntityType Name="SistemaPlantacion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="Tipo" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="TipoFinalidad">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="TipoPlantacion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="UnidadMedida">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Simbolo" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Sinonimo">
+          <Key>
+            <PropertyRef Name="Tipo" />
+            <PropertyRef Name="Nombre" />
+            <PropertyRef Name="Especie_Id" />
+          </Key>
+          <Property Name="Tipo" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Especie_Id" Type="Int32" Nullable="false" />
+          <Property Name="Fuente" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Especie" Relationship="Model.FK_EspecieForestal_Sinonimo_Especie" FromRole="Sinonimo" ToRole="Especie" />
+        </EntityType>
+        <Association Name="FK_EspecieForestal_Sinonimo_Especie">
+          <End Type="Model.Especie" Role="Especie" Multiplicity="1" />
+          <End Type="Model.Sinonimo" Role="Sinonimo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Especie">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sinonimo">
+              <PropertyRef Name="Especie_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Organizacion_Cargo_Cargo">
+          <End Type="Model.Cargo" Role="Cargo" Multiplicity="0..1" />
+          <End Type="Model.Cargo" Role="Cargo1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cargo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cargo1">
+              <PropertyRef Name="CargoSup_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Organizacion_Directorio_Cargo">
+          <End Type="Model.Cargo" Role="Cargo" Multiplicity="1" />
+          <End Type="Model.Directorio" Role="Directorio1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cargo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Directorio1">
+              <PropertyRef Name="Cargo_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Organizacion_Directorio_Sede_Administracion_Tecnica">
+          <End Type="Model.SedeAutoridadForestal" Role="SedeAutoridadForestal" Multiplicity="0..1" />
+          <End Type="Model.Directorio" Role="Directorio1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SedeAutoridadForestal">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Directorio1">
+              <PropertyRef Name="SedeATFFS_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Organizacion_SedeAutoridadForestal_TipoSede">
+          <End Type="Model.TipoSede" Role="TipoSede" Multiplicity="1" />
+          <End Type="Model.SedeAutoridadForestal" Role="SedeAutoridadForestal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoSede">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SedeAutoridadForestal">
+              <PropertyRef Name="TipoSede_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="TipoZona">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioModificacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="AutoridadForestal">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Codigo" Type="String" MaxLength="3" FixedLength="true" Unicode="false" />
+          <Property Name="NombreContacto" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="UriStorageLogo" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="EsGobiernoRegional" Type="Boolean" Nullable="false" />
+          <Property Name="DireccionContacto" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="TelefonoContacto" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="EmailContacto" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioModificacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="SedeAutoridadForestal" Relationship="Model.FK_Organizacion_SedeAutoridadForestal_AutoridadForestal" FromRole="AutoridadForestal" ToRole="SedeAutoridadForestal" />
+          <NavigationProperty Name="CodigoDerechoSemilla" Relationship="Model.FK_RNP_CodigoDerechoSemilla_AutoridadForestal" FromRole="AutoridadForestal" ToRole="CodigoDerechoSemilla" />
+          <NavigationProperty Name="Ubigeo" Relationship="Model.FK_Shared_Ubigeo_Autoridad_ARFFS_ID" FromRole="AutoridadForestal" ToRole="Ubigeo" />
+        </EntityType>
+        <EntityType Name="Ubigeo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Codigo" Type="String" Nullable="false" MaxLength="6" FixedLength="true" Unicode="false" />
+          <Property Name="CodigoDepartamento" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="NombreDepartamento" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CodigoProvincia" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="NombreProvincia" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CodigoDistrito" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="NombreDistrito" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Region" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="LatitudDec" Type="Decimal" Precision="9" Scale="6" />
+          <Property Name="LongitudDec" Type="Decimal" Precision="9" Scale="6" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioModificacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ARFFS_Id" Type="Byte" />
+          <NavigationProperty Name="AutoridadForestal" Relationship="Model.FK_Shared_Ubigeo_Autoridad_ARFFS_ID" FromRole="Ubigeo" ToRole="AutoridadForestal" />
+          <NavigationProperty Name="Persona" Relationship="Model.FK_Persona_Persona_Ubigeo" FromRole="Ubigeo" ToRole="Persona" />
+        </EntityType>
+        <Association Name="FK_Organizacion_SedeAutoridadForestal_AutoridadForestal">
+          <End Type="Model.AutoridadForestal" Role="AutoridadForestal" Multiplicity="1" />
+          <End Type="Model.SedeAutoridadForestal" Role="SedeAutoridadForestal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AutoridadForestal">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SedeAutoridadForestal">
+              <PropertyRef Name="AT_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RNP_CodigoDerechoSemilla_AutoridadForestal">
+          <End Type="Model.AutoridadForestal" Role="AutoridadForestal" Multiplicity="0..1" />
+          <End Type="Model.CodigoDerechoSemilla" Role="CodigoDerechoSemilla" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AutoridadForestal">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CodigoDerechoSemilla">
+              <PropertyRef Name="ATFFS_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Shared_Ubigeo_Autoridad_ARFFS_ID">
+          <End Type="Model.AutoridadForestal" Role="AutoridadForestal" Multiplicity="0..1" />
+          <End Type="Model.Ubigeo" Role="Ubigeo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AutoridadForestal">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Ubigeo">
+              <PropertyRef Name="ARFFS_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Persona_Persona_Ubigeo">
+          <End Type="Model.Ubigeo" Role="Ubigeo" Multiplicity="1" />
+          <End Type="Model.Persona" Role="Persona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ubigeo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Persona">
+              <PropertyRef Name="Ubigeo_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="GeneralSchema">
+          <EntitySetMapping Name="Directorio">
+            <EntityTypeMapping TypeName="Model.Directorio">
+              <MappingFragment StoreEntitySet="Directorio">
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+                <ScalarProperty Name="UsuarioModificacion" ColumnName="UsuarioModificacion" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="EsResponsable" ColumnName="EsResponsable" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Cargo_Id" ColumnName="Cargo_Id" />
+                <ScalarProperty Name="SedeATFFS_Id" ColumnName="SedeATFFS_Id" />
+                <ScalarProperty Name="Persona_Id" ColumnName="Persona_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EstadoCivil">
+            <EntityTypeMapping TypeName="Model.EstadoCivil">
+              <MappingFragment StoreEntitySet="EstadoCivil">
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+                <ScalarProperty Name="UsuarioModificacion" ColumnName="UsuarioModificacion" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Persona">
+            <EntityTypeMapping TypeName="Model.Persona">
+              <MappingFragment StoreEntitySet="Persona">
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+                <ScalarProperty Name="UsuarioModificacion" ColumnName="UsuarioModificacion" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="EsAdministrado" ColumnName="EsAdministrado" />
+                <ScalarProperty Name="EsTrabajador" ColumnName="EsTrabajador" />
+                <ScalarProperty Name="EsJuridica" ColumnName="EsJuridica" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Celular" ColumnName="Celular" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="EstadoCivil" ColumnName="EstadoCivil" />
+                <ScalarProperty Name="Sexo" ColumnName="Sexo" />
+                <ScalarProperty Name="FechaNacimiento" ColumnName="FechaNacimiento" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Ubigeo_Id" ColumnName="Ubigeo_Id" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+                <ScalarProperty Name="NumeroDocumento" ColumnName="NumeroDocumento" />
+                <ScalarProperty Name="TipoDocumento_Id" ColumnName="TipoDocumento_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sexo">
+            <EntityTypeMapping TypeName="Model.Sexo">
+              <MappingFragment StoreEntitySet="Sexo">
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+                <ScalarProperty Name="UsuarioModificacion" ColumnName="UsuarioModificacion" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoDocumento">
+            <EntityTypeMapping TypeName="Model.TipoDocumento">
+              <MappingFragment StoreEntitySet="TipoDocumento">
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+                <ScalarProperty Name="UsuarioModificacion" ColumnName="UsuarioModificacion" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Acronimo" ColumnName="Acronimo" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoAutorizacion">
+            <EntityTypeMapping TypeName="Model.TipoAutorizacion">
+              <MappingFragment StoreEntitySet="TipoAutorizacion">
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoComunidad">
+            <EntityTypeMapping TypeName="Model.TipoComunidad">
+              <MappingFragment StoreEntitySet="TipoComunidad">
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+                <ScalarProperty Name="UsuarioModificacion" ColumnName="UsuarioModificacion" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Especie">
+            <EntityTypeMapping TypeName="Model.Especie">
+              <MappingFragment StoreEntitySet="Especie">
+                <ScalarProperty Name="Fuente" ColumnName="Fuente" />
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+                <ScalarProperty Name="UsuarioModificacion" ColumnName="UsuarioModificacion" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="FamiliaEspecie_Id" ColumnName="FamiliaEspecie_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cargo">
+            <EntityTypeMapping TypeName="Model.Cargo">
+              <MappingFragment StoreEntitySet="Cargo">
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="CargoSup_Id" ColumnName="CargoSup_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SedeAutoridadForestal">
+            <EntityTypeMapping TypeName="Model.SedeAutoridadForestal">
+              <MappingFragment StoreEntitySet="SedeAutoridadForestal">
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="CodigoUA" ColumnName="CodigoUA" />
+                <ScalarProperty Name="LongitudDec" ColumnName="LongitudDec" />
+                <ScalarProperty Name="LatitudDec" ColumnName="LatitudDec" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="TipoSede_Id" ColumnName="TipoSede_Id" />
+                <ScalarProperty Name="AT_Id" ColumnName="AT_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoSede">
+            <EntityTypeMapping TypeName="Model.TipoSede">
+              <MappingFragment StoreEntitySet="TipoSede">
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+                <ScalarProperty Name="UsuarioModificacion" ColumnName="UsuarioModificacion" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="EsPrincipal" ColumnName="EsPrincipal" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CodigoDerechoSemilla">
+            <EntityTypeMapping TypeName="Model.CodigoDerechoSemilla">
+              <MappingFragment StoreEntitySet="CodigoDerechoSemilla">
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="UsuarioRegistro" ColumnName="UsuarioRegistro" />
+                <ScalarProperty Name="Correlativo" ColumnName="Correlativo" />
+                <ScalarProperty Name="Annio" ColumnName="Annio" />
+                <ScalarProperty Name="ATFFS_Id" ColumnName="ATFFS_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SistemaPlantacion">
+            <EntityTypeMapping TypeName="Model.SistemaPlantacion">
+              <MappingFragment StoreEntitySet="SistemaPlantacion">
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoFinalidad">
+            <EntityTypeMapping TypeName="Model.TipoFinalidad">
+              <MappingFragment StoreEntitySet="TipoFinalidad">
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoPlantacion">
+            <EntityTypeMapping TypeName="Model.TipoPlantacion">
+              <MappingFragment StoreEntitySet="TipoPlantacion">
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UnidadMedida">
+            <EntityTypeMapping TypeName="Model.UnidadMedida">
+              <MappingFragment StoreEntitySet="UnidadMedida">
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Simbolo" ColumnName="Simbolo" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sinonimo">
+            <EntityTypeMapping TypeName="Model.Sinonimo">
+              <MappingFragment StoreEntitySet="Sinonimo">
+                <ScalarProperty Name="Fuente" ColumnName="Fuente" />
+                <ScalarProperty Name="Especie_Id" ColumnName="Especie_Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoZona">
+            <EntityTypeMapping TypeName="Model.TipoZona">
+              <MappingFragment StoreEntitySet="TipoZona">
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+                <ScalarProperty Name="UsuarioModificacion" ColumnName="UsuarioModificacion" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AutoridadForestal">
+            <EntityTypeMapping TypeName="Model.AutoridadForestal">
+              <MappingFragment StoreEntitySet="AutoridadForestal">
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+                <ScalarProperty Name="UsuarioModificacion" ColumnName="UsuarioModificacion" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="EmailContacto" ColumnName="EmailContacto" />
+                <ScalarProperty Name="TelefonoContacto" ColumnName="TelefonoContacto" />
+                <ScalarProperty Name="DireccionContacto" ColumnName="DireccionContacto" />
+                <ScalarProperty Name="EsGobiernoRegional" ColumnName="EsGobiernoRegional" />
+                <ScalarProperty Name="UriStorageLogo" ColumnName="UriStorageLogo" />
+                <ScalarProperty Name="NombreContacto" ColumnName="NombreContacto" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ubigeo">
+            <EntityTypeMapping TypeName="Model.Ubigeo">
+              <MappingFragment StoreEntitySet="Ubigeo">
+                <ScalarProperty Name="ARFFS_Id" ColumnName="ARFFS_Id" />
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+                <ScalarProperty Name="UsuarioModificacion" ColumnName="UsuarioModificacion" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="LongitudDec" ColumnName="LongitudDec" />
+                <ScalarProperty Name="LatitudDec" ColumnName="LatitudDec" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="NombreDistrito" ColumnName="NombreDistrito" />
+                <ScalarProperty Name="CodigoDistrito" ColumnName="CodigoDistrito" />
+                <ScalarProperty Name="NombreProvincia" ColumnName="NombreProvincia" />
+                <ScalarProperty Name="CodigoProvincia" ColumnName="CodigoProvincia" />
+                <ScalarProperty Name="NombreDepartamento" ColumnName="NombreDepartamento" />
+                <ScalarProperty Name="CodigoDepartamento" ColumnName="CodigoDepartamento" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

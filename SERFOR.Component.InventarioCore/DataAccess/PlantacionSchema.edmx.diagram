@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="bf69c9e63b52429c96e89a1da7bf0bde" Name="Diagram1" ZoomLevel="100">
+        <EntityTypeShape EntityType="Model.FinalidadProducto" Width="1.875" PointX="8.625" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Persona" Width="1.5" PointX="3" PointY="14.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Plantacion" Width="1.5" PointX="6" PointY="13.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.PlantacionDetalleVertices" Width="2.125" PointX="13.875" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.SistemaPlantacion" Width="2.125" PointX="8.375" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.TipoDocumento" Width="1.5" PointX="0.75" PointY="11.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Ubigeo" Width="1.5" PointX="0.75" PointY="14.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.UnidadMedida" Width="1.5" PointX="9" PointY="11.75" IsExpanded="true" />
+        <AssociationConnector Association="Model.FK_Persona_TipoDocumento" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Persona_Ubigeo" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Plantacion_Ubigeo" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="Model.TipoZona" Width="1.5" PointX="0.75" PointY="20.75" />
+        <AssociationConnector Association="Model.FK_Persona_TipoZona" />
+        <AssociationConnector Association="Model.FK_Plantacion_TipoZona" />
+        <EntityTypeShape EntityType="Model.PersonaPlantacion" Width="2.125" PointX="11.25" PointY="15.625" />
+        <AssociationConnector Association="Model.FK_PersonasPlantacion_Persona" />
+        <AssociationConnector Association="Model.FK_PersonaPlantacion_Ubigeo" />
+        <AssociationConnector Association="Model.FK_PersonasPlantacion_Plantacion" />
+        <EntityTypeShape EntityType="Model.PlantacionHistorico" Width="1.875" PointX="14.25" PointY="13.625" />
+        <EntityTypeShape EntityType="Model.RevisionesRegistroPlantaciones" Width="2.375" PointX="6.75" PointY="22.875" />
+        <AssociationConnector Association="Model.FK_PlantacionHistorico_Plantacion" />
+        <AssociationConnector Association="Model.FK_RevisionesRegistroPlantaciones_Plantacion" />
+        <AssociationConnector Association="Model.FK_PlantacionHistorico_TipoZona" />
+        <AssociationConnector Association="Model.FK_PlantacionHistorico_Ubigeo" />
+        <EntityTypeShape EntityType="Model.RevisionesRegistroPlantacionesHistorico" Width="3.125" PointX="16.875" PointY="23.375" />
+        <AssociationConnector Association="Model.FK_RevisionesRegistroPlantacionesHistorico_PlantacionHistorico" />
+        <EntityTypeShape EntityType="Model.PersonaPlantacionHistorico" Width="2.25" PointX="8.25" PointY="15.375" />
+        <AssociationConnector Association="Model.FK_PersonaPlantacionHistorico_Persona" />
+        <AssociationConnector Association="Model.FK_PersonaPlantacionHistorico_PlantacionHistorico" />
+        <AssociationConnector Association="Model.FK_PersonaPlantacionHistorico_Ubigeo" />
+        <EntityTypeShape EntityType="Model.FamiliaEspecie" Width="1.5" PointX="6.75" PointY="2.875" />
+        <EntityTypeShape EntityType="Model.PlantacionDetalleVerticesHistorico" Width="2.75" PointX="19.875" PointY="16.125" />
+        <EntityTypeShape EntityType="Model.TipoAutorizacion" Width="1.75" PointX="0.75" PointY="0.875" />
+        <AssociationConnector Association="Model.FK_Plantacion_TipoAutorizacion" />
+        <AssociationConnector Association="Model.FK_PlantacionHistorico_TipoAutorizacion" />
+        <EntityTypeShape EntityType="Model.EspecieForestal" Width="1.5" PointX="9" PointY="0.875" />
+        <AssociationConnector Association="Model.FK_EspecieForestal_FamiliaEspecie" />
+        <EntityTypeShape EntityType="Model.PlantacionDetalle" Width="2" PointX="11.25" PointY="7.875" />
+        <EntityTypeShape EntityType="Model.PlantacionDetalleHistorico" Width="2" PointX="16.875" PointY="7.75" />
+        <AssociationConnector Association="Model.FK_PlantacionDetalle_EspecieForestal" />
+        <AssociationConnector Association="Model.FK_PlantacionDetalleHistorico_EspecieForestal" />
+        <AssociationConnector Association="Model.FK_PlantacionDetalle_FinalidadPlantacion" />
+        <AssociationConnector Association="Model.FK_PlantacionDetalleHistorico_FinalidadProducto" />
+        <AssociationConnector Association="Model.FK_PlantacionDetalle_Plantacion" />
+        <AssociationConnector Association="Model.FK_PlantacionDetalle_SistemaPlantacion" />
+        <AssociationConnector Association="Model.FK_PlantacionDetalle_UnidadMedida" />
+        <AssociationConnector Association="Model.FK_PlantacionDetalleVertices_PlantacionDetalle" />
+        <AssociationConnector Association="Model.FK_PlantacionDetalleHistorico_PlantacionHistorico" />
+        <AssociationConnector Association="Model.FK_PlantacionDetalleHistorico_SistemaPlantacion" />
+        <AssociationConnector Association="Model.FK_PlantacionDetalleHistorico_UnidadMedida" />
+        <AssociationConnector Association="Model.FK_PlantacionDetalleVerticesHistorico_PlantacionDetalleHistorico" />
+        <EntityTypeShape EntityType="Model.Anexos" Width="1.5" PointX="8" PointY="26.5" />
+        <EntityTypeShape EntityType="Model.AnexosPlantacion" Width="1.5" PointX="10.25" PointY="21" />
+        <AssociationConnector Association="Model.FK_AnexosPlantacion_Anexos" />
+        <AssociationConnector Association="Model.FK_AnexosPlantacion_Plantacion" />
+        <EntityTypeShape EntityType="Model.Interesado" Width="2" PointX="3.25" PointY="21.75" />
+        <EntityTypeShape EntityType="Model.InteresadoDetalle" Width="2" PointX="17.25" PointY="16.125" />
+        <EntityTypeShape EntityType="Model.PersonaInteresado" Width="2" PointX="5.25" PointY="8.75" />
+        <EntityTypeShape EntityType="Model.TipoAdquisicion" Width="1.875" PointX="0.75" PointY="27" />
+        <EntityTypeShape EntityType="Model.TipoComercializacion" Width="2" PointX="0.75" PointY="24.625" />
+        <AssociationConnector Association="Model.FK_InteresadoDetalle_EspecieForestal" />
+        <AssociationConnector Association="Model.FK_InteresadoDetalle_FinalidadProducto" />
+        <AssociationConnector Association="Model.FK_Interesado_TipoAdquisicion" />
+        <AssociationConnector Association="Model.FK_Interesado_TipoComercializacion" />
+        <AssociationConnector Association="Model.FK_Interesado_Ubigeo" />
+        <AssociationConnector Association="Model.FK_InteresadoDetalle_Interesado" />
+        <AssociationConnector Association="Model.FK_PersonaInteresado_Interesado" />
+        <AssociationConnector Association="Model.FK_InteresadoDetalle_SistemaPlantacion" />
+        <AssociationConnector Association="Model.FK_InteresadoDetalle_UnidadMedida" />
+        <AssociationConnector Association="Model.FK_PersonaInteresado_Persona" />
+        <AssociationConnector Association="Model.FK_PersonaInteresado_Ubigeo" />
+        <EntityTypeShape EntityType="Model.SistemaCoordenada" Width="1.875" PointX="3.375" PointY="1" />
+        <AssociationConnector Association="Model.FK_PlantacionDetalle_SistCoord_Id" />
+        <EntityTypeShape EntityType="Model.TipoComunidad" Width="1.5" PointX="0.75" PointY="4" />
+        <AssociationConnector Association="Model.FK_Plantacion_TipoComunidad" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

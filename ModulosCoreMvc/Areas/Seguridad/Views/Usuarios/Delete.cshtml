@@ -1,0 +1,129 @@
+﻿@model SERFOR.Component.SeguridadCore.DataAccess.Usuario
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Areas/Seguridad/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Eliminar Usuario</h2>
+
+<h3>Está seguro que quiere eliminarlo?</h3>
+<div>
+    <h4>Usuario</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Clave)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Clave)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Activo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Activo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaInicio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaInicio)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaFin)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaFin)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Sede_Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Sede_Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SedePrincipal_Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SedePrincipal_Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EsSedePrincipal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EsSedePrincipal)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UsuarioCreacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UsuarioCreacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaCreacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaCreacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UsuarioModificacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UsuarioModificacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaModificacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaModificacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Persona.Nombres)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Persona.Nombres)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-default" /> |
+            @Html.ActionLink("Retornar a Listado", "Index")
+        </div>
+    }
+</div>

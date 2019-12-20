@@ -1,0 +1,386 @@
+﻿@{
+    ViewBag.Title = "Reporte Oficial de plantaciones";
+    Layout = "~/Areas/Plantaciones/Views/Shared/_Layout.cshtml";
+}
+<style>
+    #map {
+        height: 700px;
+        width: 100%;
+    }
+
+    .infoDiv {
+        width: 100%;
+        -webkit-user-select: none;
+        background-color: white;
+        border-radius: 20px;
+    }
+
+    .hover {
+        background-color: #eee;
+    }
+</style>
+
+<h3>
+    Reporte de plantaciones (Oficial)
+    <button type="button" class="btn btn-info btn-xs" data-container="body" data-toggle="popover" data-trigger="focus" data-placement="right" title="Reporte de plantaciones Oficial?"
+            data-content="El presente listado muestra los registros de plantaciones que han sido aprobados por los especialistas de la ATFFS, DIR y Catastro.">
+        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+    </button>
+</h3>
+<div class='hr'></div>
+
+<div class="row">
+    <div class="col-md-3 col-sm-5 col-xs-12">
+        <div id="map"></div>
+    </div>
+    <div class="col-md-9 col-sm-7 col-xs-12">
+        <div id="toolbar">
+            <div class="form-inline" role="form">
+                <div class="form-group">
+                    <label class="control-label"> Filtre por Departamento:</label>
+                    <select id="Departamento" name="Departamento" class="form-control dropdown" data-smk-noclear></select>
+                </div>
+            </div>
+        </div>
+        <table id="table"
+               data-id-field="Id"
+               data-unique-id="Id"
+               data-classes="table-bordered"
+               data-side-pagination="client"
+               data-pagination="true"
+               data-show-pagination-switch="true"
+               data-page-list="[15, 20, 30, 50, 100]"
+               data-page-size="20"
+               data-search="true"
+               data-show-columns="true"
+               data-show-export="true"
+               data-show-toggle="true"
+               data-mobile-responsive="true"
+               data-show-footer="false"
+               data-click-to-select="true"
+               data-single-select="true"
+               data-striped="false"
+               data-toolbar="#toolbar"
+               data-show-multi-sort="false">
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <thead>
+                <tr>
+                    <th data-field="NumeroCertificado" data-sortable="true" class="col-md-2" data-formatter="enlaceFormatter">
+                        Nº Certificado
+                    </th>
+                    <th data-field="Departamento" data-halign="center" data-sortable="true" class="col-md-1">
+                        Departamento
+                    </th>
+                    <th data-field="Provincia" data-halign="center" data-sortable="true" class="col-md-1">
+                        Provincia
+                    </th>
+                    <th data-field="Distrito" data-halign="center" data-sortable="true" class="col-md-1">
+                        Distrito
+                    </th>
+
+                    <th data-field="Condicion" data-halign="center" data-sortable="true" class="col-md-1">
+                        Condición
+                    </th>
+                    <th data-field="Area" data-halign="center" data-align="right" data-sortable="true" class="col-md-1" data-formatter="decimalFormatter">
+                        Área
+                    </th>
+                    <th data-field="CantidadBloques" data-halign="center" data-align="center" data-sortable="true" class="col-md-1">
+                        Bloques
+                    </th>
+                    <th data-field="CantidadPersonas" data-halign="center" data-align="center" data-sortable="true" class="col-md-1">
+                        Personas
+                    </th>
+                    <th data-field="CantidadRevisiones" data-halign="center" data-align="center" data-sortable="true" class="col-md-1">
+                        Revisiones
+                    </th>
+                    <th data-field="CantidadHistoricos" data-halign="center" data-align="center" data-sortable="true" class="col-md-1">
+                        F3
+                    </th>
+                    <th data-field="CantidadAnexos" data-halign="center" data-align="center" data-sortable="true" class="col-md-1">
+                        Anx.
+                    </th>
+                    <th data-field="NombreZona" data-visible="false" data-halign="center" data-sortable="true" class="col-md-1">
+                        Comunidad-Caserío
+                    </th>
+
+                    <th data-field="Zona" data-visible="false" data-halign="center" data-align="center" data-sortable="true" class="col-md-1">
+                        Zona
+                    </th>
+                    <th data-field="Datum" data-visible="false" data-halign="center" data-sortable="true" class="col-md-1">
+                        Datum
+                    </th>
+                    <th data-field="Autorizacion" data-visible="false" data-halign="center" data-sortable="true" class="col-md-1">
+                        Autorización
+                    </th>
+                    <th data-field="CoordenadaEsteUTM" data-visible="false" data-halign="center" data-sortable="true" class="col-md-1">
+                        UTM-Este
+                    </th>
+                    <th data-field="CoordenadaNorteUTM" data-visible="false" data-halign="center" data-sortable="true" class="col-md-1">
+                        UTM-Norte
+                    </th>
+                    <th data-field="CantidadTotalSuperficieMl" data-visible="false" data-halign="center" data-align="right" data-sortable="true" class="col-md-1" data-formatter="decimalFormatter">
+                        Sup. Ml
+                    </th>
+                    <th data-field="CantidadTotalSuperficieHa" data-visible="false" data-halign="center" data-align="right" data-sortable="true" class="col-md-1" data-formatter="decimalFormatter">
+                        Sup. Ha
+                    </th>
+                    <th data-field="DocumentoCondicion" data-visible="false" data-halign="center" data-sortable="true" class="col-md-1">
+                        Doc. Condición
+                    </th>
+                    <th data-field="DocumentoContrato" data-visible="false" data-halign="center" data-sortable="true" class="col-md-1">
+                        Contrato
+                    </th>
+                    <th data-field="FechaRecepcion" data-visible="false" data-halign="center" data-align="center" data-sortable="true" class="col-md-1" data-formatter="dateFormatter">
+                        Solicitado
+                    </th>
+                    <th data-field="FechaRecepcionARFFS" data-visible="false" data-halign="center" data-align="center" data-sortable="true" class="col-md-1" data-formatter="dateFormatter">
+                        Recepción
+                    </th>
+                    <th data-field="FechaCreacion" data-visible="false" data-halign="center" data-align="center" data-sortable="true" class="col-md-1" data-formatter="dateFormatter">
+                        Registrado
+                    </th>
+                    <th data-field="FechaModificacion" data-visible="false" data-halign="center" data-align="center" data-sortable="true" class="col-md-1" data-formatter="dateFormatter">
+                        Modificado
+                    </th>
+                    <th data-field="UsuarioCreacion" data-visible="false" data-halign="center" data-sortable="true" class="col-md-1">
+                        Usuario Reg.
+                    </th>
+                    <th data-field="UsuarioCreacion" data-visible="false" data-halign="center" data-sortable="true" class="col-md-1">
+                        Usuario Act.
+                    </th>
+
+                </tr>
+
+            </thead>
+            <tbody id="entityListBody"></tbody>
+        </table>
+    </div>
+
+</div>
+
+@section scripts{
+
+    <script type="text/javascript">
+
+        function enlaceFormatter(value, row) {
+            return '<a href="@Url.Action("Edit", "Plantacion", new {area="Plantaciones"})?id=' + row.Id + '" type="submit" id="verPlantacion"  target="_blank">' + value + '</a>'
+
+        }
+
+    </script>
+
+    <!-- Scripts para poblar el mapa y la tabla -->
+    <script type="text/javascript">
+
+        $("#table").delegate('td', 'mouseover mouseleave', function (e) {
+            if (e.type == 'mouseover') {
+                $(this).parent().addClass("hover");
+                $("colgroup").eq($(this).index()).addClass("hover");
+            }
+            else {
+                $(this).parent().removeClass("hover");
+                $("colgroup").eq($(this).index()).removeClass("hover");
+            }
+        });
+
+        $(document).ready(function () {
+
+            $.ajax({
+                async: true,
+                type: 'POST',
+                url: '@Url.Action("GetDepartamentos", "Ubigeo", new { area = "General" })',
+                dataType: 'json',
+                data: {},
+                success: function (departamentos) {
+                    $.each(departamentos, function (i, departamento) {
+                        $("#Departamento").append('<option value="' + departamento.Value + '">' + departamento.Text + '</option>');
+                    });
+                    $("#Departamento").append('<option value="">TODOS</option>');
+
+                },
+                error: function (ex) {
+                    showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Error al intentar cargar el listado de departamentos. " + ex);
+                }
+
+            });
+
+            $("#Departamento").on("change", function () {
+                populate($(this).val(), false);
+            });
+
+            initMap();
+
+            populate('', true);
+
+        })
+
+        function populate(codigo, inicializar) {
+            $.ajax(
+            {
+                url: '@Url.Action("GetPlantaciones", "Reportes", new { area = "Plantaciones"})',
+                method: "GET",
+                data: { codigoDepartamento: codigo },
+                dataType: 'json',
+                success: function (data) {
+
+                    populateTable(data, inicializar);
+                    populateMap(data);
+                },
+                error: function () {
+                    showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Error al intentar cargar el listado de plantaciones. ");
+                }
+            });
+        }
+
+        function populateTable(data, inicializar) {
+            if (inicializar)
+            { $('#table').bootstrapTable({ data: data }); }
+            else
+            { $('#table').bootstrapTable('load', data); }
+
+        }
+
+        var $markerCluster = null;
+        var $markers = [];
+        var $map = null;
+
+        function CenterControl(controlDiv, map) {
+
+            // Set CSS for the control border.
+            var controlUI = document.createElement('div');
+            controlUI.style.backgroundColor = '#fff';
+            controlUI.style.border = '2px solid #fff';
+            controlUI.style.borderRadius = '3px';
+            controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+            controlUI.style.cursor = 'pointer';
+            controlUI.style.marginBottom = '22px';
+            controlUI.style.textAlign = 'center';
+            controlUI.title = 'Click to recenter the map';
+            controlDiv.appendChild(controlUI);
+
+            // Set CSS for the control interior.
+            var controlText = document.createElement('div');
+            controlText.style.color = 'rgb(25,25,25)';
+            controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+            controlText.style.fontSize = '16px';
+            controlText.style.lineHeight = '38px';
+            controlText.style.paddingLeft = '5px';
+            controlText.style.paddingRight = '5px';
+            controlText.innerHTML = 'Centrar';
+            controlUI.appendChild(controlText);
+
+            // Setup the click event listeners: simply set the map to Chicago.
+            controlUI.addEventListener('click', function () {
+                $map.setCenter({ lat: -9.835570, lng: -75.099388 });
+                $map.setZoom(5);
+            });
+        }
+
+        function initMap() {
+
+            $map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 5,
+                center: { lat: -9.835570, lng: -75.099388 }
+            });
+
+            var centerControlDiv = document.createElement('div');
+            var centerControl = new CenterControl(centerControlDiv, $map);
+
+            centerControlDiv.index = 1;
+            $map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
+        }
+
+        function populateMap(data) {
+
+            clearMarkers();
+
+            var cantidadPuntos = data.length;
+            if (cantidadPuntos > 0) {
+
+                for (var i = 0; i < data.length; i++) {
+
+                    if (data[i].CoordenadaGeografica != undefined && data[i].CoordenadaGeografica != null) {
+                        addMarker(data[i]);
+                    }
+                }
+
+                $markerCluster = new MarkerClusterer($map, $markers, { imagePath: '/Content/images/markers/m' });
+
+            }
+        }
+
+        function addMarker(punto) {
+
+            var detalle = '<div class="infoDiv">' +
+                           '<h4> ' + punto.CoordenadaGeografica.Nombre + ' - ' + punto.CoordenadaGeografica.NombreLocation + '</h4>' +
+                            '<table class="table table-condensed"><tbody>' +
+                            '<tr><td rowspan="2"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span>&nbsp;UTM wgs84:</td><td>' + punto.CoordenadaEsteUTM + ' E</td></tr>' +
+                            '<tr><td>' + punto.CoordenadaNorteUTM + ' N</td></tr>' +
+                            '<tr><td rowspan="2"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>&nbsp;Geográficas:</td><td>' + punto.CoordenadaGeografica.Latitud + ' lat.</td></tr>' +
+                             '<tr><td>' + punto.CoordenadaGeografica.Longitud + ' lng.</td></tr>' +
+                              '</tbody></table>' +
+                              '<footer><cite title="Source Title">Registrado por ' + punto.UsuarioCreacion + '</cite></footer>' +
+                          '</div>';
+
+            var infowindow = new window.google.maps.InfoWindow({
+                content: detalle
+            });
+
+            var marker = new window.google.maps.Marker({
+                icon: '/Content/images/markers/green-dot.png',
+                position: new window.google.maps.LatLng(punto.CoordenadaGeografica.Latitud, punto.CoordenadaGeografica.Longitud),
+                map: $map,
+            });
+
+            marker.addListener('click', function () {
+                infowindow.open(map, marker);
+            });
+
+            $markers.push(marker);
+
+        }
+
+        function clearMarkers() {
+            if ($markers != null) {
+                for (var i = 0; i < $markers.length; i++) {
+                    $markers[i].setMap(null);
+                }
+            }
+
+            $markers = [];
+
+            if ($markerCluster) {
+                $markerCluster.clearMarkers();
+            }
+        }
+    </script>
+}
+
+
+

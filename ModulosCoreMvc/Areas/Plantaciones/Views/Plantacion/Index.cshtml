@@ -1,0 +1,316 @@
+﻿
+@{
+    ViewBag.Title = "Plantaciones forestales";    
+    Layout = "~/Areas/Plantaciones/Views/Shared/_Layout.cshtml";
+}
+    @*TYLER 12.12.19*@
+    <h3>
+        Solicitudes de Plantaciones Forestales 
+        @*gpaima - 27.08.2019
+        <a type="button" class="btn btn-success  pull-right" href="@Url.Action("Create", "Plantacion", new { area = "Plantaciones" })">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Registrar
+        </a>*@
+    </h3>
+<div class='hr'></div>
+
+<table id="table"
+       data-id-field="Id"
+       data-unique-id="Id"
+       data-classes="table-bordered"
+       data-side-pagination="client"
+       data-url='@Url.Action("GetPlantaciones", "Plantacion", new { area = "Plantaciones" })'
+       data-pagination="true"
+       data-show-pagination-switch="true"
+       data-page-list="[15, 20, 30, 50, 100]"
+       data-page-size="20"
+       data-search="true"
+       data-toggle="table"
+       data-show-columns="true"
+       data-show-refresh="true"
+       data-show-export="true"
+       data-show-toggle="true"
+       data-mobile-responsive="true"
+       data-show-footer="true"
+       data-click-to-select="true"
+       data-single-select="true"
+       data-striped="true"
+       data-show-multi-sort="false">
+    <thead>
+        <tr>
+            @if (ViewBag.RoleName == "ADMINSIS")
+    {
+        <th rowspan="2" data-halign="center" data-align="center" data-valign="center" class="col-md-1" data-formatter="optionFormatter2">Opción</th>
+}
+            @if (ViewBag.RoleName != "ADMINSIS")
+            {
+        <th rowspan="2" data-halign="center" data-align="center" data-valign="center" class="col-md-1" data-formatter="optionFormatter">Opción</th>
+            }
+        <th rowspan="2" data-field="Id" data-halign="center" data-align="right" data-sortable="true" class="col-md-1">
+            ID
+        </th>     
+        <th rowspan="2" data-field="NumeroCertificado" data-sortable="true" class="col-md-2">
+            Nº Certificado
+        </th>
+        <th rowspan="2" data-field="Titular" data-halign="center" data-sortable="true" class="col-md-2">
+            Titular
+        </th>
+        <th rowspan="2" data-field="Representante" data-halign="center" data-sortable="true" class="col-md-2" data-visible="false">
+            Representante
+        </th>
+        <th rowspan="2" data-field="Departamento" data-halign="center" data-sortable="true" class="col-md-1">
+            Departamento
+        </th>
+        <th rowspan="2" data-field="Provincia" data-halign="center" data-sortable="true" class="col-md-1">
+            Provincia
+        </th>
+        <th rowspan="2" data-field="Distrito" data-halign="center" data-sortable="true" class="col-md-1">
+            Distrito
+        </th>
+        <th rowspan="2" data-field="Especie" data-halign="center" data-sortable="true" class="col-md-2">
+            Especie
+        </th>
+        <th rowspan="2" data-field="NombreZona" data-halign="center" data-sortable="true" class="col-md-1">
+            Comunidad-Caserío
+        </th>
+        <th rowspan="2" data-field="Condicion" data-halign="center" data-sortable="true" class="col-md-1">
+            Condición
+        </th>
+        <th rowspan="2" data-field="Area" data-halign="center" data-align="right" data-sortable="true" class="col-md-1" data-footer-formatter="formatterTotalArea">
+            Área Plantación
+        </th>
+        <th rowspan="2" data-field="Brigadista" data-halign="center" data-sortable="true" class="col-md-1" data-visible="false">
+            Brigadista
+        </th>
+        </tr>
+        <tr>
+            
+        </tr>
+    </thead>
+    <tbody id="entityListBody"></tbody>
+</table>
+
+<!-- Modal lg para mostrar la información  -->
+<div class="modal fade" id="modalInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div id="dialogInfo" class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div id="bodyInfoDetail" class="modal-body" style="padding:5px">
+
+            </div>
+            <div class="modal-footer" style="padding:5px">
+                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+<script type="text/javascript">
+        function formatterTotalArea(data) {
+            var total = 0;
+            $.each(data, function (i, row) {
+                total += row.Area;
+            });
+            return total.toFixed(2) +' has.';
+        }
+        function optionFormatter(value, row) {
+            var html = '<div class="btn-group  btn-group-xs dropup" role="group" aria-label="Opciones">' +
+                '<a href="@Url.Action("Edit", "Plantacion", new {area="Plantaciones"})?id=' + row.Id + '" type="button" class="btn btn-default"c><span class="glyphicon glyphicon-edit"></span></a>' +
+                '<a href="#" type="button" class="btn btn-danger" onClick="confirmDelete(' + row.Id + ')"><span class="glyphicon glyphicon-trash"></span></a>' +
+                '<a href="#" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+                '<span class="glyphicon glyphicon-info-sign"></span> </a> ' +
+                '<ul class="dropdown-menu">' +
+                '<li><a href="#" onClick="modalBloques(' + row.Id + ')"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Detalles de la plantación</a></li>' +
+                '<li><a href="#" onClick="modalRevisiones(' + row.Id + ')"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;Revisiones</a></li>' +
+                //gpaima 16.10.19
+                //'<li><a href="#" onClick="modalHistoricos(' + row.Id + ')"><span class="glyphicon glyphicon-book"></span>&nbsp;Historial de cambios (Formato N° 3)</a></li>' +
+                '<li><a href="#" onClick="modalArchivos(' + row.Id + ')"><span class="glyphicon glyphicon-open-file"></span>&nbsp;Documentos anexos subidos</a></li>' +
+                '<li><a href="#" onClick="modalFechas(' + row.Id + ')"><span class="glyphicon glyphicon-calendar"></span>&nbsp;Fechas de registro y recepción</a></li>';
+            if (row.NumeroCertificado != '') {
+                html = html + '<li><a href="@Url.Action("CertificatePrint", "Plantacion", new {area="Plantaciones"})?plantacionId=' + row.Id + '" type="submit" target="_blank" ><span class="glyphicon glyphicon-print"></span>&nbsp;Ver / Imprimir Formato N° 02</a></li>';
+            }
+            if (row.Numero>0){
+                html = html + '<li><a href="@Url.Action("ArcMapCoordenadasPlantacion", "Maps", new {area="Plantaciones"})?plantacionId=' + row.Id + '" type="submit" id="verMapa" target="_blank"><i class="glyphicon glyphicon-map-marker"></i>&nbsp;Ver bloques en el mapa</a></li>';
+            }
+
+            html = html + '</ul></div>';
+            return html;
+    }
+    function optionFormatter2(value, row) {
+        var html = '<div class="btn-group  btn-group-xs dropup" role="group" aria-label="Opciones">' +
+                '<a href="#" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+                '<span class="glyphicon glyphicon-info-sign"></span> </a> ' +
+                '<ul class="dropdown-menu">' +
+                '<li><a href="#" onClick="modalBloques(' + row.Id + ')"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Detalles de la plantación</a></li>' +
+                '<li><a href="#" onClick="modalRevisiones(' + row.Id + ')"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;Revisiones</a></li>' +
+                //gpaima 16.10.19
+                //'<li><a href="#" onClick="modalHistoricos(' + row.Id + ')"><span class="glyphicon glyphicon-book"></span>&nbsp;Historial de cambios (Formato N° 3)</a></li>' +
+                '<li><a href="#" onClick="modalArchivos(' + row.Id + ')"><span class="glyphicon glyphicon-open-file"></span>&nbsp;Documentos anexos subidos</a></li>' +
+                '<li><a href="#" onClick="modalFechas(' + row.Id + ')"><span class="glyphicon glyphicon-calendar"></span>&nbsp;Fechas de registro y recepción</a></li>';
+            if (row.NumeroCertificado != '') {
+                html = html + '<li><a href="@Url.Action("CertificatePrint", "Plantacion", new {area="Plantaciones"})?plantacionId=' + row.Id + '" type="submit" target="_blank" ><span class="glyphicon glyphicon-print"></span>&nbsp;Ver / Imprimir Formato N° 02</a></li>';
+            }
+            if (row.Numero>0){
+                html = html + '<li><a href="@Url.Action("ArcMapCoordenadasPlantacion", "Maps", new {area="Plantaciones"})?plantacionId=' + row.Id + '" type="submit" id="verMapa" target="_blank"><i class="glyphicon glyphicon-map-marker"></i>&nbsp;Ver bloques en el mapa</a></li>';
+            }
+
+            html = html + '</ul></div>';
+            return html;
+        }
+
+        function enlaceFormatter(value, row) {
+            return '<a href="@Url.Action("Edit", "Plantacion", new {area="Plantaciones"})?id=' + row.Id + '">' + value + '</a>'
+        }
+
+        function modalArchivos(id) {
+            $('#bodyInfoDetail').empty();
+
+            $.ajax({
+                async: true,
+                method: "GET",
+                url: '@Url.Action("_Documents", "Plantacion", new { area = "Plantaciones"})',
+                data: { plantacionId: id },
+                cache: false,
+                success: function (data) {
+                    $('#dialogInfo').removeClass("modal-lg");
+                    $('#dialogInfo').addClass("modal-lg");
+                    $('#modalInfo').modal('show');
+                    $('#bodyInfoDetail').html(data);
+                },
+                error: function (ex) {
+                    showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Ocurrió un error al intentar mostrar la lista de documentos anexos: " + ex);
+                }
+            });
+        }
+
+        function modalFechas(id) {
+            $('#bodyInfoDetail').empty();
+
+            $.ajax({
+                async: true,
+                method: "GET",
+                url: '@Url.Action("_DatesFormato1", "Plantacion", new { area = "Plantaciones"})',
+                data: { plantacionId: id },
+                cache: false,
+                success: function (data) {
+                    $('#modalInfo').modal('show');
+                    $('#dialogInfo').removeClass("modal-lg");
+                    $('#bodyInfoDetail').html(data);
+                },
+                error: function (ex) {
+                    showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Ocurrió un error al intentar mostrar la información de detalle de la plantación seleccionada: " + ex);
+                }
+            });
+        }
+
+        function modalHistoricos(id) {
+            $('#bodyInfoDetail').empty();
+
+            $.ajax({
+                async: true,
+                method: "GET",
+                url: '@Url.Action("_History", "Plantacion", new { area = "Plantaciones"})',
+                data: { plantacionId: id },
+                cache: false,
+                success: function (data) {
+                    $('#dialogInfo').removeClass("modal-lg");
+                    $('#dialogInfo').addClass("modal-lg");
+                    $('#modalInfo').modal('show');
+                    $('#bodyInfoDetail').html(data);
+                },
+                error: function (ex) {
+                    showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Ocurrió un error al intentar mostrar la información de detalle de la plantación seleccionada: " + ex);
+                }
+            });
+        }
+
+        function modalBloques(id) {            
+            $('#bodyInfoDetail').empty();            
+            $.ajax({
+                async: true,
+                method: "GET",
+                url: '@Url.Action("_ListBloque", "Plantacion", new { area = "Plantaciones"})',
+                data: { plantacionId: id },
+                cache: false,
+                success: function (data) {                    
+                    $('#dialogInfo').removeClass("modal-lg");
+                    $('#dialogInfo').addClass("modal-lg");
+                    $('#modalInfo').modal('show');
+                    $('#bodyInfoDetail').html(data);
+                },
+                error: function (ex) {
+                    showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Ocurrió un error al intentar mostrar la información de detalle de la plantación seleccionada: " + ex);
+                }
+            });
+        }
+
+        function modalRevisiones(id) {
+            $('#bodyInfoDetail').empty();
+
+            $.ajax({
+                async: true,
+                method: "GET",
+                url: '@Url.Action("_Revisions", "Plantacion", new { area = "Plantaciones"})',
+                data: { plantacionId: id },
+                cache: false,
+                success: function (data) {
+                    $('#dialogInfo').removeClass("modal-lg");
+                    $('#dialogInfo').addClass("modal-lg");
+                    $('#modalInfo').modal('show');
+                    $('#bodyInfoDetail').html(data);
+                },
+                error: function (ex) {
+                    showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Ocurrió un error al intentar mostrar la información de detalle de la plantación seleccionada: " + ex);
+                }
+            });
+        }
+
+        function confirmDelete(id) {
+
+            bootbox.confirm({
+                message: "La Plantacion seleccionada será eliminada permanentemente. !Esta seguro?",
+                buttons: {
+                    confirm: {
+                        label: '<i class="glyphicon glyphicon-remove"></i>&nbsp;Eliminar',
+                        className: 'btn-danger'
+                    },
+                    cancel: {
+                        label: 'Cancelar',
+                        className: 'btn-default'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        $.ajax({
+                            async: true,
+                            url: '@Url.Action("Delete", "Plantacion", new { area = "Plantaciones"})',
+                            method: "POST",
+                            data: { id: id },
+                            dataType: 'json',
+                            success: function (result) {
+                                if (result) {
+                                    $('#table').bootstrapTable('removeByUniqueId', id);
+                                    showNotification(constantes.tipoAlerta.SUCCESS, "¡En hora Buena!", " El registro seleccionado fue eliminado correctamente. ");
+                                }
+                                else {
+                                    showNotification(constantes.tipoAlerta.WARNING, "No puede eliminar el registro",
+                                        "El registro seleccionado no puede ser eliminado. Es problable que esta plantación tenga personas, bloques o formatos 03 asociados.");
+                                }
+                            },
+                            error: function (ex) {
+                                showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!",
+                                       "Ocurrió un error al intentar conectar con el servicio. Contacte al administrador del sistema y comuníquele el siguiente mensaje:" + ex);
+
+                            }
+                        });
+                    }
+                }
+            });
+
+            return false;
+        }
+        $(document).ready(function () {
+            $(".fixed-table-body").removeClass("fixed-table-body");
+        });
+</script>
+}

@@ -1,0 +1,334 @@
+﻿@using System.Text
+@model SERFOR.Component.DTEntities.Plantaciones.PlantacionTableRowDTe
+
+@{
+    ViewBag.Title = "MapCoordenadasPlantacion";
+    Layout = "~/Views/Shared/_LayoutMaps.cshtml";
+}
+<style>
+    #map {
+        height: 750px;
+        width: 100%;
+    }
+
+    .infoDiv {
+        width: 100%;
+        -webkit-user-select: none;
+        background-color: white;
+        border-radius: 20px;
+    }
+</style>
+
+<h3>@Model.Id (N° cert. @Model.NumeroCertificado ) <small>&nbsp;(<label id="numBloquesLabel">0</label> Bloques/predios registrados</small>)</h3>
+<input type="hidden" id="PlantacionId" value="@Model.Id" />
+
+<div class="row">
+    <div class="col-md-4 col-sm-6">
+        <div class="row">
+            <div class="col-md-12 col-xs-12 bhoechie-tab-container">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu" style="height:750px">
+                    <ul class="list-group">
+                        <a href="#" class="list-group-item active">
+                            <br /><i class="glyphicon glyphicon-info-sign" style="font-size:30px"></i><br />&nbsp;Sobre<br />la plantación<br />
+                        </a>
+                        <a href="#" class="list-group-item ">
+                            <br /><i class="glyphicon glyphicon-map-marker" style="font-size:30px"></i>&nbsp;<br />Bloques<br /> o Predios<br />
+                        </a>
+                    </ul>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 bhoechie-tab">
+                    <div class="bhoechie-tab-content active">
+                        <center>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">Resumen</h4>
+                                </div>
+                                <div class="panel-body">
+
+                                    @{
+                                        var resumen = new StringBuilder("Esta plantación ");
+                                        if (!string.IsNullOrEmpty(Model.Detalles[0].SistemaCoordenada_Id.ToString()))
+                                        {
+                                            resumen.AppendFormat(" con Zona {0}", Model.Detalles[0].SistemaCoordenada_Id.ToString());
+                                        }
+                                        else
+                                        {
+                                            resumen.Append(" sin zona registrada ");
+                                        }
+
+                                        //if (Model.AreaPredio != null && Model.AreaPredio > 0)
+                                        //{
+                                        //    resumen.AppendFormat(" tiene un area de {0} mt2 ", Model.AreaPredio);
+                                        //}
+                                        //else
+                                        //{
+                                        //    resumen.Append(" no tiene un area ingresada ");
+                                        //}
+
+                                        //resumen.AppendFormat(" esta ubicado en las coordenadas UTM {0} E y {1} N ", Model.CoordenadaEsteUTM, Model.CoordenadaNorteUTM);
+
+                                        //if (Model.TotalPlantado != null && Model.TotalPlantado > 0)
+                                        //{
+                                        //    resumen.AppendFormat(" tiene plantado un total de {0} para producir {1} {2} ", Model.TotalPlantado, Model.ProduccionEstimada, Model.UnidadMedidaSimbolo);
+                                        //}
+                                        //else
+                                        //{
+                                        //    resumen.Append(" no se le ha especificado el total plantado ");
+                                        //}
+
+                                        //if (Model.Especie_Id != null && Model.Especie_Id > 0)
+                                        //{
+                                        //    resumen.AppendFormat(" para la especie {0} ({1}) ", Model.EspecieNombreComun, Model.EspecieNombreCientifico);
+                                        //}
+                                        //else
+                                        //{
+                                        //    resumen.Append(" de especie forestal no especificada. ");
+                                        //}
+
+                                        resumen.AppendLine(string.Format(" Fue registrado el {0} por el usuario {1}", Model.FechaCreacion.ToShortDateString(), Model.UsuarioCreacion));
+
+                                        <p>@resumen .</p>
+                                    }
+
+                                    @*@if (!string.IsNullOrEmpty(Model.UriStorageFileName))
+                                        { <p>
+                                            <a href="@Model.UriStorageFileName">Descargar el archivo subido</a>
+                                        </p>
+                                        }
+                                        else
+                                        {
+                                        <p>
+                                            Sin archivo subido
+                                        </p>
+                                        }*@
+
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">Detalles de Predio</h4>
+                                </div>
+                                <div class="panel-body">
+                                    <table class="table table-condensed">
+                                        <tbody>
+                                            <tr>
+                                                <th><strong>Fecha de Recepción</strong></th>
+                                                <td>@Model.FechaRecepcion</td>
+                                            </tr>
+                                            <tr>
+                                                <th><strong>Nombre del Predio</strong></th>
+                                                <td>@string.Format("{0}", @Model.NombrePredio)</td>
+                                            </tr>
+                                            <tr>
+                                                <th><strong>Area</strong></th>
+                                                <td>@Model.Area</td>
+                                            </tr>
+                                            <tr>
+                                                <th><strong>Nombre de Zona</strong></th>
+                                                <td>@Model.NombreZona</td>
+                                            </tr>
+                                            <tr>
+                                                <th><strong>Distrito</strong></th>
+                                                <td>@Model.Distrito</td>
+                                            </tr>
+                                            <tr>
+                                                <th><strong>Provincia</strong></th>
+                                                <td>@Model.Provincia</td>
+                                            </tr>
+                                            <tr>
+                                                <th><strong>Departamento</strong></th>
+                                                <td>@Model.Departamento</td>
+                                            </tr>
+                                            @if (Model.Personas.Count > 0)
+                                            {
+                                                <tr>
+                                                    <th><strong>Documento</strong></th>
+                                                    <td>@string.Format("{0}", Model.Personas[0].Documento)</td>
+                                                </tr>
+                                                <tr>
+                                                    <th><strong>Titular</strong></th>
+                                                    <td>@string.Format("{0}", Model.Personas[0].NombreCompleto)</td>
+                                                </tr>
+                                                <tr>
+                                                    <th><strong>Correo</strong></th>
+                                                    <td>@string.Format("{0}", Model.Personas[0].Email)</td>
+                                                </tr>
+                                               }
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </center>
+                    </div>
+                    <div class="bhoechie-tab-content">
+                        <center>
+                            <div class="panel panel-default" style="max-height:730px;overflow-y:scroll;">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">Bloques o predios registrados</h4>
+                                </div>
+                                <div class="panel-body">
+                                    <table class="table table-condensed">
+                                        <tbody id="listBloquesBody"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </center>
+                    </div>
+                    <div class="bhoechie-tab-content">
+                        <center>
+
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8 col-sm-6 col-xs-12 bhoechie-tab-container">
+        <div id="map"></div>
+    </div>
+
+</div>
+
+
+@section scripts{
+
+    <script type="text/javascript">
+        var $map;
+        var $polygon = null;
+        var $markers = [];
+
+        function initMap() {
+
+            $map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 6,
+                mapTypeId: 'terrain',
+                center: { lat: -10, lng: -75 }
+
+            });
+
+            $map.setTilt(45);
+
+            clearMarkers();
+
+            $.ajax({
+                url: '@Url.Action("GetCoordenadasPlantacion", "Maps", new { area = "Plantaciones"})',
+                data: { plantacionId: $('#PlantacionId').val() },
+                type: "GET",
+                success: function (result) {    
+                    var cantidadBloques = result.length;
+
+                    
+
+                    if (cantidadBloques > 0) {
+                        
+                        if ($polygon != null) {
+                            $polygon.setMap(null);
+                        }
+                        
+                        $("#numBloquesLabel").html(cantidadBloques);
+                        $("#listBloquesBody").empty();
+                        $("#listBloquesBody").append('<tr><th><strong>Nombre</strong></th><td><strong>Coordenadas UTM/Geog.</strong></td></tr>');
+
+                          
+                        $.each(result, function (i, bloque) {
+
+                            $("#listBloquesBody").append('<tr><td colspan="2"><strong>' + bloque.Nombre.toUpperCase() + '</strong> (' + bloque.Coordenadas.length + ' vértices)</td></tr>');
+
+                            var cantidadPuntos = bloque.Coordenadas.length;                            
+                            if (cantidadPuntos > 0) {
+
+
+                                var points = [];
+                                var bounds = new google.maps.LatLngBounds();           
+                                 for (var i = 0; i < bloque.Coordenadas.length; i++) {
+                                     if (bloque.Coordenadas[i].CoordenadaGeografica.Latitud != undefined && bloque.Coordenadas[i].CoordenadaGeografica.Latitud != null) {
+                                         addMarkerWithTimeout(bloque.Coordenadas[i], i * 10);
+                                         points.push({ lat: bloque.Coordenadas[i].CoordenadaGeografica.Latitud, lng: bloque.Coordenadas[i].CoordenadaGeografica.Longitud });
+                                         bounds.extend(new google.maps.LatLng(bloque.Coordenadas[i].CoordenadaGeografica.Latitud, bloque.Coordenadas[i].CoordenadaGeografica.Longitud));
+                                    }
+                                }
+
+                            // Construct the polygon.
+                                $polygon = new google.maps.Polygon({
+                                    paths: points,
+                                    strokeColor: '#449D44',
+                                    strokeOpacity: 0.8,
+                                    strokeWeight: 2,
+                                    fillColor: '#449D44',
+                                    fillOpacity: 0.35
+                                });
+
+                                $polygon.setMap($map);  
+                                $map.setMapTypeId('satellite');
+                                $map.fitBounds(bounds);
+                                //$map.setCenter(new google.maps.LatLng(bloque.Coordenadas[0].CoordenadaGeografica.Latitud, bloque.Coordenadas[0].CoordenadaGeografica.Longitud));
+                                //$map.setZoom(16);
+
+                            } else {
+                                showNotification(constantes.tipoAlerta.INFO, "Mensaje", "Existen bloques sin información de vértices para mostrar");
+                            }
+                        });
+
+                    } else {
+                        showNotification(constantes.tipoAlerta.WARNING, "Mensaje", "No hay resultados para mostrar");
+                    }
+                },
+                error: function () {                    
+                    showNotification(constantes.tipoAlerta.DANGER, "Mensaje", "No ha sido posible cargar los vertices del Polígono!");
+                }
+            });
+        }
+
+
+        function addMarkerWithTimeout(punto, timeout) {
+
+            var detalle = '<div class="infoDiv">' +
+                '<h4> ' + punto.CoordenadaGeografica.Nombre + ' - ' + punto.CoordenadaGeografica.NombreLocation + '</h4>' +
+                 '<table class="table table-condensed"><tbody>' +
+                 '<tr><td rowspan="2"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span>&nbsp;UTM wgs84:</td><td>' + punto.CoordenadaEsteUTM + ' E</td></tr>' +
+                 '<tr><td>' + punto.CoordenadaNorteUTM + ' N</td></tr>' +
+                 '<tr><td rowspan="2"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>&nbsp;Geográficas:</td><td>' + punto.CoordenadaGeografica.Latitud + ' lat.</td></tr>' +
+                  '<tr><td>' + punto.CoordenadaGeografica.Longitud + ' lng.</td></tr>' +
+                   '</tbody></table>' +
+                   '<footer><cite title="Source Title">Registrado por ' + punto.UsuarioCreacion + '</cite></footer>' +
+               '</div>';
+
+            var infowindow = new window.google.maps.InfoWindow({
+                content: detalle
+            });
+
+            window.setTimeout(function () {
+                var marker = new window.google.maps.Marker({
+                    icon: '/Content/images/markers/green-dot.png',
+                    position: new window.google.maps.LatLng(punto.CoordenadaGeografica.Latitud, punto.CoordenadaGeografica.Longitud),
+                    map: $map,
+                    animation: google.maps.Animation.DROP
+                });
+
+                marker.addListener('click', function () {
+                    infowindow.open(map, marker);
+                });
+
+                $markers.push(marker);
+
+            }, timeout);
+
+            detalle = '<tr><th rowspan="2"><strong>' + punto.CoordenadaGeografica.NombreLocation + '</strong></th>' +
+                      '<td>' + punto.CoordenadaEsteUTM + ' E - ' + punto.CoordenadaNorteUTM + 'N</td>' +
+                      '</tr><tr><td>' + punto.CoordenadaGeografica.Latitud + ' lat. ' + punto.CoordenadaGeografica.Longitud + ' lng.</td></tr>';
+            $("#listBloquesBody").append(detalle);
+
+        }
+
+        function clearMarkers() {
+            if ($markers != null) {
+                for (var i = 0; i < $markers.length; i++) {
+                    $markers[i].setMap(null);
+                }
+            }
+            $markers = [];
+        }
+
+    </script>
+}

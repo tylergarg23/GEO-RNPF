@@ -1,0 +1,69 @@
+﻿@using SERFOR.Component.Tools.CustomFormatProviders
+
+@model List<SERFOR.Component.DTEntities.Plantaciones.DocumentoAnexoTableRowDTe>
+
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="panel-title">
+                    @if (Model != null)
+                    {
+                        <span id="badgeAnexosModal" class="badge">@Model.Where(a => a.Id > 0).Count()</span>
+                    }
+                    else
+                    {
+                        <span id="badgeAnexosModal" class="badge">0</span>
+                    }
+
+                    Documentos anexos subidos. (haga click en la descripción del archivo o el icono para descargarlo)
+                </h3>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-hover vmiddle">
+                    <thead>
+                        <tr>
+                            <th class="col-md-1">Formato</th>
+                            <th class="col-md-6">Nombre</th>
+                            <th class="col-md-1">Tamaño</th>
+                            <th class="col-md-4">Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Where(a => a.Id > 0).Count() > 0)
+                        {
+                            foreach (var anexo in Model.Where(a => a.Id > 0).OrderBy(a => a.Secuencia))
+                            {
+                                <tr id="anx-@anexo.Id">
+                                    <td class="text-center">
+                                        <a href="@anexo.Ruta"><span class="glyphicon glyphicon-file"></span></a>
+                                    </td>
+                                    <td><a href="@anexo.Ruta">@anexo.Secuencia. @anexo.Descripcion</a></td>
+                                    <td> @string.Format(new FileSizeFormatProvider(), "{0:fs}", anexo.Tamanio) </td>
+                                    <td>
+                                        <p><span class="glyphicon glyphicon-calendar"></span>&nbsp;Registrado el @anexo.FechaCreacion.ToString("dd-MMM-yyyy")</p>
+                                        <p><span class="glyphicon glyphicon-user"></span>&nbsp;por el usuario @anexo.UsuarioCreacion</p>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4">
+                                    <div id="jumbotronRevisiones" class="jumbotron">
+                                        <p class="text-center"><small>No se encontraron documentos anexos asociados al registro de plantación.</small></p>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

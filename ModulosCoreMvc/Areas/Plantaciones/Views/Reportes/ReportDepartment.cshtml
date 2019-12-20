@@ -1,0 +1,229 @@
+﻿@{
+    ViewBag.Title = "Reporte Oficial de plantaciones";
+    Layout = "~/Areas/Plantaciones/Views/Shared/_Layout.cshtml";
+}
+<style>
+
+    .infoDiv {
+        width: 100%;
+        -webkit-user-select: none;
+        background-color: white;
+        border-radius: 20px;
+    }
+
+    .hover {
+        background-color: #eee;
+    }
+</style>
+
+<h3>
+    Reporte de plantaciones por Departamento
+    @*<button type="button" class="btn btn-info btn-xs" data-container="body" data-toggle="popover" data-trigger="focus" data-placement="right" title="Reporte de plantaciones Oficial?"
+                data-content="El presente listado muestra los registros de plantaciones que han sido aprobados por los especialistas de la ATFFS, DIR y Catastro.">
+            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+        </button>*@
+</h3>
+<div class='hr'></div>
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <table id="table"
+               data-id-field="Id"
+               data-unique-id="Id"
+               data-classes="table-bordered"
+                data-search="true"
+               data-show-columns="true"
+               data-show-export="true"
+               data-show-toggle="true"
+               data-mobile-responsive="true"
+               data-striped="false"
+               data-show-multi-sort="false">
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <thead>
+                <tr>
+                    <th data-field="CodigoDepartamento" data-halign="center" data-sortable="true" class="col-md-1">
+                        Cod.
+                    </th>
+                    <th data-field="NombreDepartamento" data-sortable="true" class="col-md-1">
+                        Departamento
+                    </th>
+                    <th data-field="CantidadRNPs" data-halign="center" data-align="center" data-sortable="true" class="col-md-1" data-formatter="numberFormatter">
+                        RNP
+                    </th>
+                    <th data-field="CantidadVigentes" data-halign="center" data-align="center" data-sortable="true" class="col-md-1" data-formatter="numberFormatter">
+                        Vigentes
+                    </th>
+                    <th data-field="CantidadAnuladas" data-halign="center" data-align="center" data-sortable="true" class="col-md-1" data-formatter="numberFormatter">
+                        Anuladas
+                    </th>
+                    <th data-field="CantidadBloques" data-halign="center" data-align="center" data-sortable="true" class="col-md-1" data-formatter="numberFormatter">
+                        Bloques
+                    </th>
+                    <th data-field="CantidadAprobadosDIR" data-halign="center" data-align="center" data-sortable="true" class="col-md-1" data-formatter="numberFormatter">
+                        Por DIR
+                    </th>
+                    <th data-field="CantidadAprobadosCatastro" data-halign="center" data-align="center" data-sortable="true" class="col-md-1" data-formatter="numberFormatter">
+                        Por Cat.
+                    </th>
+                    <th data-field="CantidadEsPropietario" data-halign="center" data-align="center" data-sortable="true" class="col-md-1" data-formatter="numberFormatter">
+                        Prop.
+                    </th>
+                    <th data-field="CantidadEsInversionista" data-halign="center" data-align="center" data-sortable="true" class="col-md-1" data-formatter="numberFormatter">
+                        Inv.
+                    </th>
+                    <th data-field="SuperficieTotalM2" data-halign="center" data-align="right" data-sortable="true" class="col-md-1" data-formatter="decimalFormatter">
+                        m2
+                    </th>
+                    <th data-field="SuperficieTotalHa" data-halign="center" data-align="right" data-sortable="true" class="col-md-1" data-formatter="decimalFormatter">
+                        Ha
+                    </th>
+                    <th data-field="CantidadSolicitudes" data-halign="center" data-align="center" data-sortable="true" class="col-md-1" data-formatter="numberFormatter">
+                        Solicitudes
+                    </th>
+                    <th data-field="CantidadConNumero" data-halign="center" data-align="center" data-sortable="true" class="col-md-1" data-formatter="numberFormatter">
+                        Con N° x Rev.
+                    </th>
+                    <th data-field="CantidadSinNumero" data-halign="center" data-align="center" data-sortable="true" class="col-md-1" data-formatter="numberFormatter">
+                        Sin N°
+                    </th>                    
+                    <th data-field="AreaTotalM2" data-halign="center" data-align="right" data-sortable="true" class="col-md-1" data-formatter="decimalFormatter">
+                        m2
+                    </th>
+                    <th data-field="AreaTotalHa" data-halign="center" data-align="right" data-sortable="true" class="col-md-1" data-formatter="decimalFormatter">
+                        Ha
+                    </th>
+                </tr>
+
+            </thead>
+        </table>
+    </div>
+
+</div>
+
+@section scripts{
+
+    <!-- Scripts para poblar el mapa y la tabla -->
+    <script type="text/javascript">
+
+        $("#table").delegate('td', 'mouseover mouseleave', function (e) {
+            if (e.type == 'mouseover') {
+                $(this).parent().addClass("hover");
+                $("colgroup").eq($(this).index()).addClass("hover");
+            }
+            else {
+                $(this).parent().removeClass("hover");
+                $("colgroup").eq($(this).index()).removeClass("hover");
+            }
+        });
+        
+        $(document).ready(function () {
+
+            populate('', true);
+
+        })
+
+        function populate(codigo, inicializar) {
+            $.ajax(
+            {
+                url: '@Url.Action("GetDataDepartamentos", "Reportes", new { area = "Plantaciones"})',
+                method: "GET",
+                data: {},
+                dataType: 'json',
+                success: function (data) {
+                    populateTable(data, inicializar);
+                    //populateMap(data);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Error al intentar cargar el listado de información por departamentos. ");
+                }
+            });
+        }
+
+        function populateTable(data, inicializar) {
+            if (inicializar)
+            { $('#table').bootstrapTable({ data: data }); }
+            else
+            { $('#table').bootstrapTable('load', data); }
+
+        }
+
+     /*   var $map = null;
+
+        function initMap() {
+
+            $map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 5,
+                center: { lat: -9.835570, lng: -75.099388 }
+            });
+        }
+
+        function populateMap(data) {
+
+            var cantidadPuntos = data.length;
+            if (cantidadPuntos > 0) {
+
+                for (var i = 0; i < data.length; i++) {
+
+                    if (data[i].CoordenadaGeografica != undefined && data[i].CoordenadaGeografica != null) {
+                        addCircle(data[i], data[i].TotalArea);
+                    }
+                }
+
+            } else {
+                showNotification(constantes.tipoAlerta.INFO, "Mensaje", "No hay resultados para mostrar");
+            }
+        }
+
+        function addCircle(punto, valor) {
+
+            var detalle = '<div class="infoDiv">' +
+                           '<h4> ' + punto.CodigoDepartamento + ' - ' + punto.NombreDepartamento + '</h4>' +
+                           '<ul><li>Plantaciones :' + punto.CantidadPlantaciones + '</ul>' +
+                           '<ul><li>Aprobadas :' + punto.CantidadAprobados + '</ul>' +
+                           '<ul><li>Total área :' + punto.TotalArea.toLocaleString("en-US") + '</ul>' +
+                           '<ul><li>Bloques :' + punto.CantidadBloques + '</ul>' +
+                           '<ul><li>Sup. Ha :' + punto.SuperficieTotalHa.toLocaleString("en-US") + '</ul>' +
+                           '<ul><li>Sup. Ml :' + punto.SuperficieTotalMl.toLocaleString("en-US") + '</ul>' +
+                          '</div>';
+
+            var circle = new google.maps.Circle({
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#FF0000',
+                fillOpacity: 0.35,
+                map: $map,
+                center: { lat: punto.CoordenadaGeografica.Latitud, lng: punto.CoordenadaGeografica.Longitud },
+                radius: Math.sqrt(valor) * 1500
+            });
+
+            var infowindow = new window.google.maps.InfoWindow({
+                content: detalle
+            });
+
+            google.maps.event.addListener(circle, 'click', function (ev) {
+                infowindow.setPosition(circle.getCenter());
+                infowindow.open($map);
+            });
+
+        }*/
+
+    </script>
+}
+
+
+

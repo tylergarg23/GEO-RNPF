@@ -1,0 +1,186 @@
+﻿@model IEnumerable<SERFOR.Component.DTEntities.ListasExcel.LicenciaCazaDTe>
+
+@{
+    ViewBag.Title = "Licencias de caza deportiva";
+    Layout = "~/Areas/ConsultasDIR/Views/Shared/_Layout.cshtml";
+}
+
+<h3>
+    Licencias de Caza Deportiva 2017
+    <small>Actualizado al 15/05/2017</small>
+</h3>
+<div class='hr'></div>
+
+@if (Request.IsAuthenticated && User.IsInRole("ESPATFFS"))
+{
+    <div id="toolbar">
+        <div class="form-inline" role="form">
+            <div class="form-group">
+                <input type="file" class="form-control" id="inputExcel">
+            </div>
+            <button class="btn btn-default" id="uploadExcel"><span class="glyphicon glyphicon-upload"></span></button>
+        </div>
+    </div>
+}
+
+<table id="table"
+       data-classes="table-no-bordered"
+       data-side-pagination="client"
+       data-show-pagination-switch="true"
+       data-pagination="true"
+       data-page-size="20"
+       data-page-list="[20, 30, 50, 100]"
+       data-search="true"
+       data-toggle="table"
+       data-show-columns="true"
+       data-show-refresh="false"
+       data-show-export="true"
+       data-show-toggle="true"
+       data-mobile-responsive="true"
+       data-show-footer="false"
+       data-click-to-select="true"
+       data-single-select="true"
+       data-striped="true"
+       data-toolbar="#toolbar"
+       data-show-multi-sort="false"
+       data-id-field="id">
+    <thead>
+        <tr>
+
+            <th data-field="Id" data-halign="center" data-align="right" data-sortable="true" style="width:50px">
+                N°
+            </th>
+            <th data-field="AutoridadForestal" data-halign="center" data-align="center" data-sortable="true" class="col-md-1">
+                ATFFS o Gore
+            </th>
+            <th data-field="Numero" data-halign="center" data-align="center" data-sortable="true" class="col-md-2">
+                N° de Licencia
+            </th>
+            <th data-field="FechaEmision" data-halign="center" data-sortable="true" class="col-md-1">
+                Emisión
+            </th>
+            <th data-field="FechaCaducidad" data-halign="center" data-sortable="true" class="col-md-1">
+                Caducidad
+            </th>
+            <th data-field="TipoDocumento" data-halign="center" data-align="center" data-sortable="true" class="col-md-1">
+                Tipo Doc.
+            </th>
+            <th data-field="NumeroDocumento" data-halign="center" data-sortable="true" class="col-md-1">
+                Número Doc.
+            </th>
+            <th data-field="ApellidoPaterno" data-halign="center" data-sortable="true" class="col-md-1">
+                Apellido Paterno
+            </th>
+            <th data-field="ApellidoMaterno" data-halign="center" data-sortable="true" class="col-md-1">
+                Apellido Materno
+            </th>
+            <th data-field="Nombres" data-halign="center" data-sortable="true" class="col-md-2">
+                Nombres
+            </th>
+            <th data-field="CausalesExtinsion" data-halign="center" data-sortable="true" class="col-md-1">
+                Causal Ext.
+            </th>
+            <th data-field="NumeroResolucion" data-halign="center" data-sortable="true" class="col-md-1">
+                N° Resolución
+            </th>
+            <th data-field="FechaResolucion" data-halign="center" data-sortable="true" class="col-md-1">
+                Fecha Res.
+            </th>
+        </tr>
+    </thead>
+    <tbody id="entityListBody">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Id
+                </td>
+                <td>
+                    @item.AutoridadForestal
+                </td>
+                <td>
+                    @item.Numero
+                </td>
+                <td>
+                    @string.Format("{0:dd/MM/yyyy}", item.FechaEmision)
+                </td>
+                <td>
+                    @string.Format("{0:dd/MM/yyyy}", item.FechaCaducidad)
+                </td>
+                <td>
+                    @item.TipoDocumento
+                </td>
+                <td>
+                    @item.NumeroDocumento
+                </td>
+                <td>
+                    @item.ApellidoPaterno
+                </td>
+                <td>
+                    @item.ApellidoMaterno
+                </td>
+                <td>
+                    @item.Nombres
+                </td>
+                <td>
+                    @item.CausalesExtinsion
+                </td>
+                <td>
+                    @item.NumeroResolucion
+                </td>
+                <td>
+                    @if (!item.FechaResolucion.Equals(DateTime.MinValue))
+                    {
+                        string.Format("{0:dd/MM/yyyy}", item.FechaResolucion);
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section scripts{
+ 
+        <script type="text/javascript">
+        $("#uploadExcel").click(function () {
+            var fileUpload = document.getElementById("inputExcel");
+            if (fileUpload.value != null) {
+                var uploadFile = new FormData();
+                var files = $("#inputExcel").get(0).files;
+                // Add the uploaded file content to the form data collection
+                if (files.length > 0) {
+                    uploadFile.append("ExcelFile", files[0]);
+                    $.ajax({
+                        url: '@Url.Action("UploadFormato23", "Licencias", new { area = "ConsultasDIR"})',
+                        method: "POST",
+                        contentType: false,
+                        processData: false,
+                        data: uploadFile,
+                        success: function (result) {
+                            if (result != null && result.success) {
+                                showNotification(constantes.tipoAlerta.SUCCESS, "Enhorabuena!", "El archivo seleccionado se cargó y procesó correctamente.");
+                                showNotification(constantes.tipoAlerta.INFO, "Actualización de datos", "Por favor, actualice la página presionando F5 para reflejar los cambios en la tabla.");
+                            } else {
+                                showNotification(constantes.tipoAlerta.DANGER, "No se pudo cargar el archivo", result.responseText)
+                            }
+                        },
+                        error: function (ex) {
+                            showNotification(constantes.tipoAlerta.DANGER, "Algo salió mal", "Ocurrió un error durante la carga del archivo.")
+                        }
+                    });
+                }
+            }
+        });
+
+        $("#inputExcel").change(function () {
+            var selectedText = $("#inputExcel").val();
+            var extension = selectedText.split('.');
+            if (extension[1] != "xlsx") {
+                $("#inputExcel").focus();
+                showNotification(constantes.tipoAlerta.WARNING, "Archivo inválido", "Por favor seleccione un archivo excel con extensión xlsx.");
+                $("#inputExcel").val('');
+                return;
+            }
+        });
+    </script>
+}

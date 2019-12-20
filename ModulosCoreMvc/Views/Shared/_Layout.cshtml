@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+@*@using ModulosCoreBase.Security.Mvc;*@
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIR - SERFOR</title>
+    <link rel="icon" href="~/Content/images/favicon.png">
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <!-- Scripts de Telemetría AppInsights: Para recopilar análisis de uso de los usuarios finales sobre la aplicación -->
+    <script type='text/javascript'>
+        var appInsights = window.appInsights || function (config) {
+            function r(config) { t[config] = function () { var i = arguments; t.queue.push(function () { t[config].apply(t, i) }) } }
+            var t = { config: config }, u = document, e = window, o = 'script', s = u.createElement(o), i, f; for (s.src = config.url || '//az416426.vo.msecnd.net/scripts/a/ai.0.js', u.getElementsByTagName(o)[0].parentNode.appendChild(s), t.cookie = u.cookie, t.queue = [], i = ['Event', 'Exception', 'Metric', 'PageView', 'Trace', 'Ajax']; i.length;) r('track' + i.pop()); return r('setAuthenticatedUserContext'), r('clearAuthenticatedUserContext'), config.disableExceptionTracking || (i = 'onerror', r('_' + i), f = e[i], e[i] = function (config, r, u, e, o) { var s = f && f(config, r, u, e, o); return s !== !0 && t['_' + i](config, r, u, e, o), s }), t
+        }({
+            instrumentationKey: '9a1a4559-9cc4-44ad-b5b1-c1b13a1a3208'
+        });
+
+        window.appInsights = appInsights;
+        appInsights.trackPageView();
+    </script>
+
+</head>
+
+<body>
+    <!-- NavBar superior que muestra el menú del módulo seleccionado -->
+    <nav class="navbar navbar-default navbar-fixed-top" style="background-color:white;margin-top:50px" role="navigation">
+        <div class="container-fluid">
+            <a class="navbar-brand">
+                <img src="~/Content/Images/logo.jpg" class="img-responsive" alt="logo">
+            </a>
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar-menu" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar top-bar"></span>
+                    <span class="icon-bar middle-bar"></span>
+                    <span class="icon-bar bottom-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-navbar-menu">
+            @if (Request.IsAuthenticated && ViewBag.RoleName == "ADMINSIS")
+            {
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <div class="navbar-form">
+                        <div class="btn-group">
+                            <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+                                <img src="~/Content/images/modulos.png" height="50" />
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="@Url.Action("Index", "Plantacion", new { area = "Plantaciones" })">Registro Nacional de Plantaciones</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="@Url.Action("Index", "Vivero", new { area = "Plantaciones" })">Registro Nacional de Viveros Forestales</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="@Url.Action("Index", "Persona", new { area = "General" })">Mantenimiento del Sistema</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="@Url.Action("Index", "Usuarios", new { area = "Seguridad" })">Configuración del Sistema</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            }
+            <ul class="nav navbar-nav navbar-right navbar-nav-serfor">
+                @RenderSection("menu", false)
+            </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+    @Html.Partial("_Header")
+
+    <div class="container body-content" style="width:90%;position:relative;margin-top:80px">
+        <section class="area-body" id="area-body">
+            <div style="width:100%; height: 100%" id="app-body">
+                @RenderBody()
+            </div>
+            <div class="modalLoading"></div>
+        </section>
+        @Html.Partial("_Footer")
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrapmaster")
+    <script src="~/Scripts/bloodhound.min.js"></script>
+    <script src="~/Scripts/bootstrap3-typeahead.min.js"></script>
+    @Scripts.Render("~/bundles/bootstraptable")
+    @Scripts.Render("~/bundles/validatorsform")
+    <script src="~/Scripts/chart.bundle.min.js"></script>
+
+    <script type="text/javascript">
+
+        $(function () {
+            $('[data-toggle="popover"]').popover();
+
+            $('[data-toggle="tooltip"]').tooltip();
+        })
+    </script>
+    <script src="~/Scripts/Site.js"></script>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChRI0BGMoIERIqTfXJnGCQTs6vZ_6jh6o"></script>
+    <script src="~/Scripts/markerclusterer.js"></script>
+
+    @RenderSection("scripts", required: false)
+
+    @Html.RenderScripts()
+
+
+
+</body>
+</html>

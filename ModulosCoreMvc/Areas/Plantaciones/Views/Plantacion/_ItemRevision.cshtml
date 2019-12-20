@@ -1,0 +1,43 @@
+﻿@model SERFOR.Component.DTEntities.Plantaciones.RevisionPlantacionTableRowDTe
+<div class="timeline timeline-line-dotted">
+    <div class="timeline-item">
+
+        @if (Model.EsAprobado)
+        {
+            <div class="timeline-point timeline-point-success">
+                <i class="glyphicon glyphicon-ok"></i>
+            </div>
+        }
+        else
+        {
+            <div class="timeline-point timeline-point-danger">
+                <i class="glyphicon glyphicon-pencil"></i>
+            </div>
+        }
+
+        <div class="timeline-event">
+            <div class="timeline-heading">
+                @if (!Model.EsAprobado)
+                {
+                    <h4><span class="text-danger">Observado por el @Model.Rol</span></h4>
+                }
+                else
+                {
+                    <h4> <span class="text-success">Aprobado por el @Model.Rol</span></h4>
+                }
+            </div>
+            <div class="timeline-body">
+                <p>
+                    @Model.Descripcion
+                </p>
+            </div>
+            <div class="timeline-footer">
+                <p class="text-right">
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> por @Model.UsuarioCreacion
+                    <span class="glyphicon glyphicon-time" aria-hidden="true"></span> @Model.FechaCreacion
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>

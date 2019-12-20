@@ -1,0 +1,1663 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="EspecieForestal">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="smallint" Nullable="false" />
+          <Property Name="FamiliaEspecie_Id" Type="tinyint" Nullable="false" />
+          <Property Name="EsMaderable" Type="bit" />
+          <Property Name="NombreComun" Type="varchar" MaxLength="100" />
+          <Property Name="NombreCientifico" Type="varchar" MaxLength="100" />
+          <Property Name="NombreFamilia" Type="varchar" MaxLength="100" />
+          <Property Name="UsuarioCreacion" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioModificacion" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Persona">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombres" Type="varchar" MaxLength="150" />
+          <Property Name="ApellidoPaterno" Type="varchar" MaxLength="150" />
+          <Property Name="ApellidoMaterno" Type="varchar" MaxLength="150" />
+          <Property Name="Ubigeo_Id" Type="smallint" Nullable="false" />
+          <Property Name="Direccion" Type="varchar" MaxLength="250" />
+          <Property Name="TipoZona_Id" Type="tinyint" />
+          <Property Name="NombreZona" Type="varchar" MaxLength="150" />
+          <Property Name="TipoDocumento_Id" Type="tinyint" Nullable="false" />
+          <Property Name="NumeroDocumento" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="FechaNacimiento" Type="date" />
+          <Property Name="Sexo" Type="char" MaxLength="1" />
+          <Property Name="EstadoCivil" Type="char" MaxLength="1" />
+          <Property Name="Telefono" Type="varchar" MaxLength="15" />
+          <Property Name="Celular" Type="varchar" MaxLength="15" />
+          <Property Name="Email" Type="varchar" MaxLength="250" />
+          <Property Name="EsJuridica" Type="bit" Nullable="false" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioModificacion" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+          <Property Name="EsTrabajador" Type="bit" />
+          <Property Name="EsAdministrado" Type="bit" />
+        </EntityType>
+        <EntityType Name="TipoDocumento">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Acronimo" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaCreacion" Type="datetime" />
+          <Property Name="UsuarioModificacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaModificacion" Type="datetime" />
+        </EntityType>
+        <EntityType Name="TipoZona">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="150" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioModificacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Ubigeo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Codigo" Type="char" MaxLength="6" Nullable="false" />
+          <Property Name="CodigoDepartamento" Type="char" MaxLength="2" Nullable="false" />
+          <Property Name="NombreDepartamento" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CodigoProvincia" Type="char" MaxLength="2" Nullable="false" />
+          <Property Name="NombreProvincia" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CodigoDistrito" Type="char" MaxLength="2" Nullable="false" />
+          <Property Name="NombreDistrito" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Region" Type="varchar" MaxLength="100" />
+          <Property Name="LatitudDec" Type="decimal" Precision="9" Scale="6" />
+          <Property Name="LongitudDec" Type="decimal" Precision="9" Scale="6" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
+          <Property Name="UsuarioModificacion" Type="varchar" MaxLength="30" />
+          <Property Name="FechaModificacion" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Brigadista">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdInventario" Type="int" Nullable="false" />
+          <Property Name="IdPersona" Type="int" Nullable="false" />
+          <Property Name="IdTipoRolBrigada" Type="int" />
+        </EntityType>
+        <EntityType Name="Conduccion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdPredio" Type="int" Nullable="false" />
+          <Property Name="IdPersona" Type="int" Nullable="false" />
+          <Property Name="IdTipoConductor" Type="int" Nullable="false" />
+          <Property Name="IdUnidadMuestreo" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EstadoFitosanitario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Inventario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdSitio" Type="int" Nullable="false" />
+          <Property Name="Fecha" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="InventarioArbol">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="IdInventarioEspecie" Type="int" Nullable="false" />
+          <Property Name="Indice" Type="int" Nullable="false" />
+          <Property Name="Codigo" Type="varchar" MaxLength="20" />
+          <Property Name="CantidadRamas" Type="int" Nullable="false" />
+          <Property Name="Azimut" Type="numeric" Precision="7" Scale="2" Nullable="false" />
+          <Property Name="DistanciaAmarca" Type="numeric" Precision="7" Scale="2" Nullable="false" />
+          <Property Name="DiametroAlturaPecho" Type="numeric" Precision="7" Scale="2" Nullable="false" />
+          <Property Name="AlturaCopa" Type="numeric" Precision="7" Scale="2" Nullable="false" />
+          <Property Name="AlturaTotal" Type="numeric" Precision="7" Scale="2" Nullable="false" />
+          <Property Name="EstaVivo" Type="bit" Nullable="false" />
+          <Property Name="IluminacionCopa" Type="int" Nullable="false" />
+          <Property Name="FormaCopa" Type="int" Nullable="false" />
+          <Property Name="CalidadFuste" Type="int" Nullable="false" />
+          <Property Name="IdEstadoFitosanitario" Type="int" Nullable="false" />
+          <Property Name="Observaciones" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="InventarioEspecie">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="IdInventarioUM" Type="int" Nullable="false" />
+          <Property Name="IdEspecieForestal" Type="smallint" Nullable="false" />
+          <Property Name="IdTipoUso" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="InventarioUM">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="IdInventario" Type="int" Nullable="false" />
+          <Property Name="IdUnidadMuestreo" Type="int" Nullable="false" />
+          <Property Name="IdTipoAccesibilidad" Type="int" Nullable="false" />
+          <Property Name="OtraAccesibilidad" Type="varchar" MaxLength="200" />
+          <Property Name="IdConduccion" Type="int" />
+          <Property Name="FechaInicioMediciones" Type="datetime" />
+          <Property Name="FechaFinalMediciones" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Predio">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdSitio" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="PuntoCentral">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="IdUnidadMuestreo" Type="int" Nullable="false" />
+          <Property Name="FechaInstMarca" Type="datetime" Nullable="false" />
+          <Property Name="HoraInstMarca" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="CodigoGPS" Type="varchar" MaxLength="10" />
+          <Property Name="IdTipoZona" Type="tinyint" Nullable="false" />
+          <Property Name="CoordenadaUTMX" Type="numeric" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="CoordenadaUTMY" Type="numeric" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="ErrorGPS" Type="numeric" Precision="14" Scale="6" />
+          <Property Name="Altitud" Type="numeric" Precision="14" Scale="4" />
+        </EntityType>
+        <EntityType Name="Sitio">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="IdUbigeo" Type="smallint" Nullable="false" />
+          <Property Name="Comunidad" Type="varchar" MaxLength="400" />
+        </EntityType>
+        <EntityType Name="TipoAccesibilidad">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipoConductor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipoRolBrigada">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipoUso">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UnidadMuestreo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdSitio" Type="int" Nullable="false" />
+          <Property Name="Codigo" Type="varchar" MaxLength="20" />
+          <Property Name="Nombre" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <Association Name="FK_Inventario_Brigadista_IdInventario">
+          <End Role="Inventario" Type="Self.Inventario" Multiplicity="1" />
+          <End Role="Brigadista" Type="Self.Brigadista" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inventario">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Brigadista">
+              <PropertyRef Name="IdInventario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_Brigadista_IdPersona">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="Brigadista" Type="Self.Brigadista" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Brigadista">
+              <PropertyRef Name="IdPersona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_Brigadista_IdTipoRolBrigada">
+          <End Role="TipoRolBrigada" Type="Self.TipoRolBrigada" Multiplicity="0..1" />
+          <End Role="Brigadista" Type="Self.Brigadista" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoRolBrigada">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Brigadista">
+              <PropertyRef Name="IdTipoRolBrigada" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_Conduccion_IdPersona">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="Conduccion" Type="Self.Conduccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Conduccion">
+              <PropertyRef Name="IdPersona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_Conduccion_IdPredio">
+          <End Role="Predio" Type="Self.Predio" Multiplicity="1" />
+          <End Role="Conduccion" Type="Self.Conduccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Predio">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Conduccion">
+              <PropertyRef Name="IdPredio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_Conduccion_IdTipoConductor">
+          <End Role="TipoConductor" Type="Self.TipoConductor" Multiplicity="1" />
+          <End Role="Conduccion" Type="Self.Conduccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoConductor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Conduccion">
+              <PropertyRef Name="IdTipoConductor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_Conduccion_IdUnidadMuestreo">
+          <End Role="UnidadMuestreo" Type="Self.UnidadMuestreo" Multiplicity="1" />
+          <End Role="Conduccion" Type="Self.Conduccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UnidadMuestreo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Conduccion">
+              <PropertyRef Name="IdUnidadMuestreo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_Inventario_IdSitio">
+          <End Role="Sitio" Type="Self.Sitio" Multiplicity="1" />
+          <End Role="Inventario" Type="Self.Inventario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sitio">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Inventario">
+              <PropertyRef Name="IdSitio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_InventarioArbol_IdEstadoFitosanitario">
+          <End Role="EstadoFitosanitario" Type="Self.EstadoFitosanitario" Multiplicity="1" />
+          <End Role="InventarioArbol" Type="Self.InventarioArbol" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EstadoFitosanitario">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InventarioArbol">
+              <PropertyRef Name="IdEstadoFitosanitario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_InventarioArbol_IdInventarioEspecie">
+          <End Role="InventarioEspecie" Type="Self.InventarioEspecie" Multiplicity="1" />
+          <End Role="InventarioArbol" Type="Self.InventarioArbol" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InventarioEspecie">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InventarioArbol">
+              <PropertyRef Name="IdInventarioEspecie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_InventarioEspecie_IdEspecieForestal">
+          <End Role="EspecieForestal" Type="Self.EspecieForestal" Multiplicity="1" />
+          <End Role="InventarioEspecie" Type="Self.InventarioEspecie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EspecieForestal">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InventarioEspecie">
+              <PropertyRef Name="IdEspecieForestal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_InventarioEspecie_IdInventarioUM">
+          <End Role="InventarioUM" Type="Self.InventarioUM" Multiplicity="1" />
+          <End Role="InventarioEspecie" Type="Self.InventarioEspecie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InventarioUM">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InventarioEspecie">
+              <PropertyRef Name="IdInventarioUM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_InventarioEspecie_IdTipoUso">
+          <End Role="TipoUso" Type="Self.TipoUso" Multiplicity="1" />
+          <End Role="InventarioEspecie" Type="Self.InventarioEspecie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoUso">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InventarioEspecie">
+              <PropertyRef Name="IdTipoUso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_InventarioUM_IdConduccion">
+          <End Role="Conduccion" Type="Self.Conduccion" Multiplicity="0..1" />
+          <End Role="InventarioUM" Type="Self.InventarioUM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Conduccion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InventarioUM">
+              <PropertyRef Name="IdConduccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_InventarioUM_IdInventario">
+          <End Role="Inventario" Type="Self.Inventario" Multiplicity="1" />
+          <End Role="InventarioUM" Type="Self.InventarioUM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inventario">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InventarioUM">
+              <PropertyRef Name="IdInventario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_InventarioUM_IdTipoAccesibilidad">
+          <End Role="TipoAccesibilidad" Type="Self.TipoAccesibilidad" Multiplicity="1" />
+          <End Role="InventarioUM" Type="Self.InventarioUM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoAccesibilidad">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InventarioUM">
+              <PropertyRef Name="IdTipoAccesibilidad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_InventarioUM_IdUnidadMuestreo">
+          <End Role="UnidadMuestreo" Type="Self.UnidadMuestreo" Multiplicity="1" />
+          <End Role="InventarioUM" Type="Self.InventarioUM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UnidadMuestreo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InventarioUM">
+              <PropertyRef Name="IdUnidadMuestreo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_Predio_IdSitio">
+          <End Role="Sitio" Type="Self.Sitio" Multiplicity="1" />
+          <End Role="Predio" Type="Self.Predio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sitio">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Predio">
+              <PropertyRef Name="IdSitio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_PuntoCentral_IdTipoZona">
+          <End Role="TipoZona" Type="Self.TipoZona" Multiplicity="1" />
+          <End Role="PuntoCentral" Type="Self.PuntoCentral" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoZona">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PuntoCentral">
+              <PropertyRef Name="IdTipoZona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_PuntoCentral_IdUnidadMuestreo">
+          <End Role="UnidadMuestreo" Type="Self.UnidadMuestreo" Multiplicity="1" />
+          <End Role="PuntoCentral" Type="Self.PuntoCentral" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UnidadMuestreo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PuntoCentral">
+              <PropertyRef Name="IdUnidadMuestreo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_Sitio_IdUbigeo">
+          <End Role="Ubigeo" Type="Self.Ubigeo" Multiplicity="1" />
+          <End Role="Sitio" Type="Self.Sitio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ubigeo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sitio">
+              <PropertyRef Name="IdUbigeo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_UnidadMuestreo_IdSitio">
+          <End Role="Sitio" Type="Self.Sitio" Multiplicity="1" />
+          <End Role="UnidadMuestreo" Type="Self.UnidadMuestreo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sitio">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UnidadMuestreo">
+              <PropertyRef Name="IdSitio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Persona_TipoDocumento">
+          <End Role="TipoDocumento" Type="Self.TipoDocumento" Multiplicity="1" />
+          <End Role="Persona" Type="Self.Persona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoDocumento">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Persona">
+              <PropertyRef Name="TipoDocumento_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Persona_TipoZona">
+          <End Role="TipoZona" Type="Self.TipoZona" Multiplicity="0..1" />
+          <End Role="Persona" Type="Self.Persona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoZona">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Persona">
+              <PropertyRef Name="TipoZona_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Persona_Ubigeo">
+          <End Role="Ubigeo" Type="Self.Ubigeo" Multiplicity="1" />
+          <End Role="Persona" Type="Self.Persona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ubigeo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Persona">
+              <PropertyRef Name="Ubigeo_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="EspecieForestal" EntityType="Self.EspecieForestal" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Persona" EntityType="Self.Persona" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoDocumento" EntityType="Self.TipoDocumento" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoZona" EntityType="Self.TipoZona" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ubigeo" EntityType="Self.Ubigeo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Brigadista" EntityType="Self.Brigadista" Schema="Inventario" store:Type="Tables" />
+          <EntitySet Name="Conduccion" EntityType="Self.Conduccion" Schema="Inventario" store:Type="Tables" />
+          <EntitySet Name="EstadoFitosanitario" EntityType="Self.EstadoFitosanitario" Schema="Inventario" store:Type="Tables" />
+          <EntitySet Name="Inventario" EntityType="Self.Inventario" Schema="Inventario" store:Type="Tables" />
+          <EntitySet Name="InventarioArbol" EntityType="Self.InventarioArbol" Schema="Inventario" store:Type="Tables" />
+          <EntitySet Name="InventarioEspecie" EntityType="Self.InventarioEspecie" Schema="Inventario" store:Type="Tables" />
+          <EntitySet Name="InventarioUM" EntityType="Self.InventarioUM" Schema="Inventario" store:Type="Tables" />
+          <EntitySet Name="Predio" EntityType="Self.Predio" Schema="Inventario" store:Type="Tables" />
+          <EntitySet Name="PuntoCentral" EntityType="Self.PuntoCentral" Schema="Inventario" store:Type="Tables" />
+          <EntitySet Name="Sitio" EntityType="Self.Sitio" Schema="Inventario" store:Type="Tables" />
+          <EntitySet Name="TipoAccesibilidad" EntityType="Self.TipoAccesibilidad" Schema="Inventario" store:Type="Tables" />
+          <EntitySet Name="TipoConductor" EntityType="Self.TipoConductor" Schema="Inventario" store:Type="Tables" />
+          <EntitySet Name="TipoRolBrigada" EntityType="Self.TipoRolBrigada" Schema="Inventario" store:Type="Tables" />
+          <EntitySet Name="TipoUso" EntityType="Self.TipoUso" Schema="Inventario" store:Type="Tables" />
+          <EntitySet Name="UnidadMuestreo" EntityType="Self.UnidadMuestreo" Schema="Inventario" store:Type="Tables" />
+          <AssociationSet Name="FK_Inventario_Brigadista_IdInventario" Association="Self.FK_Inventario_Brigadista_IdInventario">
+            <End Role="Inventario" EntitySet="Inventario" />
+            <End Role="Brigadista" EntitySet="Brigadista" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_Brigadista_IdPersona" Association="Self.FK_Inventario_Brigadista_IdPersona">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="Brigadista" EntitySet="Brigadista" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_Brigadista_IdTipoRolBrigada" Association="Self.FK_Inventario_Brigadista_IdTipoRolBrigada">
+            <End Role="TipoRolBrigada" EntitySet="TipoRolBrigada" />
+            <End Role="Brigadista" EntitySet="Brigadista" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_Conduccion_IdPersona" Association="Self.FK_Inventario_Conduccion_IdPersona">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="Conduccion" EntitySet="Conduccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_Conduccion_IdPredio" Association="Self.FK_Inventario_Conduccion_IdPredio">
+            <End Role="Predio" EntitySet="Predio" />
+            <End Role="Conduccion" EntitySet="Conduccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_Conduccion_IdTipoConductor" Association="Self.FK_Inventario_Conduccion_IdTipoConductor">
+            <End Role="TipoConductor" EntitySet="TipoConductor" />
+            <End Role="Conduccion" EntitySet="Conduccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_Conduccion_IdUnidadMuestreo" Association="Self.FK_Inventario_Conduccion_IdUnidadMuestreo">
+            <End Role="UnidadMuestreo" EntitySet="UnidadMuestreo" />
+            <End Role="Conduccion" EntitySet="Conduccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_Inventario_IdSitio" Association="Self.FK_Inventario_Inventario_IdSitio">
+            <End Role="Sitio" EntitySet="Sitio" />
+            <End Role="Inventario" EntitySet="Inventario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_InventarioArbol_IdEstadoFitosanitario" Association="Self.FK_Inventario_InventarioArbol_IdEstadoFitosanitario">
+            <End Role="EstadoFitosanitario" EntitySet="EstadoFitosanitario" />
+            <End Role="InventarioArbol" EntitySet="InventarioArbol" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_InventarioArbol_IdInventarioEspecie" Association="Self.FK_Inventario_InventarioArbol_IdInventarioEspecie">
+            <End Role="InventarioEspecie" EntitySet="InventarioEspecie" />
+            <End Role="InventarioArbol" EntitySet="InventarioArbol" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_InventarioEspecie_IdEspecieForestal" Association="Self.FK_Inventario_InventarioEspecie_IdEspecieForestal">
+            <End Role="EspecieForestal" EntitySet="EspecieForestal" />
+            <End Role="InventarioEspecie" EntitySet="InventarioEspecie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_InventarioEspecie_IdInventarioUM" Association="Self.FK_Inventario_InventarioEspecie_IdInventarioUM">
+            <End Role="InventarioUM" EntitySet="InventarioUM" />
+            <End Role="InventarioEspecie" EntitySet="InventarioEspecie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_InventarioEspecie_IdTipoUso" Association="Self.FK_Inventario_InventarioEspecie_IdTipoUso">
+            <End Role="TipoUso" EntitySet="TipoUso" />
+            <End Role="InventarioEspecie" EntitySet="InventarioEspecie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_InventarioUM_IdConduccion" Association="Self.FK_Inventario_InventarioUM_IdConduccion">
+            <End Role="Conduccion" EntitySet="Conduccion" />
+            <End Role="InventarioUM" EntitySet="InventarioUM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_InventarioUM_IdInventario" Association="Self.FK_Inventario_InventarioUM_IdInventario">
+            <End Role="Inventario" EntitySet="Inventario" />
+            <End Role="InventarioUM" EntitySet="InventarioUM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_InventarioUM_IdTipoAccesibilidad" Association="Self.FK_Inventario_InventarioUM_IdTipoAccesibilidad">
+            <End Role="TipoAccesibilidad" EntitySet="TipoAccesibilidad" />
+            <End Role="InventarioUM" EntitySet="InventarioUM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_InventarioUM_IdUnidadMuestreo" Association="Self.FK_Inventario_InventarioUM_IdUnidadMuestreo">
+            <End Role="UnidadMuestreo" EntitySet="UnidadMuestreo" />
+            <End Role="InventarioUM" EntitySet="InventarioUM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_Predio_IdSitio" Association="Self.FK_Inventario_Predio_IdSitio">
+            <End Role="Sitio" EntitySet="Sitio" />
+            <End Role="Predio" EntitySet="Predio" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_PuntoCentral_IdTipoZona" Association="Self.FK_Inventario_PuntoCentral_IdTipoZona">
+            <End Role="TipoZona" EntitySet="TipoZona" />
+            <End Role="PuntoCentral" EntitySet="PuntoCentral" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_PuntoCentral_IdUnidadMuestreo" Association="Self.FK_Inventario_PuntoCentral_IdUnidadMuestreo">
+            <End Role="UnidadMuestreo" EntitySet="UnidadMuestreo" />
+            <End Role="PuntoCentral" EntitySet="PuntoCentral" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_Sitio_IdUbigeo" Association="Self.FK_Inventario_Sitio_IdUbigeo">
+            <End Role="Ubigeo" EntitySet="Ubigeo" />
+            <End Role="Sitio" EntitySet="Sitio" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_UnidadMuestreo_IdSitio" Association="Self.FK_Inventario_UnidadMuestreo_IdSitio">
+            <End Role="Sitio" EntitySet="Sitio" />
+            <End Role="UnidadMuestreo" EntitySet="UnidadMuestreo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Persona_TipoDocumento" Association="Self.FK_Persona_TipoDocumento">
+            <End Role="TipoDocumento" EntitySet="TipoDocumento" />
+            <End Role="Persona" EntitySet="Persona" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Persona_TipoZona" Association="Self.FK_Persona_TipoZona">
+            <End Role="TipoZona" EntitySet="TipoZona" />
+            <End Role="Persona" EntitySet="Persona" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Persona_Ubigeo" Association="Self.FK_Persona_Ubigeo">
+            <End Role="Ubigeo" EntitySet="Ubigeo" />
+            <End Role="Persona" EntitySet="Persona" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="EspecieForestal">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int16" Nullable="false" />
+          <Property Name="FamiliaEspecie_Id" Type="Byte" Nullable="false" />
+          <Property Name="EsMaderable" Type="Boolean" />
+          <Property Name="NombreComun" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="NombreCientifico" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="NombreFamilia" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="UsuarioCreacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioModificacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="InventarioEspecie" Relationship="Self.FK_Inventario_InventarioEspecie_IdEspecieForestal" FromRole="EspecieForestal" ToRole="InventarioEspecie" />
+        </EntityType>
+        <EntityType Name="Persona">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombres" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="ApellidoPaterno" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="ApellidoMaterno" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Ubigeo_Id" Type="Int16" Nullable="false" />
+          <Property Name="Direccion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="TipoZona_Id" Type="Byte" />
+          <Property Name="NombreZona" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="TipoDocumento_Id" Type="Byte" Nullable="false" />
+          <Property Name="NumeroDocumento" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FechaNacimiento" Type="DateTime" Precision="0" />
+          <Property Name="Sexo" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="EstadoCivil" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Telefono" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Celular" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="EsJuridica" Type="Boolean" Nullable="false" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioModificacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EsTrabajador" Type="Boolean" />
+          <Property Name="EsAdministrado" Type="Boolean" />
+          <NavigationProperty Name="Brigadista" Relationship="Self.FK_Inventario_Brigadista_IdPersona" FromRole="Persona" ToRole="Brigadista" />
+          <NavigationProperty Name="Conduccion" Relationship="Self.FK_Inventario_Conduccion_IdPersona" FromRole="Persona" ToRole="Conduccion" />
+          <NavigationProperty Name="TipoZona" Relationship="Self.FK_Persona_TipoZona" FromRole="Persona" ToRole="TipoZona" />
+          <NavigationProperty Name="Ubigeo" Relationship="Self.FK_Persona_Ubigeo" FromRole="Persona" ToRole="Ubigeo" />
+          <NavigationProperty Name="TipoDocumento" Relationship="Model.FK_Persona_TipoDocumento" FromRole="Persona" ToRole="TipoDocumento" />
+        </EntityType>
+        <EntityType Name="TipoZona">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioModificacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Persona" Relationship="Self.FK_Persona_TipoZona" FromRole="TipoZona" ToRole="Persona" />
+          <NavigationProperty Name="PuntoCentral" Relationship="Self.FK_Inventario_PuntoCentral_IdTipoZona" FromRole="TipoZona" ToRole="PuntoCentral" />
+        </EntityType>
+        <EntityType Name="Ubigeo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Codigo" Type="String" MaxLength="6" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="CodigoDepartamento" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="NombreDepartamento" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CodigoProvincia" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="NombreProvincia" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CodigoDistrito" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="NombreDistrito" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Region" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="LatitudDec" Type="Decimal" Precision="9" Scale="6" />
+          <Property Name="LongitudDec" Type="Decimal" Precision="9" Scale="6" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsuarioModificacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Persona" Relationship="Self.FK_Persona_Ubigeo" FromRole="Ubigeo" ToRole="Persona" />
+          <NavigationProperty Name="Sitio" Relationship="Self.FK_Inventario_Sitio_IdUbigeo" FromRole="Ubigeo" ToRole="Sitio" />
+        </EntityType>
+        <EntityType Name="Brigadista">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdInventario" Type="Int32" Nullable="false" />
+          <Property Name="IdPersona" Type="Int32" Nullable="false" />
+          <Property Name="IdTipoRolBrigada" Type="Int32" />
+          <NavigationProperty Name="Persona" Relationship="Self.FK_Inventario_Brigadista_IdPersona" FromRole="Brigadista" ToRole="Persona" />
+          <NavigationProperty Name="Inventario" Relationship="Self.FK_Inventario_Brigadista_IdInventario" FromRole="Brigadista" ToRole="Inventario" />
+          <NavigationProperty Name="TipoRolBrigada" Relationship="Self.FK_Inventario_Brigadista_IdTipoRolBrigada" FromRole="Brigadista" ToRole="TipoRolBrigada" />
+        </EntityType>
+        <EntityType Name="Conduccion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdPredio" Type="Int32" Nullable="false" />
+          <Property Name="IdPersona" Type="Int32" Nullable="false" />
+          <Property Name="IdTipoConductor" Type="Int32" Nullable="false" />
+          <Property Name="IdUnidadMuestreo" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Persona" Relationship="Self.FK_Inventario_Conduccion_IdPersona" FromRole="Conduccion" ToRole="Persona" />
+          <NavigationProperty Name="Predio" Relationship="Self.FK_Inventario_Conduccion_IdPredio" FromRole="Conduccion" ToRole="Predio" />
+          <NavigationProperty Name="TipoConductor" Relationship="Self.FK_Inventario_Conduccion_IdTipoConductor" FromRole="Conduccion" ToRole="TipoConductor" />
+          <NavigationProperty Name="UnidadMuestreo" Relationship="Self.FK_Inventario_Conduccion_IdUnidadMuestreo" FromRole="Conduccion" ToRole="UnidadMuestreo" />
+          <NavigationProperty Name="InventarioUM" Relationship="Self.FK_Inventario_InventarioUM_IdConduccion" FromRole="Conduccion" ToRole="InventarioUM" />
+        </EntityType>
+        <EntityType Name="EstadoFitosanitario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="InventarioArbol" Relationship="Self.FK_Inventario_InventarioArbol_IdEstadoFitosanitario" FromRole="EstadoFitosanitario" ToRole="InventarioArbol" />
+        </EntityType>
+        <EntityType Name="Inventario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdSitio" Type="Int32" Nullable="false" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Brigadista" Relationship="Self.FK_Inventario_Brigadista_IdInventario" FromRole="Inventario" ToRole="Brigadista" />
+          <NavigationProperty Name="Sitio" Relationship="Self.FK_Inventario_Inventario_IdSitio" FromRole="Inventario" ToRole="Sitio" />
+          <NavigationProperty Name="InventarioUM" Relationship="Self.FK_Inventario_InventarioUM_IdInventario" FromRole="Inventario" ToRole="InventarioUM" />
+        </EntityType>
+        <EntityType Name="InventarioArbol">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="IdInventarioEspecie" Type="Int32" Nullable="false" />
+          <Property Name="Indice" Type="Int32" Nullable="false" />
+          <Property Name="Codigo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CantidadRamas" Type="Int32" Nullable="false" />
+          <Property Name="Azimut" Type="Decimal" Precision="7" Scale="2" Nullable="false" />
+          <Property Name="DistanciaAmarca" Type="Decimal" Precision="7" Scale="2" Nullable="false" />
+          <Property Name="DiametroAlturaPecho" Type="Decimal" Precision="7" Scale="2" Nullable="false" />
+          <Property Name="AlturaCopa" Type="Decimal" Precision="7" Scale="2" Nullable="false" />
+          <Property Name="AlturaTotal" Type="Decimal" Precision="7" Scale="2" Nullable="false" />
+          <Property Name="EstaVivo" Type="Boolean" Nullable="false" />
+          <Property Name="IluminacionCopa" Type="Int32" Nullable="false" />
+          <Property Name="FormaCopa" Type="Int32" Nullable="false" />
+          <Property Name="CalidadFuste" Type="Int32" Nullable="false" />
+          <Property Name="IdEstadoFitosanitario" Type="Int32" Nullable="false" />
+          <Property Name="Observaciones" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EstadoFitosanitario" Relationship="Self.FK_Inventario_InventarioArbol_IdEstadoFitosanitario" FromRole="InventarioArbol" ToRole="EstadoFitosanitario" />
+          <NavigationProperty Name="InventarioEspecie" Relationship="Self.FK_Inventario_InventarioArbol_IdInventarioEspecie" FromRole="InventarioArbol" ToRole="InventarioEspecie" />
+        </EntityType>
+        <EntityType Name="InventarioEspecie">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="IdInventarioUM" Type="Int32" Nullable="false" />
+          <Property Name="IdEspecieForestal" Type="Int16" Nullable="false" />
+          <Property Name="IdTipoUso" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="EspecieForestal" Relationship="Self.FK_Inventario_InventarioEspecie_IdEspecieForestal" FromRole="InventarioEspecie" ToRole="EspecieForestal" />
+          <NavigationProperty Name="InventarioArbol" Relationship="Self.FK_Inventario_InventarioArbol_IdInventarioEspecie" FromRole="InventarioEspecie" ToRole="InventarioArbol" />
+          <NavigationProperty Name="InventarioUM" Relationship="Self.FK_Inventario_InventarioEspecie_IdInventarioUM" FromRole="InventarioEspecie" ToRole="InventarioUM" />
+          <NavigationProperty Name="TipoUso" Relationship="Self.FK_Inventario_InventarioEspecie_IdTipoUso" FromRole="InventarioEspecie" ToRole="TipoUso" />
+        </EntityType>
+        <EntityType Name="InventarioUM">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="IdInventario" Type="Int32" Nullable="false" />
+          <Property Name="IdUnidadMuestreo" Type="Int32" Nullable="false" />
+          <Property Name="IdTipoAccesibilidad" Type="Int32" Nullable="false" />
+          <Property Name="OtraAccesibilidad" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="IdConduccion" Type="Int32" />
+          <Property Name="FechaInicioMediciones" Type="DateTime" Precision="3" />
+          <Property Name="FechaFinalMediciones" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Conduccion" Relationship="Self.FK_Inventario_InventarioUM_IdConduccion" FromRole="InventarioUM" ToRole="Conduccion" />
+          <NavigationProperty Name="Inventario" Relationship="Self.FK_Inventario_InventarioUM_IdInventario" FromRole="InventarioUM" ToRole="Inventario" />
+          <NavigationProperty Name="InventarioEspecie" Relationship="Self.FK_Inventario_InventarioEspecie_IdInventarioUM" FromRole="InventarioUM" ToRole="InventarioEspecie" />
+          <NavigationProperty Name="TipoAccesibilidad" Relationship="Self.FK_Inventario_InventarioUM_IdTipoAccesibilidad" FromRole="InventarioUM" ToRole="TipoAccesibilidad" />
+          <NavigationProperty Name="UnidadMuestreo" Relationship="Self.FK_Inventario_InventarioUM_IdUnidadMuestreo" FromRole="InventarioUM" ToRole="UnidadMuestreo" />
+        </EntityType>
+        <EntityType Name="Predio">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdSitio" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Conduccion" Relationship="Self.FK_Inventario_Conduccion_IdPredio" FromRole="Predio" ToRole="Conduccion" />
+          <NavigationProperty Name="Sitio" Relationship="Self.FK_Inventario_Predio_IdSitio" FromRole="Predio" ToRole="Sitio" />
+        </EntityType>
+        <EntityType Name="PuntoCentral">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="IdUnidadMuestreo" Type="Int32" Nullable="false" />
+          <Property Name="FechaInstMarca" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="HoraInstMarca" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CodigoGPS" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="IdTipoZona" Type="Byte" Nullable="false" />
+          <Property Name="CoordenadaUTMX" Type="Decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="CoordenadaUTMY" Type="Decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="ErrorGPS" Type="Decimal" Precision="14" Scale="6" />
+          <Property Name="Altitud" Type="Decimal" Precision="14" Scale="4" />
+          <NavigationProperty Name="TipoZona" Relationship="Self.FK_Inventario_PuntoCentral_IdTipoZona" FromRole="PuntoCentral" ToRole="TipoZona" />
+          <NavigationProperty Name="UnidadMuestreo" Relationship="Self.FK_Inventario_PuntoCentral_IdUnidadMuestreo" FromRole="PuntoCentral" ToRole="UnidadMuestreo" />
+        </EntityType>
+        <EntityType Name="Sitio">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdUbigeo" Type="Int16" Nullable="false" />
+          <Property Name="Comunidad" Type="String" MaxLength="400" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Ubigeo" Relationship="Self.FK_Inventario_Sitio_IdUbigeo" FromRole="Sitio" ToRole="Ubigeo" />
+          <NavigationProperty Name="Inventario" Relationship="Self.FK_Inventario_Inventario_IdSitio" FromRole="Sitio" ToRole="Inventario" />
+          <NavigationProperty Name="Predio" Relationship="Self.FK_Inventario_Predio_IdSitio" FromRole="Sitio" ToRole="Predio" />
+          <NavigationProperty Name="UnidadMuestreo" Relationship="Self.FK_Inventario_UnidadMuestreo_IdSitio" FromRole="Sitio" ToRole="UnidadMuestreo" />
+        </EntityType>
+        <EntityType Name="TipoAccesibilidad">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="InventarioUM" Relationship="Self.FK_Inventario_InventarioUM_IdTipoAccesibilidad" FromRole="TipoAccesibilidad" ToRole="InventarioUM" />
+        </EntityType>
+        <EntityType Name="TipoConductor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Conduccion" Relationship="Self.FK_Inventario_Conduccion_IdTipoConductor" FromRole="TipoConductor" ToRole="Conduccion" />
+        </EntityType>
+        <EntityType Name="TipoRolBrigada">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Brigadista" Relationship="Self.FK_Inventario_Brigadista_IdTipoRolBrigada" FromRole="TipoRolBrigada" ToRole="Brigadista" />
+        </EntityType>
+        <EntityType Name="TipoUso">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="InventarioEspecie" Relationship="Self.FK_Inventario_InventarioEspecie_IdTipoUso" FromRole="TipoUso" ToRole="InventarioEspecie" />
+        </EntityType>
+        <EntityType Name="UnidadMuestreo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdSitio" Type="Int32" Nullable="false" />
+          <Property Name="Codigo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Nombre" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Conduccion" Relationship="Self.FK_Inventario_Conduccion_IdUnidadMuestreo" FromRole="UnidadMuestreo" ToRole="Conduccion" />
+          <NavigationProperty Name="InventarioUM" Relationship="Self.FK_Inventario_InventarioUM_IdUnidadMuestreo" FromRole="UnidadMuestreo" ToRole="InventarioUM" />
+          <NavigationProperty Name="PuntoCentral" Relationship="Self.FK_Inventario_PuntoCentral_IdUnidadMuestreo" FromRole="UnidadMuestreo" ToRole="PuntoCentral" />
+          <NavigationProperty Name="Sitio" Relationship="Self.FK_Inventario_UnidadMuestreo_IdSitio" FromRole="UnidadMuestreo" ToRole="Sitio" />
+        </EntityType>
+        <Association Name="FK_Inventario_InventarioEspecie_IdEspecieForestal">
+          <End Role="EspecieForestal" Type="Self.EspecieForestal" Multiplicity="1" />
+          <End Role="InventarioEspecie" Type="Self.InventarioEspecie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EspecieForestal">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InventarioEspecie">
+              <PropertyRef Name="IdEspecieForestal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_Brigadista_IdPersona">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="Brigadista" Type="Self.Brigadista" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Brigadista">
+              <PropertyRef Name="IdPersona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_Conduccion_IdPersona">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="Conduccion" Type="Self.Conduccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Conduccion">
+              <PropertyRef Name="IdPersona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Persona_TipoZona">
+          <End Role="TipoZona" Type="Self.TipoZona" Multiplicity="0..1" />
+          <End Role="Persona" Type="Self.Persona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoZona">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Persona">
+              <PropertyRef Name="TipoZona_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Persona_Ubigeo">
+          <End Role="Ubigeo" Type="Self.Ubigeo" Multiplicity="1" />
+          <End Role="Persona" Type="Self.Persona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ubigeo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Persona">
+              <PropertyRef Name="Ubigeo_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_PuntoCentral_IdTipoZona">
+          <End Role="TipoZona" Type="Self.TipoZona" Multiplicity="1" />
+          <End Role="PuntoCentral" Type="Self.PuntoCentral" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoZona">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PuntoCentral">
+              <PropertyRef Name="IdTipoZona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_Sitio_IdUbigeo">
+          <End Role="Ubigeo" Type="Self.Ubigeo" Multiplicity="1" />
+          <End Role="Sitio" Type="Self.Sitio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ubigeo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sitio">
+              <PropertyRef Name="IdUbigeo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_Brigadista_IdInventario">
+          <End Role="Inventario" Type="Self.Inventario" Multiplicity="1" />
+          <End Role="Brigadista" Type="Self.Brigadista" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inventario">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Brigadista">
+              <PropertyRef Name="IdInventario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_Brigadista_IdTipoRolBrigada">
+          <End Role="TipoRolBrigada" Type="Self.TipoRolBrigada" Multiplicity="0..1" />
+          <End Role="Brigadista" Type="Self.Brigadista" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoRolBrigada">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Brigadista">
+              <PropertyRef Name="IdTipoRolBrigada" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_Conduccion_IdPredio">
+          <End Role="Predio" Type="Self.Predio" Multiplicity="1" />
+          <End Role="Conduccion" Type="Self.Conduccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Predio">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Conduccion">
+              <PropertyRef Name="IdPredio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_Conduccion_IdTipoConductor">
+          <End Role="TipoConductor" Type="Self.TipoConductor" Multiplicity="1" />
+          <End Role="Conduccion" Type="Self.Conduccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoConductor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Conduccion">
+              <PropertyRef Name="IdTipoConductor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_Conduccion_IdUnidadMuestreo">
+          <End Role="UnidadMuestreo" Type="Self.UnidadMuestreo" Multiplicity="1" />
+          <End Role="Conduccion" Type="Self.Conduccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UnidadMuestreo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Conduccion">
+              <PropertyRef Name="IdUnidadMuestreo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_InventarioUM_IdConduccion">
+          <End Role="Conduccion" Type="Self.Conduccion" Multiplicity="0..1" />
+          <End Role="InventarioUM" Type="Self.InventarioUM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Conduccion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InventarioUM">
+              <PropertyRef Name="IdConduccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_InventarioArbol_IdEstadoFitosanitario">
+          <End Role="EstadoFitosanitario" Type="Self.EstadoFitosanitario" Multiplicity="1" />
+          <End Role="InventarioArbol" Type="Self.InventarioArbol" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EstadoFitosanitario">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InventarioArbol">
+              <PropertyRef Name="IdEstadoFitosanitario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_Inventario_IdSitio">
+          <End Role="Sitio" Type="Self.Sitio" Multiplicity="1" />
+          <End Role="Inventario" Type="Self.Inventario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sitio">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Inventario">
+              <PropertyRef Name="IdSitio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_InventarioUM_IdInventario">
+          <End Role="Inventario" Type="Self.Inventario" Multiplicity="1" />
+          <End Role="InventarioUM" Type="Self.InventarioUM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inventario">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InventarioUM">
+              <PropertyRef Name="IdInventario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_InventarioArbol_IdInventarioEspecie">
+          <End Role="InventarioEspecie" Type="Self.InventarioEspecie" Multiplicity="1" />
+          <End Role="InventarioArbol" Type="Self.InventarioArbol" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InventarioEspecie">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InventarioArbol">
+              <PropertyRef Name="IdInventarioEspecie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_InventarioEspecie_IdInventarioUM">
+          <End Role="InventarioUM" Type="Self.InventarioUM" Multiplicity="1" />
+          <End Role="InventarioEspecie" Type="Self.InventarioEspecie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InventarioUM">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InventarioEspecie">
+              <PropertyRef Name="IdInventarioUM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_InventarioEspecie_IdTipoUso">
+          <End Role="TipoUso" Type="Self.TipoUso" Multiplicity="1" />
+          <End Role="InventarioEspecie" Type="Self.InventarioEspecie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoUso">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InventarioEspecie">
+              <PropertyRef Name="IdTipoUso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_InventarioUM_IdTipoAccesibilidad">
+          <End Role="TipoAccesibilidad" Type="Self.TipoAccesibilidad" Multiplicity="1" />
+          <End Role="InventarioUM" Type="Self.InventarioUM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoAccesibilidad">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InventarioUM">
+              <PropertyRef Name="IdTipoAccesibilidad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_InventarioUM_IdUnidadMuestreo">
+          <End Role="UnidadMuestreo" Type="Self.UnidadMuestreo" Multiplicity="1" />
+          <End Role="InventarioUM" Type="Self.InventarioUM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UnidadMuestreo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InventarioUM">
+              <PropertyRef Name="IdUnidadMuestreo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_Predio_IdSitio">
+          <End Role="Sitio" Type="Self.Sitio" Multiplicity="1" />
+          <End Role="Predio" Type="Self.Predio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sitio">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Predio">
+              <PropertyRef Name="IdSitio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_PuntoCentral_IdUnidadMuestreo">
+          <End Role="UnidadMuestreo" Type="Self.UnidadMuestreo" Multiplicity="1" />
+          <End Role="PuntoCentral" Type="Self.PuntoCentral" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UnidadMuestreo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PuntoCentral">
+              <PropertyRef Name="IdUnidadMuestreo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_UnidadMuestreo_IdSitio">
+          <End Role="Sitio" Type="Self.Sitio" Multiplicity="1" />
+          <End Role="UnidadMuestreo" Type="Self.UnidadMuestreo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sitio">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UnidadMuestreo">
+              <PropertyRef Name="IdSitio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="InventarioSchema" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="EspecieForestal" EntityType="Self.EspecieForestal" />
+          <EntitySet Name="Persona" EntityType="Self.Persona" />
+          <EntitySet Name="TipoZona" EntityType="Self.TipoZona" />
+          <EntitySet Name="Ubigeo" EntityType="Self.Ubigeo" />
+          <EntitySet Name="Brigadista" EntityType="Self.Brigadista" />
+          <EntitySet Name="Conduccion" EntityType="Self.Conduccion" />
+          <EntitySet Name="EstadoFitosanitario" EntityType="Self.EstadoFitosanitario" />
+          <EntitySet Name="Inventario" EntityType="Self.Inventario" />
+          <EntitySet Name="InventarioArbol" EntityType="Self.InventarioArbol" />
+          <EntitySet Name="InventarioEspecie" EntityType="Self.InventarioEspecie" />
+          <EntitySet Name="InventarioUM" EntityType="Self.InventarioUM" />
+          <EntitySet Name="Predio" EntityType="Self.Predio" />
+          <EntitySet Name="PuntoCentral" EntityType="Self.PuntoCentral" />
+          <EntitySet Name="Sitio" EntityType="Self.Sitio" />
+          <EntitySet Name="TipoAccesibilidad" EntityType="Self.TipoAccesibilidad" />
+          <EntitySet Name="TipoConductor" EntityType="Self.TipoConductor" />
+          <EntitySet Name="TipoRolBrigada" EntityType="Self.TipoRolBrigada" />
+          <EntitySet Name="TipoUso" EntityType="Self.TipoUso" />
+          <EntitySet Name="UnidadMuestreo" EntityType="Self.UnidadMuestreo" />
+          <AssociationSet Name="FK_Inventario_InventarioEspecie_IdEspecieForestal" Association="Self.FK_Inventario_InventarioEspecie_IdEspecieForestal">
+            <End Role="EspecieForestal" EntitySet="EspecieForestal" />
+            <End Role="InventarioEspecie" EntitySet="InventarioEspecie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_Brigadista_IdPersona" Association="Self.FK_Inventario_Brigadista_IdPersona">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="Brigadista" EntitySet="Brigadista" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_Conduccion_IdPersona" Association="Self.FK_Inventario_Conduccion_IdPersona">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="Conduccion" EntitySet="Conduccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Persona_TipoZona" Association="Self.FK_Persona_TipoZona">
+            <End Role="TipoZona" EntitySet="TipoZona" />
+            <End Role="Persona" EntitySet="Persona" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Persona_Ubigeo" Association="Self.FK_Persona_Ubigeo">
+            <End Role="Ubigeo" EntitySet="Ubigeo" />
+            <End Role="Persona" EntitySet="Persona" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_PuntoCentral_IdTipoZona" Association="Self.FK_Inventario_PuntoCentral_IdTipoZona">
+            <End Role="TipoZona" EntitySet="TipoZona" />
+            <End Role="PuntoCentral" EntitySet="PuntoCentral" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_Sitio_IdUbigeo" Association="Self.FK_Inventario_Sitio_IdUbigeo">
+            <End Role="Ubigeo" EntitySet="Ubigeo" />
+            <End Role="Sitio" EntitySet="Sitio" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_Brigadista_IdInventario" Association="Self.FK_Inventario_Brigadista_IdInventario">
+            <End Role="Inventario" EntitySet="Inventario" />
+            <End Role="Brigadista" EntitySet="Brigadista" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_Brigadista_IdTipoRolBrigada" Association="Self.FK_Inventario_Brigadista_IdTipoRolBrigada">
+            <End Role="TipoRolBrigada" EntitySet="TipoRolBrigada" />
+            <End Role="Brigadista" EntitySet="Brigadista" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_Conduccion_IdPredio" Association="Self.FK_Inventario_Conduccion_IdPredio">
+            <End Role="Predio" EntitySet="Predio" />
+            <End Role="Conduccion" EntitySet="Conduccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_Conduccion_IdTipoConductor" Association="Self.FK_Inventario_Conduccion_IdTipoConductor">
+            <End Role="TipoConductor" EntitySet="TipoConductor" />
+            <End Role="Conduccion" EntitySet="Conduccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_Conduccion_IdUnidadMuestreo" Association="Self.FK_Inventario_Conduccion_IdUnidadMuestreo">
+            <End Role="UnidadMuestreo" EntitySet="UnidadMuestreo" />
+            <End Role="Conduccion" EntitySet="Conduccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_InventarioUM_IdConduccion" Association="Self.FK_Inventario_InventarioUM_IdConduccion">
+            <End Role="Conduccion" EntitySet="Conduccion" />
+            <End Role="InventarioUM" EntitySet="InventarioUM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_InventarioArbol_IdEstadoFitosanitario" Association="Self.FK_Inventario_InventarioArbol_IdEstadoFitosanitario">
+            <End Role="EstadoFitosanitario" EntitySet="EstadoFitosanitario" />
+            <End Role="InventarioArbol" EntitySet="InventarioArbol" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_Inventario_IdSitio" Association="Self.FK_Inventario_Inventario_IdSitio">
+            <End Role="Sitio" EntitySet="Sitio" />
+            <End Role="Inventario" EntitySet="Inventario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_InventarioUM_IdInventario" Association="Self.FK_Inventario_InventarioUM_IdInventario">
+            <End Role="Inventario" EntitySet="Inventario" />
+            <End Role="InventarioUM" EntitySet="InventarioUM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_InventarioArbol_IdInventarioEspecie" Association="Self.FK_Inventario_InventarioArbol_IdInventarioEspecie">
+            <End Role="InventarioEspecie" EntitySet="InventarioEspecie" />
+            <End Role="InventarioArbol" EntitySet="InventarioArbol" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_InventarioEspecie_IdInventarioUM" Association="Self.FK_Inventario_InventarioEspecie_IdInventarioUM">
+            <End Role="InventarioUM" EntitySet="InventarioUM" />
+            <End Role="InventarioEspecie" EntitySet="InventarioEspecie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_InventarioEspecie_IdTipoUso" Association="Self.FK_Inventario_InventarioEspecie_IdTipoUso">
+            <End Role="TipoUso" EntitySet="TipoUso" />
+            <End Role="InventarioEspecie" EntitySet="InventarioEspecie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_InventarioUM_IdTipoAccesibilidad" Association="Self.FK_Inventario_InventarioUM_IdTipoAccesibilidad">
+            <End Role="TipoAccesibilidad" EntitySet="TipoAccesibilidad" />
+            <End Role="InventarioUM" EntitySet="InventarioUM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_InventarioUM_IdUnidadMuestreo" Association="Self.FK_Inventario_InventarioUM_IdUnidadMuestreo">
+            <End Role="UnidadMuestreo" EntitySet="UnidadMuestreo" />
+            <End Role="InventarioUM" EntitySet="InventarioUM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_Predio_IdSitio" Association="Self.FK_Inventario_Predio_IdSitio">
+            <End Role="Sitio" EntitySet="Sitio" />
+            <End Role="Predio" EntitySet="Predio" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_PuntoCentral_IdUnidadMuestreo" Association="Self.FK_Inventario_PuntoCentral_IdUnidadMuestreo">
+            <End Role="UnidadMuestreo" EntitySet="UnidadMuestreo" />
+            <End Role="PuntoCentral" EntitySet="PuntoCentral" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_UnidadMuestreo_IdSitio" Association="Self.FK_Inventario_UnidadMuestreo_IdSitio">
+            <End Role="Sitio" EntitySet="Sitio" />
+            <End Role="UnidadMuestreo" EntitySet="UnidadMuestreo" />
+          </AssociationSet>
+          <EntitySet Name="TipoDocumento" EntityType="Model.TipoDocumento" />
+          <AssociationSet Name="FK_Persona_TipoDocumento" Association="Model.FK_Persona_TipoDocumento">
+            <End Role="TipoDocumento" EntitySet="TipoDocumento" />
+            <End Role="Persona" EntitySet="Persona" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="TipoDocumento">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Acronimo" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <Property Name="UsuarioCreacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Precision="3" />
+          <Property Name="UsuarioModificacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Persona" Relationship="Model.FK_Persona_TipoDocumento" FromRole="TipoDocumento" ToRole="Persona" />
+        </EntityType>
+        <Association Name="FK_Persona_TipoDocumento">
+          <End Type="Model.TipoDocumento" Role="TipoDocumento" Multiplicity="1" />
+          <End Type="Model.Persona" Role="Persona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoDocumento">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Persona">
+              <PropertyRef Name="TipoDocumento_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="InventarioSchema">
+          <EntitySetMapping Name="EspecieForestal">
+            <EntityTypeMapping TypeName="Model.EspecieForestal">
+              <MappingFragment StoreEntitySet="EspecieForestal">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FamiliaEspecie_Id" ColumnName="FamiliaEspecie_Id" />
+                <ScalarProperty Name="EsMaderable" ColumnName="EsMaderable" />
+                <ScalarProperty Name="NombreComun" ColumnName="NombreComun" />
+                <ScalarProperty Name="NombreCientifico" ColumnName="NombreCientifico" />
+                <ScalarProperty Name="NombreFamilia" ColumnName="NombreFamilia" />
+                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioModificacion" ColumnName="UsuarioModificacion" />
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Persona">
+            <EntityTypeMapping TypeName="Model.Persona">
+              <MappingFragment StoreEntitySet="Persona">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="Ubigeo_Id" ColumnName="Ubigeo_Id" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="TipoZona_Id" ColumnName="TipoZona_Id" />
+                <ScalarProperty Name="NombreZona" ColumnName="NombreZona" />
+                <ScalarProperty Name="TipoDocumento_Id" ColumnName="TipoDocumento_Id" />
+                <ScalarProperty Name="NumeroDocumento" ColumnName="NumeroDocumento" />
+                <ScalarProperty Name="FechaNacimiento" ColumnName="FechaNacimiento" />
+                <ScalarProperty Name="Sexo" ColumnName="Sexo" />
+                <ScalarProperty Name="EstadoCivil" ColumnName="EstadoCivil" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Celular" ColumnName="Celular" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="EsJuridica" ColumnName="EsJuridica" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioModificacion" ColumnName="UsuarioModificacion" />
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+                <ScalarProperty Name="EsTrabajador" ColumnName="EsTrabajador" />
+                <ScalarProperty Name="EsAdministrado" ColumnName="EsAdministrado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoZona">
+            <EntityTypeMapping TypeName="Model.TipoZona">
+              <MappingFragment StoreEntitySet="TipoZona">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioModificacion" ColumnName="UsuarioModificacion" />
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ubigeo">
+            <EntityTypeMapping TypeName="Model.Ubigeo">
+              <MappingFragment StoreEntitySet="Ubigeo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="CodigoDepartamento" ColumnName="CodigoDepartamento" />
+                <ScalarProperty Name="NombreDepartamento" ColumnName="NombreDepartamento" />
+                <ScalarProperty Name="CodigoProvincia" ColumnName="CodigoProvincia" />
+                <ScalarProperty Name="NombreProvincia" ColumnName="NombreProvincia" />
+                <ScalarProperty Name="CodigoDistrito" ColumnName="CodigoDistrito" />
+                <ScalarProperty Name="NombreDistrito" ColumnName="NombreDistrito" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="LatitudDec" ColumnName="LatitudDec" />
+                <ScalarProperty Name="LongitudDec" ColumnName="LongitudDec" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="UsuarioModificacion" ColumnName="UsuarioModificacion" />
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Brigadista">
+            <EntityTypeMapping TypeName="Model.Brigadista">
+              <MappingFragment StoreEntitySet="Brigadista">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdInventario" ColumnName="IdInventario" />
+                <ScalarProperty Name="IdPersona" ColumnName="IdPersona" />
+                <ScalarProperty Name="IdTipoRolBrigada" ColumnName="IdTipoRolBrigada" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Conduccion">
+            <EntityTypeMapping TypeName="Model.Conduccion">
+              <MappingFragment StoreEntitySet="Conduccion">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdPredio" ColumnName="IdPredio" />
+                <ScalarProperty Name="IdPersona" ColumnName="IdPersona" />
+                <ScalarProperty Name="IdTipoConductor" ColumnName="IdTipoConductor" />
+                <ScalarProperty Name="IdUnidadMuestreo" ColumnName="IdUnidadMuestreo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EstadoFitosanitario">
+            <EntityTypeMapping TypeName="Model.EstadoFitosanitario">
+              <MappingFragment StoreEntitySet="EstadoFitosanitario">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Inventario">
+            <EntityTypeMapping TypeName="Model.Inventario">
+              <MappingFragment StoreEntitySet="Inventario">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdSitio" ColumnName="IdSitio" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InventarioArbol">
+            <EntityTypeMapping TypeName="Model.InventarioArbol">
+              <MappingFragment StoreEntitySet="InventarioArbol">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdInventarioEspecie" ColumnName="IdInventarioEspecie" />
+                <ScalarProperty Name="Indice" ColumnName="Indice" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="CantidadRamas" ColumnName="CantidadRamas" />
+                <ScalarProperty Name="Azimut" ColumnName="Azimut" />
+                <ScalarProperty Name="DistanciaAmarca" ColumnName="DistanciaAmarca" />
+                <ScalarProperty Name="DiametroAlturaPecho" ColumnName="DiametroAlturaPecho" />
+                <ScalarProperty Name="AlturaCopa" ColumnName="AlturaCopa" />
+                <ScalarProperty Name="AlturaTotal" ColumnName="AlturaTotal" />
+                <ScalarProperty Name="EstaVivo" ColumnName="EstaVivo" />
+                <ScalarProperty Name="IluminacionCopa" ColumnName="IluminacionCopa" />
+                <ScalarProperty Name="FormaCopa" ColumnName="FormaCopa" />
+                <ScalarProperty Name="CalidadFuste" ColumnName="CalidadFuste" />
+                <ScalarProperty Name="IdEstadoFitosanitario" ColumnName="IdEstadoFitosanitario" />
+                <ScalarProperty Name="Observaciones" ColumnName="Observaciones" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InventarioEspecie">
+            <EntityTypeMapping TypeName="Model.InventarioEspecie">
+              <MappingFragment StoreEntitySet="InventarioEspecie">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdInventarioUM" ColumnName="IdInventarioUM" />
+                <ScalarProperty Name="IdEspecieForestal" ColumnName="IdEspecieForestal" />
+                <ScalarProperty Name="IdTipoUso" ColumnName="IdTipoUso" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InventarioUM">
+            <EntityTypeMapping TypeName="Model.InventarioUM">
+              <MappingFragment StoreEntitySet="InventarioUM">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdInventario" ColumnName="IdInventario" />
+                <ScalarProperty Name="IdUnidadMuestreo" ColumnName="IdUnidadMuestreo" />
+                <ScalarProperty Name="IdTipoAccesibilidad" ColumnName="IdTipoAccesibilidad" />
+                <ScalarProperty Name="OtraAccesibilidad" ColumnName="OtraAccesibilidad" />
+                <ScalarProperty Name="IdConduccion" ColumnName="IdConduccion" />
+                <ScalarProperty Name="FechaInicioMediciones" ColumnName="FechaInicioMediciones" />
+                <ScalarProperty Name="FechaFinalMediciones" ColumnName="FechaFinalMediciones" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Predio">
+            <EntityTypeMapping TypeName="Model.Predio">
+              <MappingFragment StoreEntitySet="Predio">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdSitio" ColumnName="IdSitio" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PuntoCentral">
+            <EntityTypeMapping TypeName="Model.PuntoCentral">
+              <MappingFragment StoreEntitySet="PuntoCentral">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdUnidadMuestreo" ColumnName="IdUnidadMuestreo" />
+                <ScalarProperty Name="FechaInstMarca" ColumnName="FechaInstMarca" />
+                <ScalarProperty Name="HoraInstMarca" ColumnName="HoraInstMarca" />
+                <ScalarProperty Name="CodigoGPS" ColumnName="CodigoGPS" />
+                <ScalarProperty Name="IdTipoZona" ColumnName="IdTipoZona" />
+                <ScalarProperty Name="CoordenadaUTMX" ColumnName="CoordenadaUTMX" />
+                <ScalarProperty Name="CoordenadaUTMY" ColumnName="CoordenadaUTMY" />
+                <ScalarProperty Name="ErrorGPS" ColumnName="ErrorGPS" />
+                <ScalarProperty Name="Altitud" ColumnName="Altitud" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sitio">
+            <EntityTypeMapping TypeName="Model.Sitio">
+              <MappingFragment StoreEntitySet="Sitio">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IdUbigeo" ColumnName="IdUbigeo" />
+                <ScalarProperty Name="Comunidad" ColumnName="Comunidad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoAccesibilidad">
+            <EntityTypeMapping TypeName="Model.TipoAccesibilidad">
+              <MappingFragment StoreEntitySet="TipoAccesibilidad">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoConductor">
+            <EntityTypeMapping TypeName="Model.TipoConductor">
+              <MappingFragment StoreEntitySet="TipoConductor">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoRolBrigada">
+            <EntityTypeMapping TypeName="Model.TipoRolBrigada">
+              <MappingFragment StoreEntitySet="TipoRolBrigada">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoUso">
+            <EntityTypeMapping TypeName="Model.TipoUso">
+              <MappingFragment StoreEntitySet="TipoUso">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UnidadMuestreo">
+            <EntityTypeMapping TypeName="Model.UnidadMuestreo">
+              <MappingFragment StoreEntitySet="UnidadMuestreo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdSitio" ColumnName="IdSitio" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoDocumento">
+            <EntityTypeMapping TypeName="Model.TipoDocumento">
+              <MappingFragment StoreEntitySet="TipoDocumento">
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+                <ScalarProperty Name="UsuarioModificacion" ColumnName="UsuarioModificacion" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Acronimo" ColumnName="Acronimo" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

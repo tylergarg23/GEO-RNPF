@@ -1,0 +1,90 @@
+﻿@using Modulos_Core_MVC.Helpers
+
+@model  IEnumerable<SERFOR.Component.DTEntities.General.PersonaItemListDTe>
+
+<style>
+    /* Important part */
+    .modal-dialog {
+        overflow-y: initial !important;
+    }
+
+    .modal-body {
+        height: 450px;
+        overflow-y: auto;
+    }
+</style>
+
+
+<div class="modal-body">
+    @using (Html.BeginForm("Search", "Persona", new { area = "General" }, FormMethod.Post))
+    {
+        <table class="table table-hover table-condensed">
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @if (item.EsJuridica)
+                            {
+                                <img src="/Content/images/company_placeholder.png" class="img-circle" width="50">
+                            }
+                            else
+                            {
+                                <img src="/Content/images/persona_placeholder.png" class="img-circle" width="50">
+                            }
+                            <input type="hidden" name="Id" value="@item.Id" />
+                        </td>
+                        <td>
+                            <h4>
+                                <b>@item.NombreCompleto</b>
+                                <input type="hidden" name="NombreCompleto" value="@item.NombreCompleto" />
+                            </h4>
+                            <p>@item.TipoPersona</p>
+                            <input type="hidden" name="TipoPersona" value="@item.TipoPersona" />
+                        </td>
+                        <td>
+                            <h5><span class="glyphicon glyphicon-envelope"></span>&nbsp;Email:&nbsp;@item.Email</h5>
+                            <input type="hidden" name="Email" value="@item.Email" />
+                            <h5><span class="glyphicon glyphicon-phone-alt"></span>&nbsp;Teléfono fijo:&nbsp;@item.Telefono</h5>
+                            <input type="hidden" name="Telefono" value="@item.Telefono" />
+                            <h5><span class="glyphicon glyphicon-phone"></span>&nbsp;Celular: @item.Celular</h5>
+                            <input type="hidden" name="Celular" value="@item.Celular" />
+                        </td>
+                        <td>
+                            <input class="btn btn-default" type="submit" value="Seleccionar" onclick="@Url.Action("Search", "Persona", new { area = "General", id = item.Id, nombre = item.NombreCompleto })"/>
+                            @*<input class="btn btn-default" type="submit" value="Seleccionar" />*@
+                        </td>
+
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-default" type="button" data-dismiss="modal">Cancelar</button>
+</div>
+
+
+@*@Html.Script(
+        @<script type="text/javascript">
+
+            $(function () {
+                alert("Documento html!");
+            });
+        </script>
+    )
+
+
+    @section Scripts {
+
+        <script type="text/javascript">
+
+            $(function () {
+                alert("Documento section!");
+            });
+        </script>
+
+    }*@

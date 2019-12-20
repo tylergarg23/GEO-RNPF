@@ -1,0 +1,107 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/csslogin")
+    <link rel="icon" href="~/Content/Images/favicon.png">
+</head>
+
+<body style="padding:50px;background-image: url('../Content/Images/fondoLogin1.jpg');" >
+    @*<ul class="cb-slideshow hidden-xs">
+        <li><span>Image 01</span><div><h3></h3></div></li>
+        <li><span>Image 02</span><div><h3></h3></div></li>
+        <li><span>Image 03</span><div><h3></h3></div></li>
+        <li><span>Image 04</span><div><h3></h3></div></li>
+        <li><span>Image 05</span><div><h3></h3></div></li>
+        <li><span>Image 06</span><div><h3></h3></div></li>
+    </ul>
+    <ul class="cb-slideshow visible-xs">
+        <li><span>Image 01</span></li>
+        <li><span>Image 02</span></li>
+        <li><span>Image 03</span></li>
+        <li><span>Image 04</span></li>
+        <li><span>Image 05</span></li>
+        <li><span>Image 06</span></li>
+    </ul>*@
+
+    <nav class="navbar navbar-default" style="opacity: 0.9;">
+        <div class="container">
+            <div class="navbar-header">
+                <div class="navbar-brand">
+                    <a href="#"><img src="~/Content/images/logo.jpg" class="img-responsive" /></a>
+                </div>
+            </div>
+            <div class="navbar-text">
+                <h3>Registro Nacional de Plantaciones Forestales</h3>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 col-md-offset-7">
+                <div class="panel panel-default" style="opacity: 0.9;margin-top:40px">
+                    <div class="panel-heading">
+                        <span class="glyphicon glyphicon-lock"></span> Ingresar
+                    </div>
+                    <div class="panel-body">
+
+                        @using (@Html.BeginForm("Login", "Account", new { returnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="form-group">
+                                <label for="nokp" class="col-sm-3 control-label">
+                                    Usuario:
+                                </label>
+                                <div class="col-sm-9">
+                                    <input type="text" placeholder="Ingrese su nombre de usuario" name="UserName" class="form-control" autofocus required/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="nopend" class="col-sm-3 control-label">
+                                    Clave:
+                                </label>
+                                <div class="col-sm-9">
+                                    <input type="password" placeholder="Ingrese su contraseña" name="Password" class="form-control" required/>
+                                </div>
+                            </div>
+                            @*<div class="form-group">
+                                    <div class="col-sm-offset-3 col-sm-9">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" />
+                                                Recordarme
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>*@
+                            <div class="form-group last">
+                                <div class="col-sm-offset-3 col-sm-9">
+                                    <input type="submit" value="Iniciar Sesión" class="btn btn-success btn-block" />
+                                    @*@Html.ActionLink("Iniciar sesion", "Index", "Plantacion", new { area = "Plantaciones" }, new { type = "submit", @class = "btn btn-success" })*@
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="panel-footer">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footerBy"> Copyright © 2019 - <a href="http://www.serfor.gob.pe" style="color:white"><b>SERFOR</b></a>, Todos los derechos reservados </div>
+
+</body>
+</html>

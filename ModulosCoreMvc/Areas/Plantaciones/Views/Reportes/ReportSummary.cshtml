@@ -1,0 +1,492 @@
+﻿@{
+    ViewBag.Title = "Reporte Oficial de plantaciones";
+    Layout = "~/Areas/Plantaciones/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    #map {
+        height: 700px;
+        width: 100%;
+    }
+
+    .infoDiv {
+        width: 100%;
+        -webkit-user-select: none;
+        background-color: white;
+        border-radius: 20px;
+    }
+
+    .hover {
+        background-color: #eee;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-4">
+        <h3 style="margin-top: 15px;">
+            Resumen de plantaciones (Dashboard mode)
+        </h3>
+    </div>
+    <div class="col-md-8">
+        <div class="form-inline" role="form" style="padding-top: 10px;">
+            <div class="form-group">
+                <h4>
+                    &nbsp; Filtre por:
+                </h4>
+            </div>
+            <div class="form-group">
+                <select id="Departamento" name="Departamento" class="form-control dropdown" data-smk-noclear></select>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input id="soloAprobados" name="SoloUnPredio" type="checkbox" value="false">
+                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                        Sólo aprobados
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="radio">
+                    <label>
+                        <input id="rbTerrestre" type="radio" name="EsPropietario" value="P" />
+                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                        Propietario
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="radio">
+                    <label>
+                        <input id="rbTerrestre" type="radio" name="EsPropietario" value="I" />
+                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                        Inversionista
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="radio">
+                    <label>
+                        <input id="rbTerrestre" type="radio" name="EsPropietario" value="S" />
+                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                        Posesionario
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="radio">
+                    <label>
+                        <input id="rbTerrestre" type="radio" name="EsPropietario" value="T" checked />
+                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                        Toda condición
+                    </label>
+                </div>
+            </div>
+            <a onclick="populate(false)" class="btn btn-default btn-success"><span class="glyphicon glyphicon-filter"></span>&nbsp;Filtrar</a>
+        </div>
+    </div>
+</div>
+<div class='hr'></div>
+
+<div class="row">
+    <div class="col-md-2 col-sm-2 col-xs-12">
+        <div id="grupoDatosKPI" class="list-group">
+          
+        </div>
+        <div id="grupoDatosKPI2" class="list-group">
+            <a href="#" class="list-group-item">
+                <h1 class="list-group-item-heading">
+                    <label id="totalArea"></label> 
+                    <p><small class="list-group-item-text"> Área total</small></p>
+                </h1>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-7 col-sm-7 col-xs-12">
+        <table id="table"
+               data-id-field="Id"
+               data-unique-id="Id"
+               data-classes="table-bordered"
+               data-side-pagination="client"
+               data-pagination="true"
+               data-show-pagination-switch="true"
+               data-page-list="[10, 20, 30, 50, 100]"
+               data-page-size="10"
+               data-search="true"
+               data-show-columns="true"
+               data-show-export="true"
+               data-show-toggle="true"
+               data-mobile-responsive="true"
+               data-show-footer="false"
+               data-click-to-select="true"
+               data-single-select="true"
+               data-striped="false"
+               data-show-multi-sort="false">
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <colgroup></colgroup>
+            <thead>
+                <tr>
+                    <th data-field="Id" data-sortable="true" class="col-md-1" data-formatter="enlaceFormatter">
+                        ID
+                    </th>
+                    <th data-field="NumeroCertificado" data-sortable="true" class="col-md-3" data-formatter="enlaceFormatter">
+                        Nº Certificado
+                    </th>
+                    <th data-field="Departamento" data-halign="center" data-sortable="true" class="col-md-1">
+                        Departamento
+                    </th>
+                    <th data-field="Provincia" data-halign="center" data-sortable="true" class="col-md-1">
+                        Provincia
+                    </th>
+                    <th data-field="Distrito" data-halign="center" data-sortable="true" class="col-md-1">
+                        Distrito
+                    </th>
+
+                    <th data-field="Condicion" data-halign="center" data-sortable="true" class="col-md-1">
+                        Condición
+                    </th>
+                    <th data-field="Area" data-halign="center" data-align="right" data-sortable="true" class="col-md-1" >
+                        Área
+                    </th>
+                    <th data-field="CantidadBloques" data-halign="center" data-align="center" data-sortable="true" class="col-md-1">
+                        Bloques
+                    </th>
+                    <th data-field="CantidadPersonas" data-halign="center" data-align="center" data-sortable="true" class="col-md-1">
+                        Personas
+                    </th>
+                    <th data-field="CantidadRevisiones" data-halign="center" data-align="center" data-sortable="true" class="col-md-1">
+                        Revisiones
+                    </th>
+                    <th data-field="CantidadHistoricos" data-halign="center" data-align="center" data-sortable="true" class="col-md-1">
+                        F3
+                    </th>
+                    <th data-field="CantidadAnexos" data-halign="center" data-align="center" data-sortable="true" class="col-md-1">
+                        Anx.
+                    </th>
+                    <th data-field="Autorizacion" data-halign="center" data-sortable="true" class="col-md-1">
+                        Autorización
+                    </th>
+
+                    <th data-field="CantidadTotalSuperficieMl" data-halign="center" data-align="right" data-sortable="true" class="col-md-1" >
+                        Sup. Ml
+                    </th>
+                    <th data-field="CantidadTotalSuperficieHa" data-halign="center" data-align="right" data-sortable="true" class="col-md-1" >
+                        Sup. Ha
+                    </th>
+                    <th data-field="DocumentoCondicion" data-halign="center" data-sortable="true" class="col-md-1">
+                        Doc. Condición
+                    </th>
+                    <th data-field="DocumentoContrato" data-halign="center" data-sortable="true" class="col-md-1">
+                        Contrato
+                    </th>
+                    <th data-field="FechaRecepcion" data-halign="center" data-align="center" data-sortable="true" class="col-md-1" data-formatter="dateFormatter">
+                        Solicitado
+                    </th>
+                    <th data-field="FechaRecepcionARFFS" data-halign="center" data-align="center" data-sortable="true" class="col-md-1" data-formatter="dateFormatter">
+                        Recepción
+                    </th>
+                    <th data-field="FechaCreacion" data-halign="center" data-align="center" data-sortable="true" class="col-md-1" data-formatter="dateFormatter">
+                        Registrado
+                    </th>
+                    <th data-field="UsuarioCreacion" data-halign="center" data-sortable="true" class="col-md-1">
+                        Usuario
+                    </th>
+                    <th data-field="NombreZona" data-visible="false" data-halign="center" data-sortable="true" class="col-md-1">
+                        Comunidad-Caserío
+                    </th>
+                    <th data-field="CoordenadaEsteUTM" data-visible="false" data-halign="center" data-sortable="true" class="col-md-1">
+                        UTM-Este
+                    </th>
+                    <th data-field="CoordenadaNorteUTM" data-visible="false" data-halign="center" data-sortable="true" class="col-md-1">
+                        UTM-Norte
+                    </th>
+                    <th data-field="Zona" data-visible="false" data-halign="center" data-align="center" data-sortable="true" class="col-md-1">
+                        Zona
+                    </th>
+                    <th data-field="Datum" data-visible="false" data-halign="center" data-sortable="true" class="col-md-1">
+                        Datum
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="entityListBody"></tbody>
+        </table>
+    </div>
+    <div class="col-md-3 col-sm-3 col-xs-12">
+        <div id="bar-chart-widget" class="panel">
+            <div class="panel-heading">
+                <h4 class="text-uppercase"><strong>Por departamento</strong><br></h4>
+            </div>
+            <div class="panel-body">
+                <canvas id="myBarChart" width="350" height="170" style="width: 350px; height: 170px;"></canvas>
+            </div>
+        </div>
+        <div id="pie-chart-widget" class="panel">
+            <div class="panel-heading">
+                <h4 class="text-uppercase"><strong>Por condición</strong><br></h4>
+            </div>
+            <div class="panel-body">
+                <canvas id="myPieChart" width="350" height="250" style="width: 350px; height: 250px;"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section scripts{
+
+    <script type="text/javascript">
+
+        $("#table").delegate('td', 'mouseover mouseleave', function (e) {
+            if (e.type == 'mouseover') {
+                $(this).parent().addClass("hover");
+                $("colgroup").eq($(this).index()).addClass("hover");
+            }
+            else {
+                $(this).parent().removeClass("hover");
+                $("colgroup").eq($(this).index()).removeClass("hover");
+            }
+        });
+
+        function enlaceFormatter(value, row) {
+            return '<a href="@Url.Action("Edit", "Plantacion", new {area="Plantaciones"})?id=' + row.Id + '" type="submit" id="verPlantacion"  target="_blank">' + value + '</a>'
+        }
+
+        $(document).ready(function () {
+
+            $.ajax({
+                async: true,
+                type: 'POST',
+                url: '@Url.Action("GetDepartamentos", "Ubigeo", new { area = "General" })',
+                dataType: 'json',
+                data: {},
+                success: function (departamentos) {
+                    $.each(departamentos, function (i, departamento) {
+                        $("#Departamento").append('<option value="' + departamento.Value + '">' + departamento.Text + '</option>');
+                    });
+                    $("#Departamento").append('<option value="">TODOS</option>');
+
+                },
+                error: function (ex) {
+                    showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Error al intentar cargar el listado de departamentos. " + ex);
+                }
+
+            });
+
+            populate(true);
+
+        })
+
+        function populate(inicializar) {
+            $.ajax(
+            {
+                url: '@Url.Action("GetAllPlantaciones", "Reportes", new { area = "Plantaciones"})',
+                method: "GET",
+                data: { soloAprobados: $("#soloAprobados").is(':checked'), condicion: $("input[name='EsPropietario']:checked").val(), codigoDepartamento: $('#Departamento').val() },
+                dataType: 'json',
+                success: function (data) {
+                    populateTable(data.PlantacionesDetalle, inicializar);
+                    dibujarGraficoCondicion(data.GraficoCondicion, inicializar);
+                    dibujarGraficoDepartamento(data.GraficoDepartamentos, inicializar);
+                    dibujarListaKPIs(data.ListaKPIs, data.TotalPlantaciones);
+                    $('#totalArea').html(data.TotalArea.toLocaleString("en-US"));
+                },
+                error: function () {
+                    showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Error al intentar cargar el listado de plantaciones. ");
+                }
+            });
+        }
+
+        function populateTable(data, inicializar) {
+            if (inicializar)
+            { $('#table').bootstrapTable({ data: data }); }
+            else
+            {
+                if (data != null && data.length > 0) {
+                    $('#table').bootstrapTable('load', data);
+                }
+                else {
+                    $('#table').bootstrapTable('removeAll');
+                }
+
+            }
+
+        }
+        
+        function dibujarListaKPIs(data, total) {
+
+            $('#grupoDatosKPI').empty();
+            
+            var htmlKPI = '<a href="#" class="list-group-item"><h1 class="list-group-item-heading"><label id="totalPlantaciones" class="count">' + total + '</label> ' +
+                            '<small class="list-group-item-text"> Plantaciones</small></h1></a>';
+
+            $('#grupoDatosKPI').append(htmlKPI);
+
+            if (data != null && data.length > 0) {
+                var className;
+                for (var i = 0; i < data.length; i++) {
+                    className = 'success';
+                    
+                    if (data[i].Porcentaje < 51) { className = 'warning'; }
+
+                    if (data[i].Porcentaje < 20) { className = 'danger'; }
+
+                    htmlKPI = '<a href="#" class="list-group-item"><h3 class="list-group-item-heading"><label class="count">' + data[i].Valor + '</label>' +
+                                '<small class="list-group-item-text">' + data[i].Etiqueta + '</small></h3>' +
+                                '<div class="progress"><div class="progress-bar progress-bar-' + className + '" role="progressbar" aria-valuenow="' + data[i].Porcentaje + '" aria-valuemin="0" aria-valuemax="100" style="width: ' + data[i].Porcentaje + '%">' +
+                                     '<span class="sr-only">' + data[i].Porcentaje + '% Complete (success)</span></div>' +
+                                   '<span class="progress-completed">' + data[i].Porcentaje + '%</span></div></a>';
+
+                    $('#grupoDatosKPI').append(htmlKPI);
+                }
+
+            }
+        }
+
+        var $myDoughnutChart = null;
+
+        function dibujarGraficoCondicion(data, inicializar) {
+            var labels = [];
+            var datas = [];
+            if (data != null && data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    labels.push(data[i].Etiqueta);
+                    datas.push(data[i].Valor);
+                }
+            }
+
+            var ctx1 = document.getElementById("myPieChart");
+
+            if (!inicializar) {
+                $("#myPieChart").empty();
+                removeData($myDoughnutChart);
+                $myDoughnutChart.destroy();
+            }
+                      
+
+            $myDoughnutChart = new Chart(ctx1, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: datas,
+                        backgroundColor: [
+                          'rgba(54, 162, 235, 1)',
+                         'rgba(255, 206, 86, 1)'
+                        ]
+                    }],
+                    // These labels appear in the legend and in the tooltips when hovering different arcs
+                    labels: labels,
+                },
+                options: {
+                    layout: {
+                        padding: {
+                            left: 20,
+                            right: 0,
+                            top: 0,
+                            bottom: 0
+                        }
+                    }
+                }
+            });
+
+        }
+
+        var $myBarChart = null;
+
+        function dibujarGraficoDepartamento(data, inicializar) {
+            var labels = [];
+            var datas = [];
+            if (data != null && data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    labels.push(data[i].Etiqueta);
+                    datas.push(data[i].Valor);
+                }
+            }
+
+            var ctx2 = document.getElementById("myBarChart");
+
+            if (!inicializar) {
+                $("#myBarChart").empty();
+                removeData($myBarChart);
+                $myBarChart.destroy();
+            }
+
+            $myBarChart = new Chart(ctx2,
+            {
+                type: 'bar',
+
+                data: {
+                    labels: labels,
+                    datasets: [{
+
+                        data: datas,
+                        backgroundColor: 'rgba(226,83,49,1)',
+                        borderColor: 'rgba(226,83,49,1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    legend: { display: false },
+                    scales: {
+                        yAxes: [{
+                            gridLines: { display: false },
+                        }],
+                        xAxes: [{
+                            ticks: { display: false },
+                            gridLines: { display: false }
+                        }]
+                    },
+                    layout: {
+                        padding: {
+                            left: 0,
+                            right: 0,
+                            top: 0,
+                            bottom: 0
+                        }
+                    },
+                    tooltips: {
+                        mode: 'nearest'
+                    }
+                }
+
+            });
+
+        }
+
+
+        function removeData(chart) {
+            chart.data.labels.pop();
+            chart.data.datasets.forEach((dataset) => {
+                dataset.data.pop();
+            });
+            chart.update();
+        }
+
+    </script>
+}
+
+
+

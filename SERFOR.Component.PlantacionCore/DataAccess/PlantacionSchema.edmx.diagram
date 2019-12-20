@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="bf69c9e63b52429c96e89a1da7bf0bde" Name="Diagram1" ZoomLevel="64">
+        <EntityTypeShape EntityType="Model.SistemaCoordenada" Width="1.5" PointX="5.25" PointY="27.5" />
+        <EntityTypeShape EntityType="Model.Persona" Width="1.5" PointX="3" PointY="27" />
+        <EntityTypeShape EntityType="Model.Anexos" Width="1.5" PointX="6" PointY="34.625" />
+        <EntityTypeShape EntityType="Model.AnexosPlantacion" Width="1.5" PointX="8.25" PointY="18.125" />
+        <EntityTypeShape EntityType="Model.FinalidadProducto" Width="1.5" PointX="5.25" PointY="32" />
+        <EntityTypeShape EntityType="Model.PersonaPlantacion" Width="1.5" PointX="5.25" PointY="22.125" />
+        <EntityTypeShape EntityType="Model.PersonaPlantacionHistorico" Width="1.5" PointX="8.25" PointY="23" />
+        <EntityTypeShape EntityType="Model.Plantacion" Width="1.5" PointX="3" PointY="15.125" />
+        <EntityTypeShape EntityType="Model.PlantacionHistorico" Width="1.5" PointX="5.25" PointY="12.625" />
+        <EntityTypeShape EntityType="Model.RevisionesRegistroPlantaciones" Width="1.5" PointX="5.25" PointY="39.75" />
+        <EntityTypeShape EntityType="Model.RevisionesRegistroPlantacionesHistorico" Width="1.5" PointX="7.5" PointY="28.25" />
+        <EntityTypeShape EntityType="Model.TipoAutorizacion" Width="1.5" PointX="0.75" PointY="24" />
+        <EntityTypeShape EntityType="Model.TipoComunidad" Width="1.5" PointX="0.75" PointY="26.5" />
+        <EntityTypeShape EntityType="Model.TipoZona" Width="1.5" PointX="0.75" PointY="13.5" />
+        <EntityTypeShape EntityType="Model.Ubigeo" Width="1.5" PointX="0.75" PointY="17.25" />
+        <AssociationConnector Association="Model.FK_Persona_Persona_Ubigeo" />
+        <AssociationConnector Association="Model.FK_RNP_PersonaPlantacionHistorico_Persona" />
+        <AssociationConnector Association="Model.FK_RNP_PersonasPlantacion_Persona" />
+        <AssociationConnector Association="Model.FK_RNP_AnexosPlantacion_Anexos" />
+        <AssociationConnector Association="Model.FK_RNP_AnexosPlantacion_Plantacion" />
+        <AssociationConnector Association="Model.FK_RNP_PersonaPlantacion_Ubigeo" />
+        <AssociationConnector Association="Model.FK_RNP_PersonasPlantacion_Plantacion" />
+        <AssociationConnector Association="Model.FK_RNP_PersonaPlantacionHistorico_PlantacionHistorico" />
+        <AssociationConnector Association="Model.FK_RNP_PersonaPlantacionHistorico_Ubigeo" />
+        <AssociationConnector Association="Model.FK_RNP_Plantacion_TipoAutorizacion" />
+        <AssociationConnector Association="Model.FK_RNP_Plantacion_TipoComunidad" />
+        <AssociationConnector Association="Model.FK_RNP_Plantacion_TipoZona" />
+        <AssociationConnector Association="Model.FK_RNP_Plantacion_Ubigeo" />
+        <AssociationConnector Association="Model.FK_RNP_PlantacionHistorico_Plantacion" />
+        <AssociationConnector Association="Model.FK_RNP_RevisionesRegistroPlantaciones_Plantacion" />
+        <AssociationConnector Association="Model.FK_RNP_PlantacionHistorico_TipoAutorizacion" />
+        <AssociationConnector Association="Model.FK_RNP_PlantacionHistorico_TipoZona" />
+        <AssociationConnector Association="Model.FK_RNP_PlantacionHistorico_Ubigeo" />
+        <AssociationConnector Association="Model.FK_RNP_RevisionesRegistroPlantacionesHistorico_PlantacionHistorico" />
+        <EntityTypeShape EntityType="Model.TipoDocumento" Width="1.5" PointX="0.75" PointY="5" />
+        <AssociationConnector Association="Model.FK_Persona_Persona_TipoDocumento" />
+        <AssociationConnector Association="Model.FK_RNP_PersonasPlantacion_TipoZona_Id" />
+        <EntityTypeShape EntityType="Model.Sinonimo" Width="1.5" PointX="7.5" PointY="44.625" />
+        <EntityTypeShape EntityType="Model.Especie" Width="1.5" PointX="5.25" PointY="43.75" />
+        <EntityTypeShape EntityType="Model.FamiliaEspecie" Width="1.5" PointX="3" PointY="44.25" />
+        <EntityTypeShape EntityType="Model.PlantacionDetalle" Width="2" PointX="10.5" PointY="16.625" />
+        <EntityTypeShape EntityType="Model.PlantacionDetalleEspecie" Width="3" PointX="15.75" PointY="29.875" />
+        <EntityTypeShape EntityType="Model.PlantacionDetalleEspecieHistorico" Width="2.625" PointX="12.75" PointY="33.25" />
+        <EntityTypeShape EntityType="Model.PlantacionDetalleHistorico" Width="1.5" PointX="10.5" PointY="23.375" />
+        <EntityTypeShape EntityType="Model.PlantacionDetalleVertices" Width="2.125" PointX="13.125" PointY="18" />
+        <EntityTypeShape EntityType="Model.PlantacionDetalleVerticesHistorico" Width="1.5" PointX="12.75" PointY="24.875" />
+        <EntityTypeShape EntityType="Model.UnidadMedida" Width="1.5" PointX="10.5" PointY="33.125" />
+        <AssociationConnector Association="Model.FK_EspecieForestal_Especie_FamiliaEspecie" />
+        <AssociationConnector Association="Model.FK_EspecieForestal_Sinonimo_Especie" />
+        <AssociationConnector Association="Model.FK_RNP_PlantacionDetalleEspecie_Especie_Id" />
+        <AssociationConnector Association="Model.FK_RNP_PlantacionDetalleEspecieHistorico_Especie_Id" />
+        <AssociationConnector Association="Model.FK_RNP_PlantacionDetalle_SistCoord_Id" />
+        <AssociationConnector Association="Model.FK_RNP_PlantacionDetalleHistorico_SistemaCoordenadas_Id" />
+        <AssociationConnector Association="Model.FK_RNP_PlantacionDetalle_FinalidadPlantacion" />
+        <AssociationConnector Association="Model.FK_RNP_PlantacionDetalleHistorico_FinalidadProducto" />
+        <AssociationConnector Association="Model.FK_RNP_PlantacionDetalle_Plantacion" />
+        <AssociationConnector Association="Model.FK_RNP_PlantacionDetalleEspecie_PlantacionDetalleId" />
+        <AssociationConnector Association="Model.FK_RNP_PlantacionDetalleVertices_PlantacionDetalle" />
+        <AssociationConnector Association="Model.FK_RNP_PlantacionDetalleEspecie_UnidadMedida" />
+        <AssociationConnector Association="Model.FK_RNP_PlantacionDetalleEspecieHistorico_PlantacionDetalleId" />
+        <AssociationConnector Association="Model.FK_RNP_PlantacionDetalleEspecieHistorico_UnidadMedida" />
+        <AssociationConnector Association="Model.FK_RNP_PlantacionDetalleHistorico_PlantacionHistorico" />
+        <AssociationConnector Association="Model.FK_RNP_PlantacionDetalleVerticesHistorico_PlantacionDetalleHistorico" />
+        <EntityTypeShape EntityType="Model.TipoPlantacion" Width="1.5" PointX="0.75" PointY="0.875" />
+        <AssociationConnector Association="Model.FK_RNP_PlantacionDetalleEspecie_TipoPlantado" />
+        <AssociationConnector Association="Model.FK_RNP_PlantacionDetalleEspecieHistorico_TipoPlantado" />
+        <EntityTypeShape EntityType="Model.SistemaPlantacion" Width="1.5" PointX="3.375" PointY="0.875" />
+        <AssociationConnector Association="Model.FK_RNP_PlantacionDetalle_SistemaPlantacion" />
+        <AssociationConnector Association="Model.FK_RNP_PlantacionDetalleHistorico_SistemaPlantacion" />
+        <EntityTypeShape EntityType="Model.AutoridadForestal" Width="1.5" PointX="3.375" PointY="4" />
+        <EntityTypeShape EntityType="Model.SedeAutoridadForestal" Width="1.5" PointX="5.625" PointY="4.25" />
+        <AssociationConnector Association="Model.FK_Organizacion_SedeAutoridadForestal_AutoridadForestal" />
+        <AssociationConnector Association="Model.FK_RNP_Plantacion_SedePrincipal" />
+        <EntityTypeShape EntityType="Model.Fact_Plantaciones" Width="2" PointX="17.375" PointY="0.5" />
+        <EntityTypeShape EntityType="Model.Fact_PlantacionesEspacio" Width="1.5" PointX="8.375" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.Fact_PlantacionesProduccion" Width="1.5" PointX="8.375" PointY="5.75" />
+        <AssociationConnector Association="Model.fk_RNP_Plantacion_SistemaCoordenada_Id" />
+        <AssociationConnector Association="Model.FK_Shared_Ubigeo_Autoridad_ARFFS_ID" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

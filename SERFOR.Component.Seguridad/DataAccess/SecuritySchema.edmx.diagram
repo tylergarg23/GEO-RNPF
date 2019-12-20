@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="063f881976154db28f4486dbbca3af53" Name="Diagram1">
+        <EntityTypeShape EntityType="Model.AutoridadForestal" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.Cargo" Width="1.5" PointX="3" PointY="2.125" />
+        <EntityTypeShape EntityType="Model.Directorio" Width="1.5" PointX="5.25" PointY="5.875" />
+        <EntityTypeShape EntityType="Model.SedeAutoridadForestal" Width="1.5" PointX="3" PointY="5.625" />
+        <EntityTypeShape EntityType="Model.TipoSede" Width="1.5" PointX="0.75" PointY="6.375" />
+        <EntityTypeShape EntityType="Model.Persona" Width="1.5" PointX="3" PointY="11.5" />
+        <EntityTypeShape EntityType="Model.MiembroRol" Width="1.5" PointX="10.5" PointY="6.5" />
+        <EntityTypeShape EntityType="Model.Rol" Width="1.5" PointX="8.25" PointY="1.25" />
+        <EntityTypeShape EntityType="Model.Usuario" Width="1.5" PointX="8.25" PointY="5.5" />
+        <EntityTypeShape EntityType="Model.Ubigeo" Width="1.5" PointX="0.75" PointY="12.25" />
+        <AssociationConnector Association="Model.FK_Organizacion_SedeAutoridadForestal_AutoridadForestal" />
+        <AssociationConnector Association="Model.FK_Organizacion_Cargo_Cargo" />
+        <AssociationConnector Association="Model.FK_Organizacion_Directorio_Cargo" />
+        <AssociationConnector Association="Model.FK_Organizacion_Directorio_Persona" />
+        <AssociationConnector Association="Model.FK_Organizacion_Directorio_Sede_Administracion_Tecnica" />
+        <AssociationConnector Association="Model.FK_Organizacion_SedeAutoridadForestal_TipoSede" />
+        <AssociationConnector Association="Model.FK_Seguridad_Usuario_Sede" />
+        <AssociationConnector Association="Model.FK_Seguridad_Usuario_SedePrincipal" />
+        <AssociationConnector Association="Model.FK_Persona_Persona_Ubigeo" />
+        <AssociationConnector Association="Model.FK_Seguridad_Usuario_Persona1" />
+        <AssociationConnector Association="Model.FK_Seguridad_MiembroRol_Rol" />
+        <AssociationConnector Association="Model.FK_Seguridad_MiembroRol_Usuario" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

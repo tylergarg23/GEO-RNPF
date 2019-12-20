@@ -1,0 +1,107 @@
+﻿@model List<SERFOR.Component.DTEntities.Plantaciones.PlantacionItemListDTe>
+
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="panel-title"><span id="badgeDetallesList" class="badge">@Model.Count</span> Registros de actualización.</h3>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-condensed table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="col-md-1">Opciones</th>
+
+                            <th data-field="NumeroCertificado" class="col-md-2">
+                                Nº Certificado
+                            </th>
+                            <th data-field="Departamento" data-halign="center" class="col-md-2">
+                                Departamento
+                            </th>
+                            <th data-field="Provincia" data-halign="center" class="col-md-2">
+                                Provincia
+                            </th>
+                            <th data-field="Distrito" data-halign="center" class="col-md-2">
+                                Distrito
+                            </th>
+                            <th data-field="NombreZona" data-halign="center" class="col-md-2">
+                                Comunidad-Caserío
+                            </th>
+                            <th data-field="Condicion" data-halign="center" class="col-md-1">
+                                Condición
+                            </th>
+                            <th data-field="Area" data-halign="center" data-align="right" class="col-md-1">
+                                Área
+                            </th>
+                            <th data-field="Estado" data-halign="center" data-align="center" class="col-md-1">
+                                Estado
+                            </th>
+                        </tr>
+
+                    </thead>
+                    <tbody id="entityListBody">
+
+                        @if (Model.Count > 0)
+                        {
+                            foreach (var plantacion in Model)
+                            {
+                        <tr>
+                            <td align="center">
+                                <a href="#" type="button" class="btn btn-default btn-xs" aria-expanded="false">
+                                    <span class="glyphicon glyphicon-print"></span>
+                                </a>
+                            </td>
+                            @*gpaima - 27.08.2019
+                                <td>
+                                      @plantacion.Id
+                                </td>*@
+                            <td>
+                                @plantacion.NumeroCertificado
+                            </td>
+                            <td>
+                                @plantacion.Departamento
+                            </td>
+                            <td>
+                                @plantacion.Provincia
+                            </td>
+                            <td>
+                                @plantacion.Distrito
+                            </td>
+                            <td>
+                                @plantacion.NombreZona
+                            </td>
+                            <td>
+                                @plantacion.Condicion
+                            </td>
+                            <td>
+                                @plantacion.Area
+                            </td>
+                            <td>
+                                @plantacion.Estado
+                            </td>
+
+                        </tr>
+
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="9">
+                                    <div id="jumbotronRevisiones" class="jumbotron">
+                                        <p class="text-center"><small>No se encontraron registros históricos a la plantación seleccionada.</small></p>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>

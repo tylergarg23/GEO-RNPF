@@ -1,0 +1,30 @@
+﻿@using Modulos_Core_MVC.Helpers
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="width:100%; height: 100%; margin:0px">
+    @RenderBody()
+</div>
+
+@section menu{
+    
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" href="#">
+            CONSULTA DE
+            <span class="caret"></span>
+            <strong>LICENCIAS</strong>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-custom">
+            <li><a href="@Url.Action("IndexCazaDeportiva", "Licencias", new { area= "ConsultasDIR" })">Caza Deportiva</a></li>
+            <li class="disabled"><a href="@Url.Action("IndexCazaDeportiva", "Licencias", new { area= "ConsultasDIR" })">Otras (pronto)</a></li>
+        </ul>
+    </li>
+
+   
+}
+
+@section scripts{
+    @Html.RenderScripts()
+    @RenderSection("scripts", required: false)
+}

@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3AFAFD8D-8A51-4D56-924E-CDDBB1432989}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SERFOR.Component.InventarioCore</RootNamespace>
+    <AssemblyName>SERFOR.Component.InventarioCore</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BusinessLogic\Facade\BrigadistaFacade.cs" />
+    <Compile Include="DataAccess\Brigadista.cs">
+      <DependentUpon>InventarioSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\Conduccion.cs">
+      <DependentUpon>InventarioSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\EspecieForestal.cs">
+      <DependentUpon>InventarioSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\EstadoFitosanitario.cs">
+      <DependentUpon>InventarioSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\Inventario.cs">
+      <DependentUpon>InventarioSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\InventarioArbol.cs">
+      <DependentUpon>InventarioSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\InventarioEspecie.cs">
+      <DependentUpon>InventarioSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\InventarioSchema.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InventarioSchema.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\InventarioSchema.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InventarioSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\InventarioSchema.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InventarioSchema.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\InventarioUM.cs">
+      <DependentUpon>InventarioSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\Persona.cs">
+      <DependentUpon>InventarioSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\Predio.cs">
+      <DependentUpon>InventarioSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\PuntoCentral.cs">
+      <DependentUpon>InventarioSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\Sitio.cs">
+      <DependentUpon>InventarioSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TipoAccesibilidad.cs">
+      <DependentUpon>InventarioSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TipoConductor.cs">
+      <DependentUpon>InventarioSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TipoDocumento.cs">
+      <DependentUpon>InventarioSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TipoRolBrigada.cs">
+      <DependentUpon>InventarioSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TipoUso.cs">
+      <DependentUpon>InventarioSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TipoZona.cs">
+      <DependentUpon>InventarioSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\Ubigeo.cs">
+      <DependentUpon>InventarioSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\UnidadMuestreo.cs">
+      <DependentUpon>InventarioSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <EntityDeploy Include="DataAccess\InventarioSchema.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>InventarioSchema.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DataAccess\InventarioSchema.edmx.diagram">
+      <DependentUpon>InventarioSchema.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="DataAccess\InventarioSchema.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>InventarioSchema.edmx</DependentUpon>
+      <LastGenOutput>InventarioSchema.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="DataAccess\InventarioSchema.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>InventarioSchema.edmx</DependentUpon>
+      <LastGenOutput>InventarioSchema.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SERFOR.Component.DTEntities\SERFOR.Component.DTEntities.csproj">
+      <Project>{cd205619-7f88-43e4-a9d6-f2b1ac57ebac}</Project>
+      <Name>SERFOR.Component.DTEntities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SERFOR.Component.Tools\SERFOR.Component.Tools.csproj">
+      <Project>{d3f5d332-3d1a-4d43-819e-7856e7451797}</Project>
+      <Name>SERFOR.Component.Tools</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

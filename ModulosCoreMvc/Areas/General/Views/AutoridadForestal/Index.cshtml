@@ -1,0 +1,348 @@
+﻿
+@{
+    ViewBag.Title = "Mantenimiento de personas";
+    Layout = "~/Areas/General/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .form-control, .thumbnail {
+        border-radius: 2px;
+    }
+
+    /* File Upload */
+    .fake-shadow {
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .fileUpload {
+        position: relative;
+        overflow: hidden;
+    }
+
+        .fileUpload #logo-id {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 0;
+            padding: 0;
+            font-size: 33px;
+            cursor: pointer;
+            opacity: 0;
+            filter: alpha(opacity=0);
+        }
+
+    .img-preview {
+        max-width: 100%;
+    }
+</style>
+
+<h3>
+    Listado de Autoridades forestales y Gobiernos regionales
+</h3>
+<div class='hr'></div>
+
+@using (Html.BeginForm())
+{
+    <table id="table"
+           data-unique-id="Id"
+           data-classes="table-bordered"
+           data-side-pagination="client"
+           data-url='@Url.Action("GetAllAutoridades", "AutoridadForestal", new { area = "General" })'
+           data-show-pagination-switch="true"
+           data-pagination="true"
+           data-page-size="25"
+           data-page-list="[10,25, 30, 50]"
+           data-search="true"
+           data-toggle="table"
+           data-show-columns="true"
+           data-show-refresh="true"
+           data-show-export="true"
+           data-show-toggle="true"
+           data-mobile-responsive="true"
+           data-show-footer="false"
+           data-click-to-select="true"
+           data-single-select="true"
+           data-striped="true"
+           @*data-toolbar="#toolbar"*@
+           data-show-multi-sort="false">
+        <thead>
+            <tr>
+                <th rowspan="2" data-halign="center" data-align="center" data-valign="center" class="col-md-1" data-formatter="optionFormatter">Opción</th>
+                <th rowspan="2" data-field="RutaLogo" data-halign="center" data-align="center" data-sortable="true" class="col-md-1" data-formatter="logoFormatter">
+                    Logo
+                </th>
+                <th rowspan="2" data-field="Id" data-halign="center" data-align="right" data-sortable="true" class="col-md-1">
+                    ID
+                </th>
+                <th rowspan="2" data-field="Nombre" data-halign="center" data-align="left" data-sortable="true" class="col-md-2">
+                    Nombre
+                </th>
+                <th rowspan="2" data-field="Codigo" data-halign="center" data-align="center" data-sortable="true" class="col-md-1">
+                    Código
+                </th>
+                <th rowspan="2" data-field="EsGobiernoRegional" data-halign="center" data-align="center" data-sortable="true" class="col-md-1" data-formatter="checkFormatter">
+                    Es <abbr title="Gobierno Regional">GORE</abbr>
+                </th>
+                <th colspan="4" data-halign="center" class="col-md-7">Datos de contacto</th>
+            </tr>
+            <tr>
+                <th data-field="NombreContacto" data-halign="center" data-align="left" data-valign="center" data-sortable="true" class="col-md-2">
+                    Nombre de la persona
+                </th>
+                <th data-field="Direccion" data-halign="center" data-align="left" data-valign="center" data-sortable="true" class="col-md-2">
+                    Dirección
+                </th>
+                <th data-field="Email" data-halign="center" data-align="left" data-valign="center" data-sortable="true" class="col-md-2">
+                    Email
+                </th>
+                <th data-field="Telefono" data-halign="center" data-align="left" data-valign="center" data-sortable="true" class="col-md-1">
+                    Teléfono
+                </th>
+            </tr>
+        </thead>
+
+        <tbody id="entityListBody"></tbody>
+
+
+    </table>
+}
+
+<input type="hidden" id="autoridadId" name="autoridadId" />
+
+<!-- Modal para la actualización de datos de contacto -->
+<div class="modal fade" id="modalDatosContacto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Datos de contacto</h4>
+            </div>
+            <div id="bodyInfoContacto" class="modal-body">
+
+                <form id="formRegContacto" name="formRegContacto" class="form-horizontal">
+
+                    <div class="form-group" style="margin:15px 0 15px 0">
+                        <div class="col-md-12 input-group">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-user" style="color: black;"></span></span>
+                            <input type="text" class="form-control" id="nombre" placeholder="Nombre de la persona de contacto" maxlength="150">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin:15px 0 15px 0">
+                        <div class="col-md-12 input-group">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-home" style="color: black;"></span></span>
+                            <input type="text" class="form-control" id="direccion" placeholder="Dirección de contacto" maxlength="150">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin:15px 0 15px 0">
+                        <div class="col-md-12 input-group">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-envelope" style="color: black;"></span></span>
+                            <input type="email" class="form-control" id="email" placeholder="Email de contacto" maxlength="150">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin:15px 0 15px 0">
+                        <div class="col-md-6 input-group">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-phone-alt" style="color: black;"></span></span>
+                            <input type="text" class="form-control" id="telefono" placeholder="Teléfono de contacto" maxlength="15">
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <a href="#" class="btn btn-success" onClick="insertFormContacto()"><span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>&nbsp;Guardar cambios</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para la configuración del logo  -->
+<div class="modal fade" id="modalLogo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div id="dialogInfo" class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div id="bodyInfoLogo" class="modal-body" style="padding:5px">
+                <div class="form-group">
+                    <div class="main-img-preview">
+                        <img class="thumbnail img-preview" title="Vista preliminar">
+                    </div>
+                    <div class="input-group">
+
+                        <input id="fakeUploadLogo" class="form-control fake-shadow" placeholder="Haga click en 'Seleccionar Logo'" disabled="disabled">
+                        <div class="input-group-btn">
+                            <div class="fileUpload btn btn-default fake-shadow">
+                                <span><i class="glyphicon glyphicon-upload"></i> Seleccionar Logo</span>
+                                <input id="logo-id" name="logo" type="file" accept="image/png, image/jpeg, image/gif" class="attachment_upload">
+                            </div>
+                        </div>
+
+                    </div>
+                    <p class="help-block">Una vez seleccionada la imagen, haga click en 'Subir'. Para visualizar los cambios en la tabla, debe actualizar la página.</p>
+                </div>
+            </div>
+            <div class="modal-footer" style="padding:5px">
+                <div class="col-md-6 col-sm-12">
+                    <button class="btn btn-success btn-block" onclick="uploadArchivoLogo()">
+                        <i class="glyphicon glyphicon-upload"></i> Subir
+                    </button>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <button type="button" class="btn btn-default btn-block" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script type="text/javascript">
+
+
+        function optionFormatter(value, row) {
+            return '<div class="btn-group btn-group-xs" role="group" aria-label="...">' +
+                        '<a href="/AutoridadForestal/Config?id=' + row.Id + '" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+                        '<span class="glyphicon glyphicon-cog"></span> <span class="caret"></span>' +
+                       '</a>' +
+                     '<ul class="dropdown-menu">' +
+                        '<li><a href="#" onClick="modalLogo(' + row.Id + ')"><span class="glyphicon glyphicon-picture"></span> Logo</a></li>' +
+                        '<li><a href="#" onClick="modalDatosContacto(' + row.Id + ',\'' + row.NombreContacto + '\',\'' + row.Direccion + '\',\'' + row.Telefono + '\',\'' + row.Email + '\')"><span class="glyphicon glyphicon-credit-card"></span> Datos de contacto</a></li>' +
+                      '</ul>' +
+                    '</div>';
+
+        }
+
+        function logoFormatter(value, row) {
+
+            var data;
+
+            if (value.length > 0)
+                data = '<img src="' + value + '" alt="logo" class="img-thumbnail">';
+            else
+                data = '(sin logo)';
+
+            return data;
+
+        }
+
+        $(document).ready(function () {
+            var brand = document.getElementById('logo-id');
+            brand.className = 'attachment_upload';
+            brand.onchange = function () {
+                document.getElementById('fakeUploadLogo').value = this.value.substring(12);
+            };
+
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('.img-preview').attr('src', e.target.result);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $("#logo-id").change(function () {
+                readURL(this);
+            });
+        });
+
+        function modalLogo(id) {
+            if (id > 0) {
+
+                $("input[id=autoridadId]").val(id);
+                $('#modalLogo').modal('show');
+            }
+            else {
+                showNotification(constantes.tipoAlerta.Warning, "Seleccione una autoridad forestal correctamente.", "No se ha podido identificar el registro seleccionado.");
+            }
+        }
+
+        function uploadArchivoLogo() {
+            var fileUpload = $("#logo-id").get(0);
+            var files = fileUpload.files;
+
+            // Checking whether FormData is available in browser
+            if (window.FormData !== undefined && files.length > 0) {
+
+                // Create FormData object
+                var fileData = new FormData();
+                fileData.append(files[0].name, files[0]);
+
+                var id = $("input[id=autoridadId]").val();
+
+                $.ajax({
+                    url: '/AutoridadForestal/UploadLogoFile?autoridadId=' + id,
+                    type: "POST",
+                    contentType: false, // Not to set any content header
+                    processData: false, // Not to process data
+                    data: fileData,
+                    success: function (result) {
+                        $('#modalLogo').modal('hide');
+                        showNotification(constantes.tipoAlerta.SUCCESS, "¡En hora Buena!", "El archivo se cargó exitosamente al sistema. ");
+                    },
+                    error: function (err) {
+                        showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Ocurrió un error al intentar cargar el archivo: " + err.statusText);
+                    }
+                });
+            }
+            else {
+                showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "El navegador no permite carga de archivos HTML5, el elmento [FormData] no es soportado o no ha seleccionado un archivo válido.");
+            }
+        }
+
+        function modalDatosContacto(id, nombre, direccion, telefono, email) {
+            $('#formRegContacto').smkClear();
+            if (id > 0) {
+
+                $("input[id=autoridadId]").val(id);
+                if (nombre != 'null') { $("#nombre").val(nombre); }
+                if (direccion != 'null') { $("#direccion").val(direccion); }
+                if (telefono != 'null') { $("#telefono").val(telefono); }
+                if (email != 'null') { $("#email").val(email); }
+                $('#modalDatosContacto').modal('show');
+
+            }
+            else {
+                showNotification(constantes.tipoAlerta.WARNING, "Seleccione una autoridad forestal correctamente.", "No se ha podido identificar el registro seleccionado.");
+            }
+        }
+
+        function insertFormContacto() {
+
+            if ($('#formRegContacto').smkValidate()) {
+
+                var formCnt = $("#formRegContacto").serialize();
+
+                $.ajax({
+                    async: true,
+                    method: "POST",
+                    url: '@Url.Action("UpdateDatosContacto", "AutoridadForestal", new { area = "General" })',
+                    data: { autoridadId: $("input[id=autoridadId]").val(), nombre: $('#nombre').val(), direccion: $('#direccion').val(), telefono: $('#telefono').val(), email: $('#email').val() },
+                    cache: false,
+                    success: function (result) {
+
+                        if (result) {
+                            //$('#formRegContacto').smkClear();
+                            $('#modalDatosContacto').modal('hide');
+                            showNotification(constantes.tipoAlerta.SUCCESS, "¡En hora Buena!", "Los datos de contacto fueron grabados correctamente");
+                        }
+                        else {
+                            showNotification(constantes.tipoAlerta.WARNING, "Oops!", "No se pudieron grabar los datos de contacto. Actualice la página e intente nuevamente.");
+                        }
+
+                    },
+                    error: function (ex) {
+                        showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Ocurrió un error al intentar registrar los datos de contacto: " + ex);
+                    }
+                });
+
+            }
+            else {
+                showNotification(constantes.tipoAlerta.WARNING, "Validación de datos", "1: Algunos de los campos ingresados no pudieron ser validados.");
+            }
+
+        }
+
+    </script>
+
+}

@@ -1,0 +1,89 @@
+﻿@using Modulos_Core_MVC.Security
+
+<!-- NavBar superior que muestra la información de usuario y su menú conextual -->
+<nav class="navbar navbar-default navbar-sm navbar-inverse navbar-fixed-top" style="background-color:#34722f;" role="navigation">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:white;">
+                    @if (Request.IsAuthenticated)
+                    {
+                    <label>¡Bienvenido!,</label>
+                    <b style="margin-left: 5px;">@UserInfo.GetFullName()</b>
+                    <span class="glyphicon glyphicon-user"></span>
+                    <span class="caret"></span>
+                    }
+                    else
+                    {
+                    <label>¡Bienvenido al sistema! </label>
+                    <span class="glyphicon glyphicon-user"></span>
+                    }
+                </a>
+                <ul class="dropdown-menu">
+                    @using (@Html.BeginForm("Login", "Account", new { area = "", returnUrl = Request.Url.PathAndQuery }, FormMethod.Post, new { role = "form" }))
+                        {
+                    @Html.AntiForgeryToken()
+                    <li>
+                        <div style="width:370px; padding:10px;">
+                            <div class="row">
+                                @if (Request.IsAuthenticated)
+                                        {
+                                <div class="col-md-3" style="padding:20px;">
+                                    <p class="text-center">
+                                        <img src="/Content/images/user_placeholder.png" class="img-circle img-responsive" width="80">
+                                    </p>
+                                </div>
+                                <div class="col-md-9">
+                                    <h3>Usuario:&nbsp;@UserInfo.GetUserName()</h3>
+                                    <h6><span class="glyphicon glyphicon-envelope"></span>&nbsp;Email:&nbsp;@UserInfo.GetEmail()</h6>
+                                    <h6><span class="glyphicon glyphicon-map-marker"></span>&nbsp;Ubicación:&nbsp;@UserInfo.GetLocality()</h6>
+                                    <!--h6><span class="glyphicon glyphicon-time"></span>&nbsp;Último acceso: 21/05/2017</h6-->
+                                </div>
+                                        }
+                                        else
+                                        {
+                                <div class="col-md-12">
+                                    <p>
+                                        <label for="UserName" class="control-label">
+                                            Usuario:
+                                        </label>
+                                        <input type="text" placeholder="Ingrese su nombre de usuario" name="UserName" class="form-control" autofocus required />
+                                    </p>
+                                    <p>
+                                        <label for="Password" class="control-label">
+                                            Clave:
+                                        </label>
+                                        <input type="password" placeholder="Ingrese su contraseña" name="Password" class="form-control" required />
+                                    </p>
+                                </div>
+                                        }
+                            </div>
+                        </div>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <div style="padding: 10px;">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p>
+                                        @if (Request.IsAuthenticated)
+                                                {
+                                        <a href="@Url.Action("LogOff", "Account", new { area = "", returnUrl = Request.Url.PathAndQuery })" class="btn btn-warning btn-block"><i class="glyphicon glyphicon-off" style="margin-right: 10px"></i>Cerrar sesión</a>
+                                                }
+                                                else
+                                                {
+                                        <input type="submit" value="Iniciar Sesión" class="btn btn-success btn-block" />
+                                                }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                        }
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+    <!-- /.container-fluid -->
+</nav>

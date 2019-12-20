@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<layerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/SimpleShapesModel" dslVersion="1.0.0.0" Id="ce42c91c-afbc-4a41-80fe-cd19ef16e3a8" xmlns="http://schemas.microsoft.com/VisualStudio/TeamArchitect/LayerDesigner">
+  <layers>
+    <layer Id="7a2d96a1-ceb1-46e7-ac68-5b0bf089fc5c" name="Módulos Core MVC">
+      <dependencyToLayers>
+        <dependencyFromLayerToLayer Id="80939e97-8e1a-433e-9102-11faaf7be7d8" direction="Forward">
+          <layerMoniker Id="5ae61e57-fe3b-4e7f-8d0d-ab7abb455a99" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="11501c03-6e4f-4ed9-b245-4625b10f2e28" direction="Forward">
+          <layerMoniker Id="224ff072-c6df-40bc-a2b7-62809f74c94f" />
+        </dependencyFromLayerToLayer>
+      </dependencyToLayers>
+      <childLayers>
+        <layer Id="d75ef03d-642c-4ec6-b787-9c5a27f53dad" name="Web App UI">
+          <dependencyToLayers>
+            <dependencyFromLayerToLayer Id="e1c9628b-ba25-469e-85c3-aed63dab0ac5" direction="Forward">
+              <layerMoniker Id="4c84d81a-38db-42cf-ab41-b7ad42c22d16" />
+            </dependencyFromLayerToLayer>
+          </dependencyToLayers>
+        </layer>
+        <layer Id="a03182b8-c322-4cb7-b578-7a260355d777" name="Servicios API Rest">
+          <dependencyToLayers>
+            <dependencyFromLayerToLayer Id="3f657841-33dd-442c-9d40-3935bf11fd6b" direction="Forward">
+              <layerMoniker Id="4c84d81a-38db-42cf-ab41-b7ad42c22d16" />
+            </dependencyFromLayerToLayer>
+          </dependencyToLayers>
+        </layer>
+      </childLayers>
+    </layer>
+    <layer Id="81709587-65fa-4cc4-876a-f60468d2b691" name="Librería BackEnd">
+      <dependencyToLayers>
+        <dependencyFromLayerToLayer Id="297d41a6-e478-483d-8e8b-17695af312c8" direction="Forward">
+          <layerMoniker Id="5ae61e57-fe3b-4e7f-8d0d-ab7abb455a99" />
+        </dependencyFromLayerToLayer>
+      </dependencyToLayers>
+      <childLayers>
+        <layer Id="4c84d81a-38db-42cf-ab41-b7ad42c22d16" name="Lógica de negocio">
+          <dependencyToLayers>
+            <dependencyFromLayerToLayer Id="e3de4a0e-5c83-47f1-a7b9-d015e39777ab" direction="Forward">
+              <layerMoniker Id="755321ef-a005-4a22-b8cb-f364b7a72601" />
+            </dependencyFromLayerToLayer>
+            <dependencyFromLayerToLayer Id="60fe5a9f-339b-47d2-b8c3-389267d9c44d" direction="Forward">
+              <layerMoniker Id="224ff072-c6df-40bc-a2b7-62809f74c94f" />
+            </dependencyFromLayerToLayer>
+          </dependencyToLayers>
+        </layer>
+        <layer Id="755321ef-a005-4a22-b8cb-f364b7a72601" name="Acceso a datos">
+          <dependencyToLayers>
+            <dependencyFromLayerToLayer Id="434644af-33c1-4963-864b-a0d781db490c" direction="Forward">
+              <layerMoniker Id="224ff072-c6df-40bc-a2b7-62809f74c94f" />
+            </dependencyFromLayerToLayer>
+          </dependencyToLayers>
+        </layer>
+        <layer Id="224ff072-c6df-40bc-a2b7-62809f74c94f" name="Entidades del negocio" />
+      </childLayers>
+    </layer>
+    <layer Id="5ae61e57-fe3b-4e7f-8d0d-ab7abb455a99" name="Librerías de clases transversales" />
+  </layers>
+</layerModel>

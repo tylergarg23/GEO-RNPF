@@ -1,0 +1,102 @@
+﻿@model List<SERFOR.Component.DTEntities.General.BitacoraDetailDTe>
+
+@if (Model.Count > 0)
+{
+    int orden = 0;
+    bool exito = true;
+
+    <div class="timeline timeline-single-column">
+        <span class="timeline-label">
+            <button class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></button>
+        </span>
+
+        @foreach (var date in Model.OrderBy(r => r.FechaEvento))
+        {
+            orden++;
+
+            <div class="timeline-item">
+
+                @if (date.FechaEvento.Equals(DateTime.MinValue) || !date.Id.Equals(orden))
+                {
+                    exito = false;
+
+
+                    if (date.FechaEvento.Equals(DateTime.MinValue))
+                    {
+
+                        <div class="timeline-point timeline-point-blank">
+                        </div>
+                        <div class="timeline-event">
+                            <div class="timeline-heading">
+                                <h4>@date.Descripcion</h4>
+                            </div>
+                            <div class="timeline-body">
+                                <p>No se registró una fecha válida. Haga click en el botón al pie este formulario para ir a corregir la información.</p>
+                            </div>
+                            <div class="timeline-footer primary">
+                                <p class="text-right">Sin fecha.</p>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+
+                        <div class="timeline-point timeline-point-warning">
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div class="timeline-event timeline-event-warning">
+                            <div class="timeline-heading">
+                                <h4>@date.Descripcion</h4>
+                            </div>
+                            <div class="timeline-body">
+                                <p> Este registro debería estar en el @date.Id° lugar.</p>
+                            </div>
+                            <div class="timeline-footer">
+                                <p class="text-right">@date.FechaEvento.ToLongDateString()</p>
+                            </div>
+                        </div>
+
+                    }
+
+                }
+                else
+                {
+                    <div class="timeline-point timeline-point-success">
+                        <i class="glyphicon glyphicon-ok"></i>
+                    </div>
+                    <div class="timeline-event timeline-event-success">
+                        <div class="timeline-heading">
+                            <h4>@date.Descripcion</h4>
+                        </div>
+                        <div class="timeline-body">
+                            <p>Registrado correctamente!.</p>
+                        </div>
+                        <div class="timeline-footer primary">
+                            <p class="text-right">@date.FechaEvento.ToLongDateString()</p>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        }
+
+    </div>
+    <div class="row">
+        @if (!exito)
+        {
+        <p class="text-center">Algunas fechas no fueron ingresadas o la secuencia no es la correcta.</p>
+        <p class="text-center"><a href="/Plantacion/Edit?id=@ViewBag.PlantacionId" type="button" class="btn btn-default" c><span class="glyphicon glyphicon-edit"></span>&nbsp;Corregir </a></p>
+        }
+        else
+        {
+        <p class="text-center">Las fechas de solicitud, recepción y registro, se ingresaron en la secuencia correcta.</p>
+        }
+    </div>
+
+}
+else
+{
+    <div id="jumbotronHistoricos" class="jumbotron">
+        <p class="text-center"><small>No se encontraron fechas de solicitud, recepción o registro a la plantación seleccionada.</small></p>
+    </div>
+}

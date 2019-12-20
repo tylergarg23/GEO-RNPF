@@ -1,0 +1,626 @@
+﻿@model SERFOR.Component.DTEntities.Seguridad.UsuarioTableRowDTe
+
+@{
+    ViewBag.Title = "Crear Usuario";
+    Layout = "~/Areas/Seguridad/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    
+    <form id="formReg" name="formReg">
+        @Html.AntiForgeryToken()
+        <h3>Crear Usuario</h3><div class='hr'></div>
+        @Html.HiddenFor(model => model.Id)
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label class="control-label" for="NombreCompleto">Persona Asociada:</label>
+                <select id="PersonaList" name="PersonaList" class="form-control dropdown"></select>
+                <span class='help-block errorDerecha'></span>
+                <input id="PersonaHidden" type="hidden" value="@Model.Id" />
+            </div>
+            <div class="form-group col-md-6">
+                <label class="control-label" for="Cargo">Cargo:</label>
+                <select id="Cargo" name="Cargo" class="form-control dropdown"></select>
+                <span class='help-block errorDerecha'></span>
+            </div>
+            <input id="CargoHidden" type="hidden" value="@Model.Cargo_Id" />
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label class="control-label" for="email">Email:</label>
+                <input id="email" name="email" type="email" class="form-control" placeholder="Ingrese el Email" value="@Model.Email" />
+                <span class='help-block errorDerecha'></span>
+            </div>
+            <div class="form-group col-md-6">
+                <div class="checkbox">
+                    <label>
+                        <input id="EsResponsable" name="EsResponsable" type="checkbox" value="false" checked="@Model.EsResponsable">
+                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                        Es Responsable
+                    </label>
+                </div>
+            </div>
+            </div>
+            <div class='hr'></div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label class="control-label" for="FechaInicio">Fecha de Inicio:</label>
+                    <input id="FechaInicio" name="FechaInicio" type="date" class="form-control" placeholder="Fecha de inicio" value='@string.Format("{0:yyyy-MM-dd}", Model.FechaInicio)' />
+                    <span class='help-block errorDerecha'></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label class="control-label" for="FechaFinal">Fecha Final:</label>
+                    <input id="FechaFinal" name="FechaFinal" type="date" class="form-control" placeholder="Fecha de final" value='@string.Format("{0:yyyy-MM-dd}", Model.FechaFin)' />
+                    <span class='help-block errorDerecha'></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label class="control-label" for="Sede">Sede:</label>
+                    <select id="Sede" name="Sede" class="form-control dropdown"></select>
+                    <span class='help-block errorDerecha'></span>
+                    <input id="SedeHidden" type="hidden" value="@Model.Sede_Id" />
+                </div>
+                <div class="form-group col-md-6">
+                    <label class="control-label" for="SedePrincipal">Sede Principal:</label>
+                    <select id="SedePrincipal" name="SedePrincipal" class="form-control dropdown"></select>
+                    <span class='help-block errorDerecha'></span>
+                    <input id="SedePrincipalHidden" type="hidden" value="@Model.SedePrincipal_Id" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <div class="checkbox">
+                        <label>
+                            <input id="EsSedePrincipal" name="EsSedePrincipal" type="checkbox" value="false" checked="@Model.EsSedePrincipal">
+                            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                            Es Sede Principal
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class='hr'></div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label class="control-label" for="nombreUsuario">Usuario:</label>
+                    <input id="nombreUsuario" name="nombreUsuario" type="text" class="form-control" placeholder="Ingrese los nombres" value="@Model.NombreUsuario" />
+                    <span class='help-block errorDerecha'></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label class="control-label" for="clave">Clave:</label>
+                    <input id="clave" name="clave" type="password" class="form-control" placeholder="Cree una clave" value="@Model.Password" />
+                    <span class='help-block errorDerecha'></span>
+                </div>
+            </div>
+            <div class='hr'></div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <label class="control-label" for="">Roles asignados:</label>
+                    <select id="Roles" name="Roles" class="form-control selectpicker" multiple></select>
+                </div>
+            </div>
+
+
+            <div class='hr'></div>
+            <div class="row">
+                <div class="col-md-6">
+                    <a href='@Url.Action("Index", "Usuarios")' type="button" class="btn btn-warning pull-left">
+                        <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;Regresar al listado
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <a id="grabar" href="#" type="button" class="btn btn-success pull-right">
+                        <span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;Grabar
+                    </a>
+                </div>
+            </div>
+</form>
+</div>
+
+<!-- Modal para mostrar la información de detalle preliminar -->
+<div class="modal fade" id="modalDetallesPersona" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div id="bodyDetails" class="modal-body" style="padding:5px">
+
+            </div>
+            <div class="modal-footer" style="padding:5px">
+                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+<script type="text/javascript">
+
+        var idPersona = 0;
+
+        var formReg = (function (window, undefined) {
+
+            var initPrivado = function () {
+                limpiaFormulario();
+                getPersonas();
+                getSedes();
+                getSedesPrincipales();
+                getRoles();
+                getCargos();
+                inscribeEventos();
+            },
+                inscribeEventos = function () {
+                    $('#nombreUsuario').blur(function () {
+                        var val1 = validaRequerido($('#nombreUsuario'), $('#nombreUsuario').val());
+                        if (val1) validaCaracteresCadena($('#nombreUsuario'), $('#nombreUsuario').val(), 3, 30);
+                        return false;
+                    });
+                    $('#clave').blur(function () {
+                        var val7 = validaRequeridoMin($('#clave'), $('#clave').val(), 7);
+                        if (val7) validaClave($('#clave'), $('#clave').val());
+                        return false;
+                    });
+                    $('#PersonaList').blur(function () {
+                        validaSelRequerido($('#PersonaList'), $('#PersonaList').val());
+                        return false;
+                    });
+                    $('#FechaInicio').blur(function () {
+                        var val3 = validaRequerido($('#FechaInicio'), $('#FechaInicio').val());
+                        if (val3) {
+
+                            var valorfec = new Date($('#FechaInicio').val() + " 00:00");
+                            var minimafec = new Date();
+                            minimafec.setHours(0);
+                            minimafec.setMinutes(0);
+                            minimafec.setSeconds(0);
+                            minimafec.setMilliseconds(0);
+                            validaFecMayorIgualQue($('#FechaInicio'), valorfec, minimafec);
+                        }
+                        return false;
+                    });
+                    $('#FechaFinal').blur(function () {
+                        var val4 = validaRequerido($('#FechaFinal'), $('#FechaFinal').val());
+                        if (val4) {
+
+                            var valorfec = new Date($('#FechaFinal').val() + " 00:00");
+                            var minimafec = new Date($('#FechaInicio').val() + " 00:00");
+                            validaFecMayorQue($('#FechaFinal'), valorfec, minimafec);
+                        }
+                        else {
+                            val4 = false;
+                            $('#FechaFinal').parent().addClass("has-feedback has-error");
+                            $('#FechaFinal').parent().find("span").html('Ingrese la Fecha Inicial');
+                            $('#FechaFinal').parent().find("span").show();
+                        }
+                        return false;
+                    });
+                    $('#Sede').blur(function () {
+                        validaSelRequerido($('#Sede'), $('#Sede').val());
+                        return false;
+                    });
+                    $('#SedePrincipal').blur(function () {
+                        validaSelRequerido($('#SedePrincipal'), $('#SedePrincipal').val());
+                        return false;
+                    });
+                    $('#Cargo').blur(function () {
+                        validaSelRequerido($('#Cargo'), $('#Cargo').val());
+                        return false;
+                    });
+                    $('#email').blur(function () {
+                        validaRequerido($('#email'), $('#email').val());
+                        return false;
+                    });
+
+                    $('#EsSedePrincipal').change(function () {
+                        if ($('#EsSedePrincipal').is(':checked')) {
+                            $('#EsSedePrincipal').val('true');
+                        }
+                        else {
+                            $('#EsSedePrincipal').val('false');
+                        }
+                        return false;
+                    });
+                    $('#EsResponsable').change(function () {
+                        if ($('#EsResponsable').is(':checked')) {
+                            $('#EsResponsable').val('true');
+                        }
+                        else {
+                            $('#EsResponsable').val('false');
+                        }
+                        return false;
+                    });
+                    $('#grabar').click(function () {
+                        insert();
+                        return false;
+                    });
+                },
+                limpiaFormulario = function () {
+
+                },
+                getPersonas = function () {
+                    $("#PersonaList").empty();
+                    $.ajax({
+                        async: true,
+                        cache: false,
+                        type: 'POST',
+                        url: '@Url.Action("GetTrabajadores_nU", "TipoDato", new { area = "Seguridad" })',
+                        dataType: 'json',
+                        data: {},
+                        success: function (personas) {
+                            $.each(personas, function (i, persona) {
+                                $("#PersonaList").append('<option value="' + persona.Value + '">' + persona.Text + '</option>');
+                            });
+                            if ($('input#PersonaHidden').val().trim() != "") $("#PersonaList").val($('input#PersonaHidden').val()).change();
+                        },
+                        error: function (ex) {
+                            showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Error al intentar cargar el listado de personas. " + ex);
+                        }
+
+                    });
+                },
+                getSedes = function () {
+                    $("#Sede").empty();
+                    $.ajax({
+                        async: true,
+                        type: 'POST',
+                        url: '@Url.Action("GetSedes", "TipoDato", new { area = "Seguridad" })',
+                        dataType: 'json',
+                        data: {},
+                        success: function (sedes) {
+                            $.each(sedes, function (i, sede) {
+                                $("#Sede").append('<option value="' + sede.Value + '">' + sede.Text + '</option>');
+                            });
+                            if ($('input#SedeHidden').val().trim() != "") $("#Sede").val($('input#SedeHidden').val()).change();
+                        },
+                        error: function (ex) {
+                            showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Error al intentar cargar el listado de sedes. " + ex);
+                        }
+
+                    });
+                },
+                getSedesPrincipales = function () {
+                    $("#SedePrincipal").empty();
+                    $.ajax({
+                        async: true,
+                        type: 'POST',
+                        url: '@Url.Action("GetSedes", "TipoDato", new { area = "Seguridad" })',
+                        dataType: 'json',
+                        data: {},
+                        success: function (sedes) {
+                            $.each(sedes, function (i, sede) {
+                                $("#SedePrincipal").append('<option value="' + sede.Value + '">' + sede.Text + '</option>');
+                            });
+                            if ($('input#SedePrincipalHidden').val().trim() != "") $("#SedePrincipal").val($('input#SedePrincipalHidden').val()).change();
+                        },
+                        error: function (ex) {
+                            showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Error al intentar cargar el listado de sedes principales. " + ex);
+                        }
+
+                    });
+                },
+                getRoles = function () {
+                    $("#Roles").empty();
+                    $.ajax({
+                        async: true,
+                        type: 'POST',
+                        url: '@Url.Action("GetRoles", "TipoDato", new { area = "Seguridad" })',
+                        dataType: 'json',
+                        data: {},
+                        async: false,
+                        success: function (roles) {
+                            $.each(roles, function (i, rol) {
+                                $("#Roles").append('<option value="' + rol.Value + '">' + rol.Text + '</option>');
+                            });
+                        },
+                        error: function (ex) {
+                            showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Error al intentar cargar el listado de roles. " + ex);
+                        }
+
+                    });
+                },
+                getCargos = function () {
+                    $("#Cargo").empty();
+                    $.ajax({
+                        async: true,
+                        type: 'POST',
+                        url: '@Url.Action("GetCargos", "TipoDato", new { area = "Seguridad" })',
+                        dataType: 'json',
+                        data: {},
+                        success: function (cargos) {
+                            $.each(cargos, function (i, cargo) {
+                                $("#Cargo").append('<option value="' + cargo.Value + '">' + cargo.Text + '</option>');
+                            });
+                        },
+                        error: function (ex) {
+                            showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Error al intentar cargar el listado de cargos. " + ex);
+                        }
+
+                    });
+                },
+                validaForm = function () {
+                    //Valida Nombre del Usuario
+                    var val1 = validaRequerido($('#nombreUsuario'), $('#nombreUsuario').val());
+                    if (val1) val1 = validaCaracteresCadena($('#nombreUsuario'), $('#nombreUsuario').val(), 3, 30);
+                    //Valida Clave
+                    var val7 = validaRequeridoMin($('#clave'), $('#clave').val(), 7);
+                    if (val7) val7 = validaClave($('#clave'), $('#clave').val());
+                    //Valida Selección de Persona
+                    var val2 = validaSelRequerido($('#PersonaList'), $('#PersonaList').val());
+                    //Valida Selección de Fecha
+                    var val3 = validaRequerido($('#FechaInicio'), $('#FechaInicio').val());
+                    if (val3) {
+
+                        var valorfec = new Date($('#FechaInicio').val() + " 00:00");
+                        var minimafec = new Date();
+                        minimafec.setHours(0);
+                        minimafec.setMinutes(0);
+                        minimafec.setSeconds(0);
+                        minimafec.setMilliseconds(0);
+                        val3 = validaFecMayorIgualQue($('#FechaInicio'), valorfec, minimafec);
+                    }
+                    var val4 = validaRequerido($('#FechaFinal'), $('#FechaFinal').val());
+                    if (val3 && val4) {
+
+                        var valorfec = new Date($('#FechaFinal').val() + " 00:00");
+                        var minimafec = new Date($('#FechaInicio').val() + " 00:00");
+                        val4 = validaFecMayorQue($('#FechaFinal'), valorfec, minimafec);
+                    }
+                    else {
+                        val4 = false;
+                        $('#FechaFinal').parent().addClass("has-feedback has-error");
+                        $('#FechaFinal').parent().find("span").html('Ingrese la Fecha Inicial');
+                        $('#FechaFinal').parent().find("span").show();
+                    }
+                    //Valida selección del Sede
+                    var val5 = validaSelRequerido($('#Sede'), $('#Sede').val());
+                    //Valida selección del Sede Principal
+                    var val6 = validaSelRequerido($('#SedePrincipal'), $('#SedePrincipal').val());
+
+                    //Valida Selección de Cargo
+                    var val8 = validaSelRequerido($('#Cargo'), $('#Cargo').val());
+                    //Valida Email
+                    var val9 = validaRequerido($('#email'), $('#email').val());
+                    if (val9) validaCorreo($('#email'), $('#email').val());
+
+                    return val1 && val2 && val3 && val4 && val5 && val6 && val7 && val8 && val9;
+                },
+                validaRequerido = function (objeto, valor) {
+                    if (valor.length > 0) {
+                        objeto.parent().removeClass("has-feedback has-error");
+                        objeto.parent().find("span").html('');
+                        objeto.parent().find("span").hide();
+                        return true;
+                    }
+                    else {
+                        objeto.parent().addClass("has-feedback has-error");
+                        objeto.parent().find("span").html('Valor es requerido');
+                        objeto.parent().find("span").show();
+                        return false;
+                    }
+                },
+                validaRequeridoMin = function (objeto, valor, min) {
+                    if (valor.length > min) {
+                        objeto.parent().removeClass("has-feedback has-error");
+                        objeto.parent().find("span").html('');
+                        objeto.parent().find("span").hide();
+                        return true;
+                    }
+                    else {
+                        objeto.parent().addClass("has-feedback has-error");
+                        objeto.parent().find("span").html('Es requerido más de '+ min+' caracteres');
+                        objeto.parent().find("span").show();
+                        return false;
+                    }
+                },
+                validaCaracteresCadena = function (objeto, valor, num1, num2) {
+                    if (valor.length > num1) {
+                        objeto.parent().removeClass("has-feedback has-error");
+                        objeto.parent().find("span").html('');
+                        objeto.parent().find("span").hide();
+                        return true;
+                    }
+                    else {
+                        objeto.parent().addClass("has-feedback has-error");
+                        objeto.parent().find("span").html('Debe ser mayor a ' + num1 + ' y menor a ' + num2 + ' caracteres');
+                        objeto.parent().find("span").show();
+                        return false;
+                    }
+                },
+                validaSelRequerido = function (objeto, valor) {
+                    if (valor > 0) {
+                        objeto.parent().removeClass("has-feedback has-error");
+                        objeto.parent().find("span").html('');
+                        objeto.parent().find("span").hide();
+                        return true;
+                    }
+                    else {
+                        objeto.parent().addClass("has-feedback has-error");
+                        objeto.parent().find("span").html('Valor es requerido');
+                        objeto.parent().find("span").show();
+                        return false;
+                    }
+                },
+                validaFecMayorIgualQue = function (objeto, valor, minimo) {
+                    if (valor >= minimo) {
+                        objeto.parent().removeClass("has-feedback has-error");
+                        objeto.parent().find("span").html('');
+                        objeto.parent().find("span").hide();
+                        return true;
+                    }
+                    else {
+                        objeto.parent().addClass("has-feedback has-error");
+                        objeto.parent().find("span").html('Fecha debe ser mayor o igual a ' + formatoFecha(minimo));
+                        objeto.parent().find("span").show();
+                        return false;
+                    }
+                },
+                validaFecMayorQue = function (objeto, valor, minimo) {
+                    if (valor > minimo) {
+                        objeto.parent().removeClass("has-feedback has-error");
+                        objeto.parent().find("span").html('');
+                        objeto.parent().find("span").hide();
+                        return true;
+                    }
+                    else {
+                        objeto.parent().addClass("has-feedback has-error");
+                        objeto.parent().find("span").html('Fecha debe ser mayor a ' + formatoFecha(minimo));
+                        objeto.parent().find("span").show();
+                        return false;
+                    }
+                },
+                validaCorreo = function (objeto, valor) {
+                    var emailReg = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+                    if (emailReg.test(valor)) {
+                        objeto.parent().removeClass("has-feedback has-error");
+                        objeto.parent().find("span").html('');
+                        objeto.parent().find("span").hide();
+                        return true;
+                    }
+                    else {
+                        objeto.parent().addClass("has-feedback has-error");
+                        objeto.parent().find("span").html('Email no valido');
+                        objeto.parent().find("span").show();
+                        return false;
+                    }
+                },
+                validaClave = function (objeto, valor) {
+                    var rspta = '';
+                    if (valor.match(/[a-z]/)) {
+                        
+                    } else {
+                        rspta = 'Debe contener letras minúsculas';
+                    }
+
+                    if (valor.match(/[A-Z]/)) {
+                        
+                    } else {
+                        rspta = 'Debe contener letras mayúsculas';
+                    }
+
+                    if (valor.match(/\d/)) {
+                        
+                    } else {
+                        rspta = 'Debe contener números';
+                    }
+                    
+                    if (rspta == '') {
+                        objeto.parent().removeClass("has-feedback has-error");
+                        objeto.parent().find("span").html('');
+                        objeto.parent().find("span").hide();
+                        return true;
+                    }
+                    else {
+                        objeto.parent().addClass("has-feedback has-error");
+                        objeto.parent().find("span").html(rspta);
+                        objeto.parent().find("span").show();
+                        return false;
+                    }
+                },
+                formatoFecha = function (fecha){
+                    let mes = String(fecha.getMonth() + 1);
+                    let dia = String(fecha.getDate());
+                    const anio = String(fecha.getFullYear());
+
+                    if (mes.length < 2) mes = '0' + mes;
+                    if (dia.length < 2) dia = '0' + dia;
+                    return dia + '/' + mes + '/' + anio;
+                },
+            insert = function () {
+                if (validaForm()) {
+                    var form = $("#formReg").serialize();
+
+                        $.ajax({
+                            async: true,
+                            type: 'POST',
+                            url: '@Url.Action("Create", "Usuarios", new { area = "Seguridad" })',
+                            data: form,
+                            dataType: 'json',
+                            success: function (result) {
+                                console.log(result);
+                                if (result != null && result.success) {
+                                    showNotification(constantes.tipoAlerta.SUCCESS, "¡En hora Buena!", "Los datos del usuario fueron registrados correctamente. ");
+                                    /*enable next tab*/
+                                    $('.nav #li3').removeClass('disabled');
+                                    $('.nav #li3').find('a').attr("data-toggle", "tab")
+                                    $('.nav-tabs > .active').next('li').find('a').trigger('click');
+                                }
+                                else {
+                                    showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!",
+                                    "Ocurrió un error al intentar registrar los datos del usuario. Por favor verifique la información ingresada y el siguiente mensaje: " + result.responseText);
+                                }
+                            },
+                            error: function (ex) {
+                                showNotification(constantes.tipoAlerta.DANGER, "¡Error del sistema!", "No se pudo conectar con el servicio solicitado: " + ex);
+                            }
+                        });
+                }
+                else {
+                    showNotification(constantes.tipoAlerta.WARNING, "Validación de datos", "Complete los datos adecuadamente.");
+                }
+
+            };
+            return {
+                init: initPrivado
+            }
+
+    })(window);
+        formReg.init();
+
+
+        function insertFormCollection(id) {
+            if ($('#formReg').smkValidate()) {
+
+                var form = $("#formReg").serialize();
+
+                $.ajax({
+                    async: true,
+                    type: 'POST',
+                    url: '@Url.Action("Register", "Persona", new { area = "General"})',
+                    data: form,
+                    dataType: 'json',
+                    success: function (result) {
+                        if (result != null && result.success) {
+                            showNotification(constantes.tipoAlerta.SUCCESS, "¡En hora Buena!", "Los datos se grabaron correctamente. ");
+                            //$('#formReg').smkClear();
+                            $('input#Id').val(result.innerId);
+                        }
+                        else {
+                            showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!",
+                                "Ocurrió un error al intentar registrar los datos de la persona. Por favor verifique la información ingresada y el siguiente mensaje: " + result.responseText);
+                        }
+                    },
+                    error: function (ex) {
+                        showNotification(constantes.tipoAlerta.DANGER, "¡Error del sistema!",
+                                    "No se pudo conectar con el servicio solicitado: " + ex);
+                    }
+                });
+            }
+            else {
+                showNotification(constantes.tipoAlerta.WARNING, "Validación de datos", "14: Algunos de los campos ingresados no pudieron ser validados.");
+            }
+        }
+
+        function modalDetalles(id) {
+            $('#bodyDetails').empty();
+
+            $.ajax({
+                async: true,
+                method: "GET",
+                url: '@Url.Action("_DetailsPopUp", "Persona", new { area = "General" })',
+                data: { id: id },
+                cache: false,
+                success: function (data) {
+                    $('#modalDetallesPersona').modal('show');
+                    $('#bodyDetails').html(data);
+                },
+                error: function (ex) {
+                    showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Ocurrió un error al intentar mostrar la información de la persona seleccionada." + ex);
+                }
+            });
+        }
+
+</script>
+
+    <script type="text/javascript">
+
+      
+    </script>
+}

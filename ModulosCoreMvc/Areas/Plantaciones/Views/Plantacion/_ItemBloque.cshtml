@@ -1,0 +1,80 @@
+﻿@model SERFOR.Component.DTEntities.Plantaciones.BloqueTableRowDTe
+
+<tr id="rowB-@Model.Id">
+    <td>
+        <H5 class="text-center">@Model.Nombre</H5>
+    </td>
+    <td>
+        <p class="text-center">@Model.MesDescripcion del @Model.AnnioEstablecimiento</p>
+    </td>
+    <td>
+        <p class="text-center">
+            E @Model.CoordenadaEsteUTM - N @Model.CoordenadaNorteUTM (Zona @Model.SistemaCoordenada_Id)
+        </p>
+    </td>
+    <td>
+        <p class="text-center">@Model.SistemaPlantacionDescripcion</p>
+    </td>
+    <td>
+        <p class="text-right">@string.Format("{0:N}", Model.AreaPredio)</p>
+    </td>   
+    <td>
+        <p class="text-center">@Model.FinalidadDescripcion </p>
+    </td>
+    <td class="text-center">
+        <div class="btn-group btn-group-sm" role="group">
+            <input type="hidden" value="@Model.Id" id="codigoListaCordenadas" />
+            <a href="#" type="button" class="btn btn-primary" onClick="modalCoordenadas('@Model.Id','@Model.LatitudMin','@Model.LatitudMax','@Model.LongitudMin','@Model.LongitudMax')">
+                <span class="glyphicon glyphicon-screenshot"></span>
+                <span id="badgeCoordenadas-@Model.Id" class="badge">@Model.CantidadCoordenadasRegistradas</span>
+            </a>
+
+            <a href="@Url.Action("ArcMapCoordenadasBloque", "Maps", new { area = "Plantaciones", bloqueId = Model.Id })"
+               type="submit"
+               class="btn btn-success"
+               id="verMapa"
+               target="_blank">
+                <i class="glyphicon glyphicon-map-marker"></i>
+            </a>
+
+            <a href="#" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="glyphicon glyphicon-cog"></span>
+            </a>
+            @if (ViewData["noEditable"] == null || !Convert.ToBoolean(ViewData["noEditable"]))
+            {
+                <button class="btn btn-danger deleteLink" onClick="deleteRowDetalle('@Model.Id')" value="left" type="button">
+                    <i class="glyphicon glyphicon-trash"></i>
+                </button>
+            }
+            @*TYLER 12.12.19 - INICIO*@
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="#" onClick="modalBloques('@Model.Id')">
+                        <span class="glyphicon glyphicon-pencil"></span>&nbsp;Modificar bloque
+                    </a>
+                </li>
+                <!--<li>
+            <input type="hidden" value="@Model.Id" id="codigoListaCordenadas"/>
+            <a href="#" onClick="modalCoordenadas('@Model.Id','@Model.LatitudMin','@Model.LatitudMax','@Model.LongitudMin','@Model.LongitudMax')">
+                <span class="glyphicon glyphicon-screenshot"></span>&nbsp;Coordenadas o vértices
+                <span id="badgeCoordenadas-@Model.Id" class="badge">@Model.CantidadCoordenadasRegistradas</span>
+            </a>
+        </li>-->
+                <li>
+                    <a href="#" onClick="modalUploadCoordenadas(@Model.Id,'@Model.LatitudMin','@Model.LatitudMax','@Model.LongitudMin','@Model.LongitudMax')"> <span class="glyphicon glyphicon-upload"></span>&nbsp;Subir un archivo de coordenadas</a>
+                </li>
+                <!--<li>
+            <a href="@Url.Action("ArcMapCoordenadasBloque", "Maps", new { area = "Plantaciones", bloqueId = Model.Id })"
+               type="submit"
+               id="verMapa"
+               target="_blank">
+                <i class="glyphicon glyphicon-map-marker"></i>&nbsp;Ver en el mapa
+            </a>
+        </li>-->
+            </ul>
+            @*TYLER 12.12.19 - FIN*@
+
+        </div>
+
+    </td>
+</tr>

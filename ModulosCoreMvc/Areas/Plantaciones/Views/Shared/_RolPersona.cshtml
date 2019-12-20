@@ -1,0 +1,51 @@
+﻿@model SERFOR.Component.DTEntities.General.PersonaTableRowDTe
+
+<tr id="row-@Model.PersonaPlantacion_Id">
+    <td>
+        @if (Model.EsJuridica)
+            {
+            <img src="/Content/images/company_placeholder.png" class="img-circle" width="60">
+        }
+        else
+        {
+
+            if (Model.Sexo == "M")
+            {
+                <img src="/Content/images/persona_placeholder.png" class="img-circle" width="60">
+            }
+            else
+            {
+                <img src="/Content/images/personafeme_placeholder.png" class="img-circle" width="60">
+            }
+        }
+    </td>
+    <td>
+        <h4>
+            <b>@Model.Rol</b>
+        </h4>
+        <p>
+            <a href="#" onClick="modalDetalles('@Model.Id')">@Model.NombreCompleto</a>
+        </p>
+    </td>
+    @* //gpaima - 05/11/19
+        <td>
+
+        <p><span class="glyphicon glyphicon-envelope"></span>&nbsp;Email:&nbsp;@Model.Email</p>
+        <p><span class="glyphicon glyphicon-phone-alt"></span>&nbsp;Teléfono fijo:&nbsp;@Model.Telefono</p>
+        <p><span class="glyphicon glyphicon-phone"></span>&nbsp;Celular: @Model.Celular</p>
+    </td>*@
+    <td>
+        <p><span class="glyphicon glyphicon-globe"></span>&nbsp;Departamento: @Model.Departamento</p>
+        <p><span class="glyphicon glyphicon-globe"></span>&nbsp;Provincia: @Model.Provincia</p>
+        <p><span class="glyphicon glyphicon-globe"></span>&nbsp;Distrito: @Model.Distrito</p>
+    </td>
+    <td>
+        @if (ViewData["noEditable"] == null || !Convert.ToBoolean(ViewData["noEditable"]))
+        {
+            <button class="btn btn-danger btn-sm deleteLink" onClick="deleteRowPersona('@Model.PersonaPlantacion_Id')" value="left" type="button">
+                <span class="glyphicon glyphicon-trash"></span>
+            </button>
+        }
+
+    </td>
+</tr>

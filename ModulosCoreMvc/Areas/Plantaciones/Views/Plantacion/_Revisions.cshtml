@@ -1,0 +1,74 @@
+﻿@model List<SERFOR.Component.DTEntities.Plantaciones.RevisionPlantacionTableRowDTe>
+
+@if (Model.Count > 0)
+{
+    <div class="timeline timeline-line-dotted">
+        @{
+            var datesLabels = Model.OrderBy(r => r.FechaCreacion).Select(r => r.FechaCreacion.Date).Distinct();
+
+            foreach (var date in datesLabels)
+            {
+                <span class="timeline-label">
+                    <span class="label label-primary">@string.Format("{0:dd.MM.yyyy}", date)</span>
+                </span>
+
+                foreach (var revision in Model.Where(r => r.FechaCreacion.Date == date).OrderBy(r => r.FechaCreacion))
+                {
+                    <div class="timeline-item">
+
+                        @if (revision.EsAprobado)
+                        {
+                            <div class="timeline-point timeline-point-success">
+                                <i class="glyphicon glyphicon-ok"></i>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="timeline-point timeline-point-danger">
+                                <i class="glyphicon glyphicon-pencil"></i>
+                            </div>
+                        }
+
+                        <div class="timeline-event">
+                            <div class="timeline-heading">
+                                @if (!revision.EsAprobado)
+                                {
+                                    <h4><span class="text-danger">Observado por el @revision.Rol</span></h4>
+                                }
+                                else
+                                {
+                                    <h4> <span class="text-success">Aprobado por el @revision.Rol</span></h4>
+                                }
+                            </div>
+                            <div class="timeline-body">
+                                <p>
+                                    @revision.Descripcion
+                                </p>
+                            </div>
+                            <div class="timeline-footer">
+                                <p class="text-right">
+                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> por @revision.UsuarioCreacion
+                                    <span class="glyphicon glyphicon-time" aria-hidden="true"></span> @revision.FechaCreacion
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                }
+
+            }
+        }
+        <span class="timeline-label">
+            @*<a href="#" class="btn btn-default" title="More...">
+                    <i class="glyphicon glyphicon-repeat"></i>
+                </a>*@
+            <span class="label label-primary">HOY @string.Format("{0:dd.MM.yyyy}", DateTime.Now)</span>
+        </span>
+    </div>
+            }
+            else
+            {
+                <div id="jumbotronRevisiones" class="jumbotron">
+                    <p class="text-center"><small>No se encontraron revisiones realizadas a la plantación seleccionada.</small></p>
+                </div>
+            }

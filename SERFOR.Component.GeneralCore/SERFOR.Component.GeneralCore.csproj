@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{64563841-EA81-4901-9B27-9524EBF2A7E5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SERFOR.Component.GeneralCore</RootNamespace>
+    <AssemblyName>SERFOR.Component.GeneralCore</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BusinessLogic\AbstractFactory\CodigoDerecho\CodigoDerechoFactory.cs" />
+    <Compile Include="BusinessLogic\AbstractFactory\CodigoDerecho\ConcesionProvider.cs" />
+    <Compile Include="BusinessLogic\AbstractFactory\CodigoDerecho\ContratoProvider.cs" />
+    <Compile Include="BusinessLogic\AbstractFactory\CodigoDerecho\DerechoProvider.cs" />
+    <Compile Include="BusinessLogic\AbstractFactory\CodigoDerecho\LicenciaProvider.cs" />
+    <Compile Include="BusinessLogic\AbstractFactory\CodigoDerecho\PermisoProvider.cs" />
+    <Compile Include="BusinessLogic\AbstractFactory\CodigoDerecho\RegistroProvider.cs" />
+    <Compile Include="BusinessLogic\Facade\AutoridadForestalFacade.cs" />
+    <Compile Include="BusinessLogic\Facade\EspecieFacade.cs" />
+    <Compile Include="BusinessLogic\Facade\PersonaFacade.cs" />
+    <Compile Include="BusinessLogic\Facade\TiposFacade.cs" />
+    <Compile Include="BusinessLogic\Facade\UbigeoFacade.cs" />
+    <Compile Include="DataAccess\AutoridadForestal.cs">
+      <DependentUpon>GeneralSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\Cargo.cs">
+      <DependentUpon>GeneralSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\CodigoDerechoSemilla.cs">
+      <DependentUpon>GeneralSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\Directorio.cs">
+      <DependentUpon>GeneralSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\Especie.cs">
+      <DependentUpon>GeneralSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\EstadoCivil.cs">
+      <DependentUpon>GeneralSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\GeneralSchema.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GeneralSchema.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\GeneralSchema.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GeneralSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\GeneralSchema.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GeneralSchema.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\Persona.cs">
+      <DependentUpon>GeneralSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\SedeAutoridadForestal.cs">
+      <DependentUpon>GeneralSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\Sexo.cs">
+      <DependentUpon>GeneralSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\Sinonimo.cs">
+      <DependentUpon>GeneralSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\SistemaPlantacion.cs">
+      <DependentUpon>GeneralSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TipoAutorizacion.cs">
+      <DependentUpon>GeneralSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TipoComunidad.cs">
+      <DependentUpon>GeneralSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TipoDocumento.cs">
+      <DependentUpon>GeneralSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TipoFinalidad.cs">
+      <DependentUpon>GeneralSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TipoPlantacion.cs">
+      <DependentUpon>GeneralSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TipoSede.cs">
+      <DependentUpon>GeneralSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TipoZona.cs">
+      <DependentUpon>GeneralSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\Ubigeo.cs">
+      <DependentUpon>GeneralSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\UnidadMedida.cs">
+      <DependentUpon>GeneralSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <EntityDeploy Include="DataAccess\GeneralSchema.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>GeneralSchema.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="BusinessLogic\AbstractFactory\CodigoDerecho\ClassDiagram.cd" />
+    <None Include="DataAccess\GeneralSchema.edmx.diagram">
+      <DependentUpon>GeneralSchema.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SERFOR.Component.Common\SERFOR.Component.Common.csproj">
+      <Project>{ae6771ef-cfa8-4b4f-9abb-1039269aa4ad}</Project>
+      <Name>SERFOR.Component.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SERFOR.Component.DTEntities\SERFOR.Component.DTEntities.csproj">
+      <Project>{cd205619-7f88-43e4-a9d6-f2b1ac57ebac}</Project>
+      <Name>SERFOR.Component.DTEntities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SERFOR.Component.Tools\SERFOR.Component.Tools.csproj">
+      <Project>{d3f5d332-3d1a-4d43-819e-7856e7451797}</Project>
+      <Name>SERFOR.Component.Tools</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DataAccess\GeneralSchema.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>GeneralSchema.edmx</DependentUpon>
+      <LastGenOutput>GeneralSchema.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="DataAccess\GeneralSchema.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>GeneralSchema.edmx</DependentUpon>
+      <LastGenOutput>GeneralSchema.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

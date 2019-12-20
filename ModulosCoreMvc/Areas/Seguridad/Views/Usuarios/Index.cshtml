@@ -1,0 +1,171 @@
+﻿
+@{
+    ViewBag.Title = "Gestión de Usuarios";
+    Layout = "~/Areas/Seguridad/Views/Shared/_Layout.cshtml";
+}
+
+<h3>
+    Gestión de Usuarios
+    <a type="button" class="btn btn-success  pull-right" href="@Url.Action("Create", "Usuarios", new { area = "Seguridad" })">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Registrar
+    </a>
+</h3>
+<div class='hr'></div>
+
+@using (Html.BeginForm())
+{
+    <table id="table"
+           data-unique-id="Id"
+           data-classes="table-bordered"
+           @*data-side-pagination="server"
+           data-url='@Url.Action("GetPersonas", "Persona", new { area = "General" })'
+            data-query-params-type="Else"*@
+           data-side-pagination="client"
+           data-url='@Url.Action("GetAllUsuarios", "Usuarios", new { area = "Seguridad" })'
+           data-show-pagination-switch="true"
+           data-pagination="true"
+           data-page-size="20"
+           data-page-list="[15,20, 30, 50, 100]"
+           data-search="true"
+           data-toggle="table"
+           data-show-columns="true"
+           data-show-refresh="true"
+           data-show-export="true"
+           data-show-toggle="true"
+           data-mobile-responsive="true"
+           data-show-footer="false"
+           data-click-to-select="true"
+           data-single-select="true"
+           data-striped="true"
+           @*data-toolbar="#toolbar"*@
+           data-show-multi-sort="false">
+        <thead>
+            <tr>
+
+                <th data-halign="center" data-align="center" data-valign="center" style="width:70px" data-formatter="optionFormatter">Opción</th>
+                <th data-field="Id" data-halign="center" data-align="right" data-sortable="true" style="width:50px">
+                    ID
+                </th>
+                <th data-field="NombreUsuario" data-halign="center" data-align="center" data-sortable="true" class="col-md-2">
+                    Usuario
+                </th>
+                <th data-field="NombreCompleto" data-halign="center" data-align="center" data-sortable="true" class="col-md-3">
+                    Persona asociada
+                </th>
+                <th data-field="FechaInicio" data-halign="center" data-sortable="false" class="col-md-2">
+                    Fecha Inicio
+                </th>
+                <th data-field="FechaFin" data-halign="center" data-sortable="false" class="col-md-2">
+                    Fecha Fin
+                </th>
+                <th data-field="Sede" data-halign="center" data-sortable="true" class="col-md-2">
+                    Sede
+                </th>
+                <th data-field="SedePrincipal" data-halign="center" data-sortable="true" class="col-md-2">
+                    Sede Principal
+                </th>
+                <th data-field="EsSedePrincipal" data-halign="center" data-align="center" data-valign="center" data-sortable="true" data-formatter="checkFormatter" class="col-md-1">
+                    Es Sede Principal?
+                </th>
+            </tr>
+        </thead>
+        <tbody id="entityListBody"></tbody>
+    </table>
+}
+
+
+
+<!-- Modal para mostrar la información de detalle de la persona seleccionada -->
+<div class="modal fade" id="modalDetallesPersona" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div id="bodyDetails" class="modal-body" style="padding:5px">
+
+            </div>
+            <div class="modal-footer" style="padding:5px">
+                <a id="btnEdit" href='#' class="btn btn-success pull-left">Editar</a>
+                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script type="text/javascript">
+        function optionFormatter(value, row) {
+            return '<div class="btn-group btn-group-xs" role="group" aria-label="...">' +
+                    '<a href="/Seguridad/Usuarios/Edit?id=' + row.Id + '" type="button" class="btn btn-default"c><span class="glyphicon glyphicon-edit"></span></a>' +
+                    '<a href="#" type="button" class="btn btn-danger" onClick="confirmDelete(' + row.Id + ')"><span class="glyphicon glyphicon-trash"></span></a>' +
+                   '</div>';
+
+        }
+
+        function detailFormatter(value, row) {
+            return '<a href="#" onClick = "modalDetalles(' + row.Id + ')">' + value + '</a>'
+        }
+
+        function modalDetalles(id) {
+            $('#bodyDetails').empty();
+
+            $.ajax({
+                method: "GET",
+                url: '@Url.Action("_DetailsPopUp", "Persona", new { area = "General"})',
+                data: { id: id },
+                cache: false,
+                success: function (data) {
+                    $('#modalDetallesPersona').modal('show');
+                    $('#bodyDetails').html(data);
+                    $('#btnEdit').attr('href', '/Persona/Edit?id=' + id);
+                },
+                error: function (ex) {
+                    showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Ocurrió un error al intentar mostrar la información de la persona seleccionada." + ex);
+                }
+            });
+        }
+
+        function confirmDelete(id) {
+
+            bootbox.confirm({
+                message: "El Usuario seleccionado con ID " + id + ", será eliminada. !Esta seguro?",
+                buttons: {
+                    confirm: {
+                        label: '<i class="glyphicon glyphicon-remove"></i>&nbsp;Eliminar',
+                        className: 'btn-danger'
+                    },
+                    cancel: {
+                        label: 'Cancelar',
+                        className: 'btn-default'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: '@Url.Action("Delete", "Usuarios", new { area = "Seguridad"})',
+                            method: "POST",
+                            data: { id: id },
+                            dataType: 'json',
+                            success: function (result) {
+                                if (result) {
+                                    $('#table').bootstrapTable('removeByUniqueId', id);
+                                    showNotification(constantes.tipoAlerta.SUCCESS, "¡En hora Buena!", " El registro seleccionado fue eliminado correctamente. ");
+                                }
+                                else {
+                                    showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!",
+                                        "Ocurrió un error al intentar eliminar a la persona seleccionada. Es problable que el registro esté asociado a una plantación o a un usuario del sistema.");
+                                }
+                            },
+                            error: function () {
+
+                            }
+                        });
+                    }
+                }
+            });
+
+            return false;
+        }
+
+    </script>
+
+}

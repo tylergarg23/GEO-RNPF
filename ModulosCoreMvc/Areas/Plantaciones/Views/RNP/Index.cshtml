@@ -1,0 +1,411 @@
+﻿@{
+    ViewBag.Title = "Plantaciones forestales";
+    Layout = "~/Areas/Plantaciones/Views/Shared/_Layout.cshtml";
+}
+
+<h3>
+    Registro Nacional de Plantaciones
+</h3>
+<div class='hr'></div>
+
+
+
+<table id="table"
+       data-id-field="Id"
+       data-unique-id="Id"
+       data-classes="table-bordered"
+       data-side-pagination="server"
+       data-response-handler="responseHandler"
+       data-url='@Url.Action("GetRNP", "RNP", new { area = "Plantaciones"})'
+       data-pagination="true"
+       data-show-pagination-switch="true"
+       data-page-list="[15, 20, 30, 50, 100]"
+       data-page-size="20"
+       data-search="true"
+       data-toggle="table"
+       data-show-columns="true"
+       data-show-refresh="true"
+       data-show-export="true"
+       data-show-toggle="true"
+       data-mobile-responsive="true"
+       data-show-footer="false"
+       data-click-to-select="true"
+       data-single-select="true"
+       data-striped="true"
+       data-row-style="rowStyle"
+       data-show-multi-sort="false">
+    <thead>
+        <tr>
+            @if (ViewBag.RoleName == "ADMINSIS" || ViewBag.RoleName == "CONSULTOR")
+            {
+                <th rowspan="2" data-halign="center" data-align="center" data-valign="center" class="col-md-1" data-formatter="optionFormatter2">Opción</th>
+            }
+            @if (ViewBag.RoleName != "ADMINSIS" && ViewBag.RoleName != "CONSULTOR")
+            {
+                <th rowspan="2" data-halign="center" data-align="center" data-valign="center" class="col-md-1" data-formatter="optionFormatter">Opción</th>
+            }
+
+            <th rowspan="2" data-field="Id" data-halign="center" data-align="right" data-sortable="true" class="col-md-1">
+                ID
+            </th>
+            <th rowspan="2" data-field="NumeroCertificado" data-sortable="true" class="col-md-2">
+                Nº Certificado
+            </th>
+            <th rowspan="2" data-field="Titular" data-halign="center" data-sortable="true" class="col-md-2">
+                Titular
+            </th>
+            <th rowspan="2" data-field="Representante" data-halign="center" data-sortable="true" class="col-md-1" data-visible="false">
+                Representante
+            </th>
+            <th rowspan="2" data-field="Departamento" data-halign="center" data-sortable="true" class="col-md-1">
+                Departamento
+            </th>
+            <th rowspan="2" data-field="Provincia" data-halign="center" data-sortable="true" class="col-md-1">
+                Provincia
+            </th>
+            <th rowspan="2" data-field="Distrito" data-halign="center" data-sortable="true" class="col-md-1">
+                Distrito
+            </th>
+            <th rowspan="2" data-field="NombreZona" data-align="center" data-sortable="true" class="col-md-1">
+                Comunidad-Caserío
+            </th>
+            <th rowspan="2" data-field="Condicion" data-halign="center" data-sortable="true" class="col-md-1">
+                Condición
+            </th>
+            <th rowspan="2" data-field="Area" data-halign="center" data-align="right" data-sortable="true" class="col-md-1">
+                Área
+            </th>
+            <th rowspan="2" data-field="Estado" data-halign="center" data-align="center" data-sortable="true" class="col-md-1" data-visible="false">
+                Estado
+            </th>
+            <th colspan="3" data-halign="center" class="col-md-2">Actualizado:</th>
+        </tr>
+        <tr>
+            <th data-halign="center" data-align="center" data-valign="center" data-sortable="false" data-formatter="optionFormatter3" class="col-md-1">
+                Formato N° 3
+            </th>
+            <th data-halign="center" data-align="center" data-valign="center" data-sortable="false" data-formatter="optionFormatter4" class="col-md-1">
+                Historial
+            </th>
+        </tr>
+    </thead>
+    <tbody id="entityListBody"></tbody>
+</table>
+<!-- Modal lg para mostrar la información  -->
+<div class="modal fade" id="modalInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div id="dialogInfo" class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div id="bodyInfoDetail" class="modal-body" style="padding:5px">
+
+            </div>
+            <div class="modal-footer" style="padding:5px">
+                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script type="text/javascript">
+    const $table = $('#table');
+    getAnios();
+    getTrimestre(@DateTime.Now.Year);
+                function getAnios() {
+                    $("#inputAnio").empty();
+                    var anioInicio = @DateTime.Now.Year;
+                    var anioFinal = 2017;
+                    for (var i = anioInicio; i >= anioFinal; i--) {
+                        $("#inputAnio").append('<option value=' + i + '>' + i + '</option>');
+                    }
+    }
+                $("#inputAnio").change(function () {
+                    console.log('adw1');
+                    getTrimestre($("#inputAnio").val());
+                    return false;
+                });
+                function getTrimestre(anio) {
+                    console.log('adw2');
+                    $("#inputTrimestre").empty();
+                    var trimestreI = 4;
+                    if (anio == @DateTime.Now.Year) {
+                        var mes = @DateTime.Now.Month;
+                        trimestreI = (mes + 2) / 3;
+                    }
+                    var trimestreF = 1;
+                    console.log('adw3');
+                    for (var i = trimestreI; i >= trimestreF; i--) {
+                        $("#inputTrimestre").append('<option value="' + i + '">' + getRomano(i) + '</option>');
+                    }
+                }
+                function getRomano(valor) {
+                    var rom = "";
+                    switch (valor) {
+                        case 1: rom = "I"; break;
+                        case 2: rom = "II"; break;
+                        case 3: rom = "III"; break;
+                        case 4: rom = "IV"; break;
+                    }
+                    return rom;
+                }
+        $(document).ready(function () {
+            $(".fixed-table-body").removeClass("fixed-table-body");
+        });
+    //gpaima - 27.08.2019
+        function optionFormatter(value, row) {
+            var html = '<div class="btn-group  btn-group-xs dropup" role="group" aria-label="Opciones">';
+            @*if (row.Estado != 'ANULADO') {
+                /**/
+                html = html + '<a href="@Url.Action("Edit", "Plantacion", new { area = "Plantaciones" })?id=' + row.Id + '" type="button" class="btn btn-default"c><span class="glyphicon glyphicon-edit"></span></a>' +
+            /**/
+            '<a href="#" type="button" class="btn btn-danger" onClick="confirmDelete(' + row.Id + ')"><span class="glyphicon glyphicon-trash"></span></a>';
+            }*@
+
+            html = html + '<a href="#" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+                '<span class="glyphicon glyphicon-info-sign"></span> </a> ' +
+                '<ul class="dropdown-menu">' +
+                //'<li><a href="#" onClick="modalBloques2(' + row.Id + ')"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Detalles de la plantación</a></li>' +
+                //'<li><a href="#" onClick="modalRevisiones(' + row.Id + ')"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;Revisiones</a></li>' +
+                '<li><a href="#" onClick="modalHistoricos(' + row.Id + ')"><span class="glyphicon glyphicon-book"></span>&nbsp;Historial de cambios (Formato N° 3)</a></li>' +
+                '<li><a href="#" onClick="modalArchivos(' + row.Id + ')"><span class="glyphicon glyphicon-open-file"></span>&nbsp;Documentos anexos subidos</a></li>';
+        //'<li><a href="#" onClick="modalFechas(' + row.Id + ')"><span class="glyphicon glyphicon-calendar"></span>&nbsp;Fechas de registro y recepción</a></li>';
+    if (row.Estado != 'ANULADO') {
+        /**/
+        html = html + '<li><a href="@Url.Action("CertificatePrint", "Plantacion", new { area = "Plantaciones" })?plantacionId=' + row.Id + '" type="submit" target="_blank" ><span class="glyphicon glyphicon-print"></span>&nbsp;Ver / Imprimir Formato N° 02</a></li>';
+        /**/
+    }
+
+    if (row.Numero > 0) {
+        /**/
+        html = html + '<li><a href="@Url.Action("ArcMapCoordenadasPlantacion", "Maps", new { area = "Plantaciones" })?plantacionId=' + row.Id + '" type="submit" id="verMapa" target="_blank"><i class="glyphicon glyphicon-map-marker"></i>&nbsp;Ver bloques en el mapa</a></li>';
+        /**/
+    }
+
+    html = html + '</ul></div>';
+    return html;
+        }
+    //***************************************
+
+    function optionFormatter3(value, row) {
+        if (row.Estado != 'ANULADO') {
+            var html;
+            html = '<a href="@Url.Action("Edit", "Plantacion", new { area = "Plantaciones" })?id=' + row.Id + '" type="button" class="btn-sm btn-warning"><span class="glyphicon glyphicon-edit"></span></a>';
+            return html;
+        }
+    }
+
+    function optionFormatter4(value, row) {
+        if (row.Estado != 'ANULADO') {
+            var html;
+            html = '<a href="#" onClick="modalHistoricos(' + row.Id + ') " type="button" class="btn-sm btn-info"><span class="glyphicon glyphicon-book"></span></a>';
+            return html;
+        }
+    }
+
+
+
+
+function optionFormatter2(value, row) {
+    var html = '<div class="btn-group  btn-group-xs dropup" role="group" aria-label="Opciones">' +
+        '<a href="#" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+        '<span class="glyphicon glyphicon-info-sign"></span> </a> ' +
+        '<ul class="dropdown-menu">' +
+        '<li><a href="#" onClick="modalBloques2(' + row.Id + ')"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Detalles de la plantación</a></li>' +
+        '<li><a href="#" onClick="modalRevisiones(' + row.Id + ')"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;Revisiones</a></li>' +
+        '<li><a href="#" onClick="modalHistoricos(' + row.Id + ')"><span class="glyphicon glyphicon-book"></span>&nbsp;Historial de cambios (Formato N° 3)</a></li>' +
+        '<li><a href="#" onClick="modalArchivos(' + row.Id + ')"><span class="glyphicon glyphicon-open-file"></span>&nbsp;Documentos anexos subidos</a></li>' +
+        '<li><a href="#" onClick="modalFechas(' + row.Id + ')"><span class="glyphicon glyphicon-calendar"></span>&nbsp;Fechas de registro y recepción</a></li>' +
+        /**/
+        '<li><a href="@Url.Action("CertificatePrint", "Plantacion", new { area = "Plantaciones" })?plantacionId=' + row.Id + '" type="submit" target="_blank" ><span class="glyphicon glyphicon-print"></span>&nbsp;Ver / Imprimir Formato N° 02</a></li>';
+    /**/
+
+    if (row.Numero > 0) {
+        /**/
+        html = html + '<li><a href="@Url.Action("MapCoordenadasPlantacion", "Maps", new { area = "Plantaciones" })?plantacionId=' + row.Id + '" type="submit" id="verMapa" target="_blank"><i class="glyphicon glyphicon-map-marker"></i>&nbsp;Ver bloques en el mapa</a></li>';
+        /**/
+    }
+
+    html = html + '</ul></div>';
+    return html;
+}
+
+
+function modalArchivos(id) {
+    $('#bodyInfoDetail').empty();
+
+    $.ajax({
+        async: true,
+        method: "GET",
+        /**/
+        url: '@Url.Action("_Documents", "Plantacion", new { area = "Plantaciones" })',
+        /**/
+        data: { plantacionId: id },
+        cache: false,
+        success: function (data) {
+            $('#dialogInfo').removeClass("modal-lg");
+            $('#dialogInfo').addClass("modal-lg");
+            $('#modalInfo').modal('show');
+            $('#bodyInfoDetail').html(data);
+        },
+        error: function (ex) {
+            showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Ocurrió un error al intentar mostrar la lista de documentos anexos: " + ex);
+        }
+    });
+}
+
+function modalFechas(id) {
+    $('#bodyInfoDetail').empty();
+
+    $.ajax({
+        async: true,
+        method: "GET",
+        /**/
+        url: '@Url.Action("_DatesFormato1", "Plantacion", new { area = "Plantaciones" })',
+        /**/
+        data: { plantacionId: id },
+        cache: false,
+        success: function (data) {
+            $('#modalInfo').modal('show');
+            $('#dialogInfo').removeClass("modal-lg");
+            $('#bodyInfoDetail').html(data);
+        },
+        error: function (ex) {
+            showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Ocurrió un error al intentar mostrar la información de detalle de la plantación seleccionada: " + ex);
+        }
+    });
+}
+
+function modalHistoricos(id) {
+    $('#bodyInfoDetail').empty();
+
+    $.ajax({
+        async: true,
+        method: "GET",
+        /**/
+        url: '@Url.Action("_History", "Plantacion", new { area = "Plantaciones" })',
+        /**/
+        data: { plantacionId: id },
+        cache: false,
+        success: function (data) {
+            $('#dialogInfo').removeClass("modal-lg");
+            $('#dialogInfo').addClass("modal-lg");
+            $('#modalInfo').modal('show');
+            $('#bodyInfoDetail').html(data);
+        },
+        error: function (ex) {
+            showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Ocurrió un error al intentar mostrar la información de detalle de la plantación seleccionada: " + ex);
+        }
+    });
+}
+
+function modalBloques2(id) {
+    $('#bodyInfoDetail').empty();
+    $.ajax({
+        async: true,
+        method: "GET",
+        /**/
+        url: '@Url.Action("_ListBloque", "Plantacion", new { area = "Plantaciones" })',
+        /**/
+        data: { plantacionId: id },
+        cache: false,
+        success: function (data) {
+            console.log(data);
+            $('#dialogInfo').removeClass("modal-lg");
+            $('#dialogInfo').addClass("modal-lg");
+            $('#modalInfo').modal('show');
+            $('#bodyInfoDetail').html(data);
+        },
+        error: function (ex) {
+            showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Ocurrió un error al intentar mostrar la información de detalle de la plantación seleccionada: " + ex);
+        }
+    });
+}
+
+function modalRevisiones(id) {
+    $('#bodyInfoDetail').empty();
+
+    $.ajax({
+        async: true,
+        method: "GET",
+        /**/
+        url: '@Url.Action("_Revisions", "Plantacion", new { area = "Plantaciones" })',
+        /**/
+        data: { plantacionId: id },
+        cache: false,
+        success: function (data) {
+            $('#dialogInfo').removeClass("modal-lg");
+            $('#dialogInfo').addClass("modal-lg");
+            $('#modalInfo').modal('show');
+            $('#bodyInfoDetail').html(data);
+        },
+        error: function (ex) {
+            showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Ocurrió un error al intentar mostrar la información de detalle de la plantación seleccionada: " + ex);
+        }
+    });
+}
+function rowStyle(row, index) {
+    if (row.Estado == 'ANULADO') {
+        return {
+            classes: 'danger'
+        };
+    }
+    return {};
+}
+function confirmDelete(id) {
+
+    bootbox.confirm({
+        message: "Está seguro de Anular este Certificado?",
+        buttons: {
+            confirm: {
+                label: '<i class="glyphicon glyphicon-remove"></i>&nbsp;Eliminar',
+                className: 'btn-danger'
+            },
+            cancel: {
+                label: 'Cancelar',
+                className: 'btn-default'
+            }
+        },
+        callback: function (result) {
+            if (result) {
+                $.ajax({
+                    async: true,
+                    /**/
+                    url: '@Url.Action("Anular", "RNP", new { area = "Plantaciones" })',
+        /**/
+        method: "POST",
+        data: { id: id },
+        dataType: 'json',
+        success: function (result) {
+            if (result) {
+                $('#table').bootstrapTable('refresh');
+                showNotification(constantes.tipoAlerta.SUCCESS, "¡En hora Buena!", " El registro seleccionado fue anulado correctamente. ");
+            }
+            else {
+                showNotification(constantes.tipoAlerta.WARNING, "No puede anular el certificado",
+                    "El registro seleccionado no puede ser anulado.");
+            }
+        },
+        error: function (ex) {
+            showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!",
+                "Ocurrió un error al intentar conectar con el servicio. Contacte al administrador del sistema y comuníquele el siguiente mensaje:" + ex);
+
+        }
+    });
+}
+}
+});
+
+return false;
+    }
+
+    function responseHandler(res) {
+
+        return res;
+    }
+
+
+
+
+
+    </script>
+}

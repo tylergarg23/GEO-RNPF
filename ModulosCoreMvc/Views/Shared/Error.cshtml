@@ -1,0 +1,20 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error";
+}
+
+@*<h1 class="text-danger">Mantenimiento del sistema activado por solicitud del administrador.</h1>
+<h2 class="text-danger">Por favor intentar la operación en otro momento.</h2>*@
+<h1 class="text-danger">Oops! Ocurrió un error.</h1>
+<h2 class="text-danger">Por favor comunicar el siguiente mensaje al administrador del sistema:</h2>
+@if (Model != null)
+{
+    <div>
+        @Model.Exception.Message
+        <br />
+      CONTROLLER:&nbsp;@Model.ControllerName
+        <br />
+        Inner Exception: @Model.Exception.InnerException
+    </div>
+}

@@ -1,0 +1,660 @@
+﻿@model SERFOR.Component.DTEntities.General.PersonaTableRowDTe
+
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Areas/Plantaciones/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+    <nav class="navbar navbar-default navbar-xs" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"><b>Formulario de edición o registro de Interesados </b></a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        @if (Model.Id > 0)
+        {
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <form class="navbar-form navbar-right" role="search">
+                    <a type="button" class="btn btn-success pull-right" href="@Url.Action("Create", "Interesado", new { area = "Plantaciones" })">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Nuevo
+                    </a>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#" data-toggle="modal" title="Registros de plantaciones en los que figura" data-target="#modalPlantaciones"><i class="glyphicon glyphicon-grain"></i>-<span class="label label-pill label-info">0</span></a></li>
+                    <li><a href="#" onClick="modalDetalles(@Model.Id)" title="Tarjeta de información registrada"><i class="glyphicon glyphicon-user"></i></a></li>
+                    <li><a href="#" title="Información de registro"><i class="glyphicon glyphicon-time"></i></a></li>
+                </ul>
+
+            </div>
+        }
+        else
+        {
+
+        }
+        <!-- /.navbar-collapse -->
+
+    </nav>
+
+
+    <form id="formReg" name="formReg">
+        @Html.AntiForgeryToken()
+        <h3>Datos generales</h3><div class='hr'></div>
+        @Html.HiddenFor(model => model.Id)
+        <div class="row">
+            <div class="form-group col-md-12">
+                <div class="checkbox">
+                    <label>
+                        <input id="EsJuridica" name="EsJuridica" type="checkbox" value="false" onchange="showDatosJuridica()" checked="@Model.EsJuridica">
+                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                        Es jurídica
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div id="datosJuridica" class="row" hidden>
+            <div class="form-group col-md-4">
+                <label class="control-label" for="numRUC">RUC:</label>
+                <input id="numRUC" name="NumeroRuc" type="number" minlength="11" maxlength="11" class="form-control" placeholder="Ingrese el número de RUC" value="@Model.Documento" />
+                <label id="errorRUC" class="error"></label>
+            </div>
+            <div class="form-group col-md-8">
+                <label class="control-label" for="RazonSocial">Razón social:</label>
+                <input id="razonSoc" name="RazonSocial" type="text" class="form-control" minlength="5" maxlength="150" placeholder="Ingrese el nombre de la empresa" value="@Model.NombreCompleto" />
+            </div>
+        </div>
+        <div id="datosNatural" class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label class="control-label"> Tipo de documento:</label>
+                        <select id="TipoDocumento" name="TipoDocumento" class="form-control dropdown" data-smk-noclear required></select>
+                    </div>
+                    <input id="TipoDocumentoHidden" type="hidden" value="@Model.TipoDocumento_Id" />
+                    <div class="form-group col-md-4">
+                        <label class="control-label" for="NumeroDocumento"> Número de documento:</label>
+                        <input id="numdocumento" name="NumeroDocumento" type="text" minlength="7" maxlength="15" class="form-control" placeholder="Ingrese el número del documento" value="@Model.Documento" required />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label class="control-label" for="Nombres">Nombres:</label>
+                        <input id="nombres" name="Nombres" type="text" class="form-control" minlength="3" maxlength="150" placeholder="Ingrese los nombres" value="@Model.NombreCompleto" required />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label" for="ApePataterno">Apellido paterno:</label>
+                        <input id="apePat" type="text" name="ApellidoPaterno" class="form-control" minlength="3" maxlength="150" placeholder="Apellido paterno" value="@Model.ApellidoPaterno" required />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label" for="apeMaterno">Apellido materno:</label>
+                        <input id="apeMat" type="text" name="ApellidoMaterno" class="form-control" minlength="3" maxlength="150" placeholder="Apellido materno" value="@Model.ApellidoMaterno" required />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="control-label">Género:</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <div class="radio">
+                                    <label>
+                                        <input id="rbTerrestre" type="radio" name="Sexo" value="M" checked="@(Model.Sexo=="M")" />
+                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                        Masculino
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <div class="radio">
+                                    <label>
+                                        <input id="rbTerrestre" type="radio" name="Sexo" value="F" checked="@(Model.Sexo=="F")" />
+                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                        Femenino
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label" for="FechaNacimiento">Fecha de nacimiento:</label>
+                        @if (Model.FechaNacimiento.HasValue)
+                        {
+                            <input id="fechareg" name="FechaNacimiento" type="date" class="form-control" placeholder="Fecha de Nacimiento" value='@String.Format("{0:yyyy-MM-dd}", Model.FechaNacimiento.Value)' />
+                        }
+                        else
+                        {
+                            <input id="fechareg" name="FechaNacimiento" type="date" class="form-control" placeholder="Fecha de Nacimiento" />
+                        }
+
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label" for="EstadoCivil">Estado civil:</label>
+                        <div class="dropdown">
+                            <select id="EstadoCivil" name="EstadoCivil" class="form-control dropdown"></select>
+                        </div>
+                    </div>
+                    <input id="EstadoCivilHidden" type="hidden" value="@Model.EstadoCivil" />
+                </div>
+            </div>
+        </div>
+
+        <h3>Información de contacto</h3><div class='hr'></div>
+        <div class="row">
+            <div class="form-group col-md-3">
+                <label class="control-label" for="telFijo">Teléfono:</label>
+                <input id="telFijo" name="Telefono" type="number" maxlength="15" class="form-control" placeholder="Ingrese número" value="@Model.Telefono" />
+            </div>
+            <div class="form-group col-md-3">
+                <label class="control-label" for="telCel">Celular:</label>
+                <input id="telCel" name="Celular" type="number" maxlength="15" class="form-control" placeholder="Ingrese número" value="@Model.Celular" />
+            </div>
+            <div class="form-group col-md-6">
+                <label class="control-label" for="eMail">Correo electrónico:</label>
+                <input id="email" name="Email" type="email" class="form-control" placeholder="Ingrese el email" value="@Model.Email" />
+            </div>
+        </div>
+
+        <h3>Ubigeo</h3><div class='hr'></div>
+        <div class="row">
+            <div class="form-group col-md-4">
+                <label class="control-label"> Departamento:</label>
+                <select id="Departamento" name="Departamento" class="form-control dropdown" data-smk-noclear required></select>
+            </div>
+            <input id="DepartamentoHidden" type="hidden" value="@Model.CodigoDepartamento" />
+            <div class="form-group col-md-4">
+                <label class="control-label"> Provincia:</label>
+                <select id="Provincia" name="Provincia" class="form-control dropdown" data-smk-noclear required></select>
+            </div>
+            <input id="ProvinciaHidden" type="hidden" value="@Model.CodigoProvincia" />
+            <div class="form-group col-md-4">
+                <label class="control-label"> Distrito:</label>
+                <select id="Distrito" name="Distrito" class="form-control dropdown" data-smk-noclear required></select>
+            </div>
+            <input id="DistritoHidden" type="hidden" value="@Model.Ubigeo_Id" />
+        </div>
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label class="control-label" for="caserio"> Dirección:</label>
+                <input id="direccion" name="Direccion" type="text" maxlength="250" class="form-control" placeholder="Ingrese la dirección de la persona" value="@Model.Direccion" />
+            </div>                        
+        </div>
+
+        <div class='hr'></div>
+        <div class="row">
+            <div class="col-md-6">
+                <a href='@Url.Action("Index", "Interesado")' type="button" class="btn btn-warning pull-left">
+                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;Regresar al listado
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a href="#" type="button" class="btn btn-success pull-right" onClick="insertFormCollection()">
+                    <span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;Registrar persona
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Modal para mostrar la información de detalle preliminar -->
+<div class="modal fade" id="modalDetallesPersona" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div id="bodyDetails" class="modal-body" style="padding:5px">
+
+            </div>
+            <div class="modal-footer" style="padding:5px">
+                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+               
+
+        function showDatosJuridica() {
+            if ($('#EsJuridica').is(':checked')) {
+                $('#EsJuridica').val('true');
+
+                $('#datosNatural').hide();
+                $('#datosJuridica').show();
+
+                $('#numRUC').attr('required', '');
+                $('#razonSoc').attr('required', '');
+
+                $('#TipoDocumento').removeAttr('required');
+                $('#numdocumento').removeAttr('required');
+                $('#numdocumento').removeAttr('value');
+                $('#nombres').removeAttr('required');
+                $('#nombres').removeAttr('value');
+                $('#apePat').removeAttr('required');
+                $('#apePat').removeAttr('value');
+                $('#apeMat').removeAttr('required');
+                $('#apeMat').removeAttr('value');
+            }
+            else {
+                $('#EsJuridica').val('false');
+
+                $('#datosJuridica').hide();
+                $('#datosNatural').show();
+
+                $('#numRUC').removeAttr('required');
+                $('#numRUC').removeAttr('value');
+                $('#razonSoc').removeAttr('required');
+                $('#razonSoc').removeAttr('value');
+
+                $('#TipoDocumento').attr('required', '');
+                $('#numdocumento').attr('required', '');
+                $('#nombres').attr('required', '');
+                $('#apePat').attr('required', '');
+                $('#apeMat').attr('required', '');
+            }
+        }
+
+        function insertFormCollection(id) {
+            if ($('#formReg').smkValidate()) {
+
+                var form = $("#formReg").serialize();
+
+                $.ajax({
+                    async: true,
+                    type: 'POST',
+                    url: '@Url.Action("Register", "Interesado", new { area = "Plantaciones"})',
+                    data: form,
+                    dataType: 'json',
+                    success: function (result) {
+                        if (result != null && result.success) {
+                            showNotification(constantes.tipoAlerta.SUCCESS, "¡En hora Buena!", "Los datos se grabaron correctamente. ");
+                            //$('#formReg').smkClear();
+                            $('input#Id').val(result.innerId);
+                        }
+                        else {
+                            showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!",
+                                "Ocurrió un error al intentar registrar los datos de la persona. Por favor verifique la información ingresada y el siguiente mensaje: " + result.responseText);
+                        }
+                    },
+                    error: function (ex) {
+                        showNotification(constantes.tipoAlerta.DANGER, "¡Error del sistema!",
+                                    "No se pudo conectar con el servicio solicitado: " + ex);
+                    }
+                });
+            }
+            else {
+                showNotification(constantes.tipoAlerta.WARNING, "Validación de datos", "4: Algunos de los campos ingresados no pudieron ser validados.");
+            }
+        }
+
+        function modalDetalles(id) {
+            $('#bodyDetails').empty();
+
+            $.ajax({
+                async: true,
+                method: "GET",
+                url: '@Url.Action("_DetailsPopUp", "Interesado", new { area = "Plantaciones" })',
+                data: { id: id },
+                cache: false,
+                success: function (data) {
+                    $('#modalDetallesPersona').modal('show');
+                    $('#bodyDetails').html(data);
+                },
+                error: function (ex) {
+                    showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Ocurrió un error al intentar mostrar la información de la persona seleccionada." + ex);
+                }
+            });
+        }
+
+    </script>
+
+    <script type="text/javascript">
+        var formRegistrarPersona = (function (window, undefined) {
+
+            var init = function () {
+                inscribeEventos();
+            },
+                inscribeEventos = function () {
+                    $("#TipoDocumento").change(function () {
+                        if ($("#TipoDocumento").val() == "1") {                            
+                            $("#numdocumento").attr('data-smk-pattern', '[0-9]{8}');
+                            $("#numdocumento").attr('minlength', '8');
+                            $("#numdocumento").attr('maxlength', '8');
+                        }
+                        else {
+                            if ($("#TipoDocumento").val() == "2") {
+                                $("#numdocumento").attr('data-smk-pattern', '[0-9]{11}');
+                                $("#numdocumento").attr('minlength', '11');
+                                $("#numdocumento").attr('maxlength', '11');
+                            }
+                            else {                                
+                                $("#numdocumento").removeAttr('data-smk-pattern');
+                                $("#numdocumento").attr('minlength', '7');
+                                $("#numdocumento").attr('maxlength', '15');
+                            }
+                        }
+                    });
+                    $("#numRUC").change(function () {
+                        validaRUC();
+                    });
+                    $("#numdocumento").change(function () {
+                        validaDocumentos();
+                    });
+                },
+                validaDocumentos = function () {
+                    switch ($("#TipoDocumento").val()) {
+                        case "1": validaDNI(); break;
+                        case "2": validaRUC2(); break;
+                        default: break;
+                    }
+
+                },
+                validaDNI = function () {
+                    if ($("#numdocumento").val().length == 8) {
+                        consultaBaseDatos("1", $("#numdocumento").val());
+                    }
+                },
+                validaRUC = function () {
+                    $("#errorRUC").text("");
+                    if ($("#numRUC").val().length == 11) {
+                        consultaBaseDatos("2", $("#numRUC").val());
+                    }
+                },
+                validaRUC2 = function () {
+                    if ($("#numdocumento").val().length == 11) {
+                        consultaBaseDatos("2", $("#numdocumento").val());
+                    }
+                },
+                consultaBaseDatos = function (tipo, numero) {
+                    $('.cargando').show();
+                    if (tipo == "1") {
+                        $('#nombres').hide();
+                    }
+                    else if (tipo == "2") {
+                        $('#razonSoc').hide();
+                    }
+                    $.ajax({
+                        url: '@Url.Action("SearchTipoNumero", "Persona", new { area = "General" })',
+                        data: "{ 'tipo': '" + tipo + "','numero': '" + numero + "'}",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (lista) {
+                            $('.cargando').hide();
+                            if (tipo == "1") {
+                                $('#nombres').show();
+                            }
+                            else if (tipo == "2") {
+                                $('#razonSoc').show();
+                                $("#nombres").show();
+                            }
+                            if (lista.length > 0) {
+                                cargaDatosPersona(tipo, {
+                                    nombres: lista[0].Nombres,
+                                    apPaterno: lista[0].ApellidoPaterno,
+                                    apMaterno: lista[0].ApellidoMaterno,
+                                    razonSocial: lista[0].NombreCompleto,
+                                    estadoCivil: lista[0].EstadoCivil,
+                                    sexo: lista[0].Sexo,
+                                    telefono: lista[0].Telefono,
+                                    celular: lista[0].Celular,
+                                    email: lista[0].Email,
+                                    direccion: lista[0].Direccion,
+                                    departamento: lista[0].Departamento,
+                                    provincia: lista[0].Provincia,
+                                    distrito: lista[0].Distrito,
+                                    id: lista[0].Id
+                                });
+                            }
+                            else {
+                                if (tipo == "1") {
+                                    //consultaRENIEC();
+                                    limpiaDatosPersona();
+                                }
+                                else if (tipo == "2") {
+                                    //consultaSUNAT();
+                                }
+                            }
+                        },
+                        error: function (response) {
+                            console.log("algo ocurrió");
+                        },
+                        failure: function (response) {
+                            console.log("algo ocurrió");
+                        }
+                    });
+                },
+                limpiaDatosPersona = function (me) {
+                    $("#nombres").val("");
+                    $("#apePat").val("");
+                    $("#apeMat").val("");
+                    $("#EstadoCivil").val("");
+                    $.each(jQuery("input[name='Sexo']"), function (index, control) {
+                        control.checked = false;
+                    });
+                    $("#telFijo").val("");
+                    $("#telCel").val("");
+                    $("#email").val("");
+                    $("#direccion").val("");
+                    $("#Departamento").val("");
+                    $("#Provincia").empty();
+                    $("#Provincia").append('<option value="">Seleccione una provincia</option>');
+                    $("#Distrito").empty();
+                    $("#Distrito").append('<option value="">Seleccione un distrito</option>');
+                },
+                cargaDatosPersona = function (tipo, persona) {
+                    if (tipo == "1") {
+                        $("#nombres").val(persona.nombres);
+                        $("#apePat").val(persona.apPaterno);
+                        $("#apeMat").val(persona.apMaterno);
+                        $("#EstadoCivil").val(persona.estadoCivil);
+                        $.each(jQuery("input[name='Sexo']"), function (index, control) {
+                            if (control.value == persona.sexo.substr(0, 1)) {
+                                control.checked = true;
+                            }
+                            else {
+                                control.checked = false;
+                            }
+                        });
+                        $("#telFijo").val(persona.telefono);
+                        $("#telCel").val(persona.celular);
+                        $("#email").val(persona.email);
+                        $("#direccion").val(persona.direccion);
+                        $("#Departamento").val(persona.departamento);
+                        //$("#fechareg").val("2015-11-02");
+                        getProvincias(persona.departamento, persona.provincia);
+                        getDistrito(persona.departamento, persona.provincia, persona.distrito);
+                        idPersona = persona.id;
+
+                    } else if (tipo == "2") {
+                        $("#razonSoc").val(persona.razonSocial);
+                        $("#direccion").val(persona.direccion);
+                        $("#telFijo").val(persona.telefono);
+                        $("#telCel").val(persona.celular);
+                        $("#email").val(persona.email);
+                        $("#Departamento").val(persona.departamento);
+                        getProvincias(persona.departamento, persona.provincia);
+                        getDistrito(persona.departamento, persona.provincia, persona.distrito);
+                        idPersona = persona.id;
+                    }
+                },
+                consultaSUNAT = function () {
+                    $('.cargando').show();
+                    $('#razonSoc').hide();
+                    $("#nombres").hide();
+                    var jsonenvio =
+                        {
+                            "ruc": $("#numRUC").val() || $("#numdocumento").val()
+                        };
+                    $.ajax({
+                        url: '@Url.Action("GetEmpresaSUNAT", "Plantacion", new { area = "Plantaciones" })',
+                        data: JSON.stringify(jsonenvio),
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (result) {
+                            console.log(result);
+                            $('#razonSoc').show();
+                            $("#nombres").show();
+                            $('.cargando').hide();
+                            if (result.success) {
+                                $("#errorRUC").text("");
+                                $("#razonSoc").val(result.data.RazonSocial);
+                                $("#nombres").val(result.data.RazonSocial);
+                                $("#direccion").val(result.data.Direccion);
+                            }
+                            else {
+                                $("#errorRUC").text(result.responseText);
+                                $("#razonSoc").val("");
+                                $("#nombres").val("");
+                                $("#direccion").val("");
+                            }
+                        },
+                        error: function (ex) {
+                            $('#razonSoc').show();
+                            $('.cargando').hide();
+                            $("#razonSoc").val("");
+                            $("#direccion").val("");
+                            console.log("algo ocurrió")
+                            //console.log("código de error: " + response.code)
+                            console.log("mensaje de respuesta: " + result.status)
+                            console.log(result.responseText);
+                        }
+                    });
+                };
+            return {
+                init: init
+            }
+
+        })(window);
+        formRegistrarPersona.init();
+        $(function () {
+
+            showDatosJuridica();
+
+            $("#EstadoCivil").empty();
+            $.ajax({
+                async: true,
+                type: 'POST',
+                url: '@Url.Action("GetEstadosCivil", "DatosTipo", new { area = "General" })',
+                dataType: 'json',
+                data: {},
+                success: function (estadosCivil) {
+                    $.each(estadosCivil, function (i, estado) {
+                        $("#EstadoCivil").append('<option value="' + estado.Value + '">' + estado.Text + '</option>');
+                    });
+
+                    if ($('input#EstadoCivilHidden').val().trim() != "") $("#EstadoCivil").val($('input#EstadoCivilHidden').val());
+                },
+                error: function (ex) {
+                    showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Error al intentar cargar los estados civiles." + ex)
+                }
+
+            });
+
+
+            $("#TipoDocumento").empty();
+            $.ajax({
+                async: true,
+                type: 'POST',
+                url: '@Url.Action("GetTiposDocumento", "DatosTipo", new { area = "General" })',
+                dataType: 'json',
+                data: {},
+                success: function (tiposDocumento) {
+                    $.each(tiposDocumento, function (i, tipo) {
+                        $("#TipoDocumento").append('<option value="' + tipo.Value + '">' + tipo.Text + '</option>');
+                    });
+
+                    if ($('input#TipoDocumentoHidden').val().trim() != "") $("#TipoDocumento").val($('input#TipoDocumentoHidden').val());
+                },
+                error: function (ex) {
+                    showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Error al intentar cargar los tipos de documento." + ex)
+                }
+
+            });
+
+            $("#Departamento").empty();
+            $("#Provincia").empty();
+            $("#Provincia").append('<option value="">Seleccione una provincia</option>');
+            $("#Distrito").empty();
+            $("#Distrito").append('<option value="">Seleccione un distrito</option>');
+            $.ajax({
+                async: true,
+                type: 'POST',
+                url: '@Url.Action("GetDepartamentos", "Ubigeo", new { area = "General" })',
+                dataType: 'json',
+                data: {},
+                success: function (departamentos) {
+                    $.each(departamentos, function (i, departamento) {
+                        $("#Departamento").append('<option value="' + departamento.Value + '">' + departamento.Text + '</option>');
+                    });
+
+                    if ($('input#DepartamentoHidden').val().trim() != "") $("#Departamento").val($('input#DepartamentoHidden').val()).change();
+                },
+                error: function (ex) {
+                    showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Error al intentar cargar el listado de departamentos. " + ex);
+                }
+
+            });
+
+
+            $("#Departamento").change(function () {
+                $("#Provincia").empty();
+                $("#Distrito").empty();
+                $("#Distrito").append('<option value="">Seleccione un distrito</option>');
+                $.ajax({
+                    async: true,
+                    type: 'POST',
+                    url: '@Url.Action("GetProvincias", "Ubigeo", new { area = "General" })',
+                    dataType: 'json',
+                    data: { codigoDep: $("#Departamento").val() },
+                    success: function (provincias) {
+                        $.each(provincias, function (i, provincia) {
+                            $("#Provincia").append('<option value="' + provincia.Value + '">' + provincia.Text + '</option>');
+                        });
+
+                        if ($('input#ProvinciaHidden').val().trim() != "") $("#Provincia").val($('input#ProvinciaHidden').val()).change();
+                    },
+                    error: function (ex) {
+                        showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Error al intentar cargar el listado de provincias. " + ex);
+                    }
+                });
+                return false;
+            });
+
+            $("#Provincia").change(function () {
+                $("#Distrito").empty();
+                $.ajax({
+                    async: true,
+                    type: 'POST',
+                    url: '@Url.Action("GetDistritos", "Ubigeo", new { area = "General" })',
+                    dataType: 'json',
+                    data: { codigoDep: $("#Departamento").val(), codigoProv: $("#Provincia").val() },
+                    success: function (distritos) {
+                        $.each(distritos, function (i, distrito) {
+                            $("#Distrito").append('<option value="' + distrito.Value + '">' + distrito.Text + '</option>');
+                        });
+
+                        if ($('input#DistritoHidden').val().trim() != "") $("#Distrito").val($('input#DistritoHidden').val());
+
+                    },
+                    error: function (ex) {
+                        showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Error al intentar cargar el listado de distritos." + ex);
+                    }
+                });
+                return false;
+            });
+
+        });
+    </script>
+}

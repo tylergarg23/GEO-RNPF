@@ -1,0 +1,725 @@
+﻿@model SERFOR.Component.DTEntities.Plantaciones.PlantacionTableRowDTe
+
+@{
+    ViewBag.Title = "Certificado de inscripción";
+    Layout = "~/Views/Shared/_LayoutPrint.cshtml";
+}
+
+<!-- Navigation -->
+<div class="row" noprint>
+    <nav class="navbar navbar-inverse navbar-fixed-bottom" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand " href="#">
+                    @{
+                        string iniTitle = string.Format("<b>Formato N° 02 </b> {0}", (Model.Id > 0) ?
+                            (!string.IsNullOrEmpty(Model.NumeroCertificado)) ?
+                            " - (ID " + Model.Id + ") Cód. " + Model.NumeroCertificado.ToUpper()
+                            : " - (ID " + Model.Id + ") Pendiente de aprobación"
+                            : " Nuevo Registro");
+                    }
+                    @Html.Raw(iniTitle)
+                </a>
+
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <form class="navbar-form navbar-right">
+                    <a class="btn btn-default" href="#" onClick="window.print();"><i class="glyphicon glyphicon-print"></i>&nbsp;Imprimir</a>
+                </form>
+            </div><!-- /.navbar-collapse -->
+        </div>
+    </nav>
+</div>
+
+<page size="A4">
+    <!-- Each sheet element should have the class "sheet" -->
+    <!-- "padding-**mm" is optional: you can set 10, 15, 20 or 25 -->
+    <section class="sheet padding-20mm" style="padding-top:10mm">
+        <div class="row">
+            <div class="col-md-6 col-xs-6">
+                <img src="@Model.LogoARFFS" class="img-responsive img-logo" alt="Responsive logo" />
+                <br />
+            </div>
+            <div class="col-md-6 col-xs-6">
+                <img src="data:image/png;base64,@Model.CodigoQR" class="img-responsive img-qr" alt="" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-xs-12">
+                <p class="text-center"><b>CERTIFICADO DE INSCRIPCIÓN EN EL REGISTRO NACIONAL DE PLANTACIONES FORESTALES </b></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-xs-12">
+                <p class="text-right"><small>Registro N°:</small> <span class="text-resaltado"> @Model.NumeroCertificado</span></p>
+            </div>
+        </div>
+        <div class="row title margin-bottom-10">
+            <div class="col-md-12 col-xs-12 ajust">
+                <p class="diminuto margin0">El registro de una plantación de especies forestales no es una modalidad de aprovechamiento de los recursos forestales, tampoco reconoce derechos de propiedad ni de posesión.</p>
+                <p class="diminuto margin0">Las actividades de aprovechamiento son de entera responsabilidad del titular o propietario de la plantación.</p>
+                <p class="diminuto margin0">El registro será cancelado si se determina el empleo de información falsa por parte del solicitante.</p>
+            </div>
+        </div>
+
+        <div class="row title subtitle">
+            <div class="col-md-12 col-xs-12 ajust">
+                <b>1. INFORMACIÓN DEL SOLICITANTE</b>
+            </div>
+        </div>
+        @{
+            var nomPropietario = "";
+            var docPropietario = "";
+            int numItem = 1;
+            if (Model.Personas.Count > 0)
+            {
+                var iper = 1;
+                foreach (var persona in Model.Personas)
+                {
+                    if (persona.Rol != "Propietario")
+                    {
+                        if (persona.Rol != "Brigadista")
+                        {
+                    <div class="row content">
+                        <div class="col-md-12 col-xs-12 ajust">
+                            <b>1.@iper. Del @persona.Rol</b>
+                        </div>
+                    </div>
+
+
+
+                    <div class="row content">
+                        <div class="col-md-12 col-xs-12 ajustDiv2">
+                            <table style="width:100%">
+                                <tr>
+                                    <td><l>Nombre y/o Razón Social:</l></td>
+                                    <td>
+                                        @if (persona.EsJuridica)
+                                        {
+                            @persona.NombreCompleto.ToUpper();
+                                        }
+                                        else
+                                        {
+                            @persona.NombreCompleto.ToUpper();
+                                        }
+                                    </td>
+                                    <td>
+                                        @persona.Documento
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Dirección:</td>
+                                    <td colspan="2">@persona.Direccion</td>
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td>Distrito:</td>
+                                                <td>@persona.Distrito</td>
+                                            </tr>
+                                        </table>                                        
+                                    </td>
+                                    <td>
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td>Provincia:</td>
+                                                <td>@persona.Provincia</td>
+                                            </tr>
+                                        </table>                                        
+                                    </td>
+                                    <td>
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td>Departamento:</td>
+                                                <td>@persona.Departamento</td>
+                                            </tr>
+                                        </table>                                        
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+                                        iper++;
+                                    }
+                                }
+                                else
+                                {
+                                    if (nomPropietario == "")
+                                    {
+                                        nomPropietario = persona.NombreCompleto.ToUpper();
+                                        docPropietario = persona.Documento;
+                                    }
+                                    else {
+                                        nomPropietario += " - " + persona.NombreCompleto.ToUpper();
+                                        docPropietario += " - " + persona.Documento;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+        <div class="row content">
+            <div class="col-md-12 col-xs-12 ajustDiv2">
+                No se han registrado personas asociadas a este registro de plantación.
+            </div>
+        </div>
+}
+            }
+        <div class="row content subtitle">
+            <div class="col-md-12 col-xs-12 ajust">
+                <b>2. DATOS DEL PREDIO</b>
+            </div>
+        </div>
+        <div class="row content ">
+            <div class="col-md-12 col-xs-12 ajust">
+                <b>2.1. Del Predio</b>
+            </div>
+        </div>
+        <div class="row content">
+
+            <div class="col-md-12 col-xs-12 ajustDiv2">
+                <table style="width:100%">
+                    <tr>
+                        <td colspan="2">
+                            <table style="width:100%">
+                                <tr>
+                                    <td>
+                                        Nombre del predio:
+                                    </td>
+                                    <td>@Model.NombrePredio</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>
+                            <table style="width:100%">
+                                <tr>
+                                    <td>
+                                        Área (ha):
+                                    </td>
+                                    <td>@string.Format("{0:N}", Model.Area)</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <table style="width:100%">
+                                <tr>
+                                    <td>
+                                        Propietario:
+                                    </td>
+                                    <td>@nomPropietario</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>
+                            @docPropietario
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Ubicación geográfica</td>
+                        <td>
+                            <table style="width:100%">
+                                <tr>
+                                    <td>
+                                        Este: @Model.CoordenadaEsteUTM
+                                    </td>
+                                    <td>
+                                        Norte: @Model.CoordenadaNorteUTM
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>
+                            <table style="width:100%">
+                                <tr>
+                                    <td>
+                                        DATUM, Zona:
+                                    </td>
+                                    <td>
+                                        WGS84, @Model.SistemaCoordenada_Id S
+                                    </td>
+                                </tr>
+                                </table>
+                        </td>
+                    </tr>
+                </table>              
+
+                <div class="row">
+                    <div class="col-md-6 col-xs-6">
+                        <div class="row">
+                            <div class="col-md-5 col-xs-5">
+                                Caserío/Comunidad:
+                            </div>
+                            <div class="col-md-7 col-xs-7">
+                                @Model.NombreZona
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xs-6">
+                        <div class="row">
+                            <div class="col-md-4 col-xs-4">
+                                Distrito:
+                            </div>
+                            <div class="col-md-8 col-xs-8">
+                                @Model.Distrito
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xs-6">
+                        <div class="row">
+                            <div class="col-md-4 col-xs-4">
+                                Provincia:
+                            </div>
+                            <div class="col-md-8 col-xs-8">
+                                @Model.Provincia
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xs-6">
+                        <div class="row">
+                            <div class="col-md-4 col-xs-4">
+                                Departamento:
+                            </div>
+                            <div class="col-md-8 col-xs-8">
+                                @Model.Departamento
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row content">
+            <div class="col-md-1 col-xs-1 ajustDiv3">
+                Condición
+            </div>
+            <div class="col-md-11 col-xs-11">
+                <div class="row ajustDiv2" style="border-left:1px solid black;border-bottom:1px solid black;">
+                    <div class="col-md-4 col-xs-4">
+                        @if (Model.EsPropietario)
+                    {
+                        <l>  Propietario &nbsp;&nbsp;[X]</l>
+                }
+                else
+                {
+                    <l>  Propietario &nbsp;&nbsp;[&nbsp;&nbsp;]</l>
+            }
+                    </div>
+                    <div class="col-md-4 col-xs-4">
+                        @if (Model.EsInversionista)
+                    {
+                        <l>  Arrendatario [X]</l>
+
+                }
+                else
+                {
+                    <l>  Arrendatario [&nbsp;&nbsp;]</l>
+            }
+                    </div>
+                    <div class="col-md-4 col-xs-4">
+                        @if (Model.EsPosesionario)
+                    {
+                        <l>  Posesionario [X]</l>
+
+                }
+                else
+                {
+                    <l>  Posesionario [&nbsp;&nbsp;]</l>
+            }
+                    </div>
+                    <!--div class="col-md-12 col-xs-12">
+                        Doc. que acredita:&nbsp;
+                    </div-->
+                </div>
+                <div class="row ajustDiv2 " style="border-left:1px solid black;">
+                    <div class="col-md-12 col-xs-12">
+                        Especificar el documento que autorice el uso del área para el establecimiento de la plantación:
+                    </div>
+                    <div class="col-md-12 col-xs-12">
+                        <div class="caja-texto">
+                            @Model.DocumentoCondicion
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row content">
+            <div class="col-md-12 col-xs-12 ajust">
+                <b>2.2. Del Título habilitante - contrato (De corresponder)</b>
+            </div>
+        </div>
+        <div class="row content margin-bottom-10">
+            @if (Model.TipoAutorizacion_Id != null && Model.TipoAutorizacion_Id > 0)
+        {
+            <div class="col-md-6 col-xs-6 ajustDiv">
+                Tipo: &nbsp;@Model.Autorizacion
+            </div>
+            <div class="col-md-6 col-xs-6 ajustDiv">
+                Número:&nbsp;@Model.DocumentoContrato
+            </div>
+    }
+    else
+    {
+        <div class="col-md-12 col-xs-12 ajustDiv">
+            No se ha registrado información del contrato.
+        </div>
+}
+        </div>
+
+        <div class="row title subtitle">
+            <div class="col-md-12 col-xs-12 ajust">
+                <b>3. INFORMACIÓN GENERAL DE LA PLANTACIÓN</b>
+            </div>
+        </div>
+        <div class="row content">
+            <div class="col-md-5  ">
+                <div class="row">
+                    <div class="col-md-8 col-xs-8 pequenio">
+                        Área total de la plantación (ha):
+                    </div>
+                    <div class="col-md-4 col-xs-4">
+                        @string.Format("{0:N}", Model.Detalles.Sum(d => d.CantidadSuperficieHa))
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7 ">
+
+                <div class="row">
+                    <div class="col-md-8 col-xs-8 pequenio">
+                          Mes y año de establecimiento de la plantación:
+                    </div>
+                    <div class="col-md-4 col-xs-4">
+                        @Model.Detalles[0].MesDescripcion de @Model.Detalles[0].AnnioEstablecimiento
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row content subtitle">
+            <div class="col-md-12 col-xs-12">
+                <div class="row ">
+                    <div class="col-md-2 col-xs-2">
+                        <p style="margin: 0 0 0px;" class="text-center pequenio">Sistema de plantación</p>
+                    </div>
+                    <div class="col-md-4 col-xs-4" style="border-left:1px solid black;">
+                        <div class="row ">
+                            <div class="col-md-12 col-xs-12" style="border-bottom:1px solid black;border-right:1px solid black;">
+                                <p style="margin: 0 0 0px;" class="text-center pequenio">Superficie</p>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-md-6 col-xs-6">
+                                <p style="margin: 0 0 0px;" class="text-center pequenio">Unid. Medida</p>
+                            </div>
+                            <div class="col-md-6 col-xs-6" style="border-left:1px solid black; border-right:1px solid black;">
+                                <p style="margin: 0 0 0px;" class="text-center pequenio">Cantidad</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-xs-2">
+                        <p style="margin: 0 0 0px;" class="text-center pequenio"> Fines</p>
+                    </div>
+                    <div class="col-md-4 col-xs-4" style="border-left:1px solid black;">
+                        <div class="row ">
+                            <div class="col-md-12 col-xs-12" style="border-bottom:1px solid black;">
+                                <p style="margin: 0 0 0px;" class="text-center pequenio">Especies establecidas</p>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-md-6 col-xs-6">
+                                <p style="margin: 0 0 0px;" class="text-center pequenio">Nombre Científico</p>
+                            </div>
+                            <div class="col-md-6 col-xs-6" style="border-left:1px solid black;">
+                                <p style="margin: 0 0 0px;" class="text-center pequenio">Nombre Común</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row margin-bottom-10">
+            <div class="col-md-12 col-xs-12">
+                @{
+                    int nrofilas = 0;
+                    int nrobloque = 0;
+                    foreach (var detalle in Model.Detalles)
+                    {
+
+                        if (detalle.Especies != null)
+                        {
+
+                            if (nrofilas + detalle.Especies.Count <= 50)
+                            {
+                                nrobloque++;
+                    <div class="row content">
+                        <div class="col-md-8 col-xs-8">
+                            <div class="row">
+                                
+                                <div class="col-md-3 col-xs-3">
+                                    <p>@detalle.SistemaPlantacionDescripcion </p>
+                                </div>
+                                @if (detalle.SistemaPlantacionTipo == "L")
+                                {
+                                    <div class="col-md-3 col-xs-3">
+                                        <p>m2 </p>
+                                    </div>
+                                    <div class="col-md-3 col-xs-3">
+                                        <p>@detalle.CantidadSuperficieMl </p>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-3 col-xs-3">
+                                        <p>ha </p>
+                                    </div>
+                                    <div class="col-md-3 col-xs-3">
+                                        <p>@detalle.CantidadSuperficieHa </p>
+                                    </div>
+                                }
+                                <div class="col-md-3 col-xs-3">
+                                    @detalle.FinalidadDescripcion
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-xs-4">
+                            @if (detalle.Especies != null)
+                            {
+                                <div class="row">
+                                    @foreach (var especie in detalle.Especies)
+                                    {
+                                        nrofilas++;
+                                    <div class="col-md-6 col-xs-6 pequenio" style="height: 25px;font-style: italic;padding-left: 0;padding-right: 0;">                                       
+                                        @especie.EspecieNombre
+                                    </div>
+                                    <div class="col-md-6 col-xs-6 pequenio" style="height: 25px;">
+                                        @especie.NombreComun
+                                    </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                            }
+                            else
+                            {
+                                nrofilas += detalle.Especies.Count;
+                            }
+                        }
+                       
+                    }
+                    }
+            </div>
+        </div>
+
+
+
+
+
+        @if (Model.Detalles.Count <= 2)
+    {
+            
+        <div class="row title subtitle">
+            <div class="col-md-12 col-xs-12 ajust">
+                <b>4. OBSERVACIÓN</b>
+            </div>
+        </div>
+        <div class="row content">
+            <div class="col-md-12 col-xs-12 ajustDiv2">
+                @if (Model.Observaciones == null)
+            {
+                <p>Sin observaciones.</p>
+        }
+        else
+        {
+            @Model.Observaciones
+    }
+            </div>
+        </div>
+        <div class="row  ajustDiv5">
+            <div class="col-md-3 col-xs-3">
+                Lugar y Fecha:
+            </div>
+            <div class="col-md-9 col-xs-9">
+                @{                  
+                    DateTime fecha = @Model.FechaFirma ?? @DateTime.Now; //TYLER 20/11/19 FECHA FIRMA
+                    //DateTime fecha = @DateTime.Now;
+                    string mes = "";
+                    if (fecha.Month == 1) mes = "Enero";
+                    else if (fecha.Month == 2) mes = "Febrero";
+                    else if (fecha.Month == 3) mes = "Marzo";
+                    else if (fecha.Month == 4) mes = "Abril";
+                    else if (fecha.Month == 5) mes = "Mayo";
+                    else if (fecha.Month == 6) mes = "Junio";
+                    else if (fecha.Month == 7) mes = "Julio";
+                    else if (fecha.Month == 8) mes = "Agosto";
+                    else if (fecha.Month == 9) mes = "Septiembre";
+                    else if (fecha.Month == 10) mes = "Octubre";
+                    else if (fecha.Month == 11) mes = "Noviembre";
+                    else if (fecha.Month == 12) mes = "Diciembre";
+                }
+                @Model.Sede, @fecha.ToString("dd \\de") @mes @fecha.ToString("\\de yyyy")
+            </div>
+        </div>
+                    }
+    </section>
+</page>
+
+@{
+    int numRows = 15;
+    var numPageDet = 0;
+    if (Model.Detalles.Count > 2)
+    {
+        numPageDet = (Model.Detalles.Count - 3) / numRows;
+        if (Model.Detalles.Count % numRows > 0) { numPageDet++; }
+    }
+    for (var i = 0; i < numPageDet; i++)
+    {
+        <page size="A4">
+
+            <section class="sheet padding-20mm" style="padding-top:10mm">
+                <div class="row">
+                    <div class="col-md-6 col-xs-6">
+                        <img src="@Model.LogoARFFS" class="img-responsive img-logo" alt="Responsive logo" />
+                        <br />
+                    </div>
+                    <div class="col-md-6 col-xs-6">
+                        <img src="data:image/png;base64,@Model.CodigoQR" class="img-responsive img-qr" alt="" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-xs-12">
+                        <p class="text-center"><b>CERTIFICADO DE INSCRIPCIÓN EN EL REGISTRO NACIONAL DE PLANTACIONES FORESTALES </b></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-xs-12">
+                        <p class="text-right"><small>Registro N°:</small> <span class="text-resaltado"> @Model.NumeroCertificado</span></p>
+                    </div>
+                </div>
+
+
+                @if (Model.Detalles.Count > nrobloque)
+                {
+                <div class="row margin-bottom-10 linea-arriba">
+                    <div class="col-md-12 col-xs-12">
+                        @{ 
+                                        int nro = 0;
+                                        foreach (var detalle in Model.Detalles)
+                                        {
+                                            nro++;
+                                            if(nro > nrobloque)
+                                            {
+                                    <div class="row content">
+                                        <div class="col-md-8 col-xs-8">
+                                            <div class="row">
+                                                <div class="col-md-3 col-xs-3">
+                                                    <p>@detalle.SistemaPlantacionDescripcion </p>
+                                                </div>
+                                                @if (detalle.SistemaPlantacionTipo == "L")
+                                    {
+                                                    <div class="col-md-3 col-xs-3">
+                                                        <p>m2 </p>
+                                                    </div>
+                                                    <div class="col-md-3 col-xs-3">
+                                                        <p>@detalle.CantidadSuperficieMl </p>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-md-3 col-xs-3">
+                                                        <p>ha </p>
+                                                    </div>
+                                                    <div class="col-md-3 col-xs-3">
+                                                        <p>@detalle.CantidadSuperficieHa </p>
+                                                    </div>
+                                                }
+                                                <div class="col-md-3 col-xs-3">
+                                                    @detalle.FinalidadDescripcion
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-xs-4">
+                                            @if (detalle.Especies != null)
+                            {
+                                            <div class="row">
+                                                @foreach (var especie in detalle.Especies)
+                                                {                                               
+                                                    <div class="col-md-6 col-xs-6 pequenio" style="height: 25px;font-style: italic;padding-left: 0;padding-right: 0;">
+                                                        @especie.EspecieNombre
+                                                    </div>
+                                                    <div class="col-md-6 col-xs-6 pequenio" style="height: 25px;">
+                                                        @especie.NombreComun
+                                                    </div>
+                                                }
+                                            </div>
+                                            }
+                                        </div>
+                                    </div>
+                            }
+                        }
+                            }
+                    </div>
+                </div>
+                }
+
+
+
+                @if (i == numPageDet - 1)
+                {
+                    <div class="row title subtitle">
+                        <div class="col-md-12 col-xs-12 ajust">
+                            <b>4. OBSERVACIÓN</b>
+                        </div>
+                    </div>
+                    <div class="row content">
+                        <div class="col-md-12 col-xs-12 ajustDiv">
+                            @Model.Observaciones
+                        </div>
+                    </div>
+                    <div class="row  ajustDiv5">
+                        <div class="col-md-3 col-xs-3">
+                            Lugar y Fecha:
+                        </div>
+
+                        <div class="col-md-9 col-xs-9">
+                            @{
+                                //DateTime fecha = @Model.FechaRecepcionARFFS ?? @DateTime.Now;
+                                DateTime fecha = @DateTime.Now;
+                                string mes = "";
+                                if (fecha.Month == 1) mes = "Enero";
+                                else if (fecha.Month == 2) mes = "Febrero";
+                                else if (fecha.Month == 3) mes = "Marzo";
+                                else if (fecha.Month == 4) mes = "Abril";
+                                else if (fecha.Month == 5) mes = "Mayo";
+                                else if (fecha.Month == 6) mes = "Junio";
+                                else if (fecha.Month == 7) mes = "Julio";
+                                else if (fecha.Month == 8) mes = "Agosto";
+                                else if (fecha.Month == 9) mes = "Septiembre";
+                                else if (fecha.Month == 10) mes = "Octubre";
+                                else if (fecha.Month == 11) mes = "Noviembre";
+                                else if (fecha.Month == 12) mes = "Diciembre";
+                            }
+                            @Model.Sede, @fecha.ToString("dd \\de") @mes @fecha.ToString("\\de yyyy")
+                        </div>
+                    </div>
+                }
+            </section>
+        </page>
+
+    }
+
+}
+
+@section scripts{
+}

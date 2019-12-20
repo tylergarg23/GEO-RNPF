@@ -1,0 +1,1179 @@
+﻿
+@{
+    ViewBag.Title = "Reporte Resumen de Plantaciones";
+    Layout = "~/Areas/Plantaciones/Views/Shared/_Layout.cshtml";
+}
+<script charset="utf-8" src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/maps/modules/offline-exporting.js"></script>
+<script charset="utf-8" src="https://code.highcharts.com/maps/modules/map.js"></script>
+<script charset="utf-8" src="https://code.highcharts.com/modules/drilldown.js"></script>
+
+<script src="~/Scripts/mapa/pe-dpto.js"></script>
+<script src="~/Scripts/mapa/PE-01.js"></script>
+<script src="~/Scripts/mapa/PE-02.js"></script>
+<script src="~/Scripts/mapa/PE-03.js"></script>
+<script src="~/Scripts/mapa/PE-04.js"></script>
+<script src="~/Scripts/mapa/PE-05.js"></script>
+<script src="~/Scripts/mapa/PE-06.js"></script>
+<script src="~/Scripts/mapa/PE-07.js"></script>
+<script src="~/Scripts/mapa/PE-08.js"></script>
+<script src="~/Scripts/mapa/PE-09.js"></script>
+<script src="~/Scripts/mapa/PE-10.js"></script>
+<script src="~/Scripts/mapa/PE-11.js"></script>
+<script src="~/Scripts/mapa/PE-12.js"></script>
+<script src="~/Scripts/mapa/PE-13.js"></script>
+<script src="~/Scripts/mapa/PE-14.js"></script>
+<script charset="utf-8" src="~/Scripts/mapa/PE-15.js"></script>
+<script charset="utf-8" src="~/Scripts/mapa/PE-16.js"></script>
+<script charset="utf-8" src="~/Scripts/mapa/PE-17.js"></script>
+<script charset="utf-8" src="~/Scripts/mapa/PE-18.js"></script>
+<script src="~/Scripts/mapa/PE-19.js"></script>
+<script src="~/Scripts/mapa/PE-20.js"></script>
+<script src="~/Scripts/mapa/PE-21.js"></script>
+<script src="~/Scripts/mapa/PE-22.js"></script>
+<script src="~/Scripts/mapa/PE-23.js"></script>
+<script src="~/Scripts/mapa/PE-24.js"></script>
+<script src="~/Scripts/mapa/PE-25.js"></script>
+
+
+
+<div id="panel-dashboard" class="panel-container">
+    <div class="row">
+        <div class="col-md-10">
+            <h2 id="dashboard">Dashboard de Área Plantada</h2>
+        </div>
+        <div class="col">
+            <a href="#" id="btnDescargar" type="button" class="btn btn-success pull-right">
+                <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Descargar
+            </a>
+        </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div id="mapaDepartamento" class="card-personalizada card-largo">
+
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="grafFinalidad" class="card-personalizada card-mediano">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div id="grafSistPlantacion" class="card-personalizada card-mediano">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="grafSede" class="card-personalizada card-mediano">
+
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div id="grafTiempo" class="card-personalizada card-mediano">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@section scripts{
+
+    <script type="text/javascript">
+        var datasourceAll = null;
+        var datasource = null;
+        var metrica = 0;
+    var dataDepartamentos = [];
+    var dataFinalidades = null;
+    var dataSistemaPlantacion = null;
+    var dataSede = null;
+    var dataTiempo = null;
+    //var dataAnio = null;
+
+        String.prototype.capitalize = function () {
+            return this.toLowerCase().replace(/(^|\s)([a-z])/g, function (m, p1, p2) { return p1 + p2.toUpperCase(); });
+        };
+        //console.log($("#opcion 1").button('toggle'));
+        
+        
+    $(document).ready(function () {
+        $('#btnDescargar').click(function () {
+            if (datasource == null)
+                return;
+
+            JSONToCSVConvertor(datasource, "Dashboard de Área Plantada", true);
+        });
+        $.ajax({
+            async: true,
+            type: 'POST',
+            url: '@Url.Action("GetResumenPlantacionEspacio", "Reportes", new { area = "Plantaciones" })',
+            dataType: 'json',
+            data: {},
+            success: function (resumenes) {                
+                datasource = resumenes;
+                datasourceAll = resumenes;
+                getDataDepartamentos().then(function () {
+                    graficoDepartamentos();
+                });
+                getDataFinalidad().then(function () {                    
+                    graficoFinalidades();
+                });
+                getDataSistemaPlantacion().then(function () {
+                    graficoSistemaPlantacion();
+                });
+                getDataSede().then(function () {
+                    graficoSedes();
+                });
+                getDataTiempo().then(function () {
+                    graficoTiempos();
+                });
+            },
+            error: function (ex) {
+                showNotification(constantes.tipoAlerta.DANGER, "¡Algo salió mal!", "Error al intentar cargar el listado de departamentos. " + ex);
+            }
+        });
+    });
+    function getDataDepartamentos() {
+        var deferred = $.Deferred();
+        var key;
+        var keys = [];
+        dataDepartamentos = [];
+        $.each(datasource, function (index, registro) {
+            key = registro.Ubigeo.substring(0, 2);
+            if ($.inArray(key, keys) == -1) {
+                var item = {};
+                item.Codigo = registro.Ubigeo.substring(0,2);
+                item.Departamento = registro.Departamento
+                item.Area_Ha = registro.Area_Ha;
+                item.Lineal_m2 = registro.Lineal_m2;
+                dataDepartamentos.push(item);
+                keys.push(key);
+            }
+            else {
+                index = $.inArray(key, keys);
+                dataDepartamentos[index].Area_Ha += registro.Area_Ha;
+                dataDepartamentos[index].Lineal_m2 += registro.Lineal_m2;                
+
+                dataDepartamentos[index].Area_Ha = Math.round(dataDepartamentos[index].Area_Ha * 100) / 100;
+                dataDepartamentos[index].Lineal_m2 = Math.round(dataDepartamentos[index].Lineal_m2 * 100) / 100;                
+            }
+        });
+        deferred.resolve();
+        return deferred.promise();
+        }
+        function getDataProvincias() {
+            var deferred = $.Deferred();
+            var key;
+            var keys = [];
+            dataProvincias = [];            
+            $.each(datasource, function (index, registro) {
+                key = registro.Ubigeo.substring(0, 4);
+                if ($.inArray(key, keys) == -1) {
+                    var item = {};
+                    item.Codigo = registro.Ubigeo.substring(0, 4);
+                    item.Departamento = registro.Departamento
+                    item.Area_Ha = registro.Area_Ha;
+                    item.Lineal_m2 = registro.Lineal_m2;                    
+                    dataProvincias.push(item);
+                    keys.push(key);
+                }
+                else {
+                    index = $.inArray(key, keys);
+                    dataProvincias[index].Area_Ha += registro.Area_Ha;
+                    dataProvincias[index].Lineal_m2 += registro.Lineal_m;
+
+                    dataProvincias[index].Area_Ha = Math.round(dataProvincias[index].Area_Ha * 100) / 100;
+                    dataProvincias[index].Lineal_m2 = Math.round(dataProvincias[index].Lineal_m * 100) / 100;
+                }
+            });
+            deferred.resolve();
+            return deferred.promise();
+        }
+   function getDataFinalidad() {
+        var deferred = $.Deferred();
+        var key;
+        var keys = [];
+        dataFinalidades = [];
+        $.each(datasource, function (index, registro) {
+            key = registro.Finalidad;
+            if ($.inArray(key, keys) == -1) {
+                var item = {};
+                item.Finalidad = registro.Finalidad
+                if (registro.Estado == "R") {
+                    item.Area_Ha_R = registro.Area_Ha;
+                    item.Lineal_m2_R = registro.Lineal_m2;                    
+                    item.Area_Ha_S = 0;
+                    item.Lineal_m2_S = 0;                    
+                }
+                else {
+                    item.Area_Ha_R = 0;
+                    item.Lineal_m2_R = 0;                    
+                    item.Area_Ha_S = registro.Area_Ha;
+                    item.Lineal_m2_S = registro.Lineal_m2;                    
+                }
+                dataFinalidades.push(item);
+                keys.push(key);
+            }
+            else {
+                index = $.inArray(key, keys);
+                if (registro.Estado == "R") {
+                    dataFinalidades[index].Area_Ha_R += registro.Area_Ha;
+                    dataFinalidades[index].Lineal_m2_R += registro.Lineal_m2;
+                    dataFinalidades[index].Area_Ha_R = Math.round(dataFinalidades[index].Area_Ha_R * 100) / 100;
+                    dataFinalidades[index].Lineal_m2_R = Math.round(dataFinalidades[index].Lineal_m2_R * 100) / 100;                    
+                }
+                else {
+                    dataFinalidades[index].Area_Ha_S += registro.Area_Ha;
+                    dataFinalidades[index].Lineal_m2_S += registro.Lineal_m2;                    
+                    dataFinalidades[index].Area_Ha_S = Math.round(dataFinalidades[index].Area_Ha_S * 100) / 100;
+                    dataFinalidades[index].Lineal_m2_S = Math.round(dataFinalidades[index].Lineal_m2_S * 100) / 100;                    
+                }
+
+
+            }
+        });
+        deferred.resolve();
+        return deferred.promise();
+    }
+
+    function getDataSistemaPlantacion() {
+        var deferred = $.Deferred();
+        var key;
+        var keys = [];
+        dataSistemaPlantacion = [];
+        $.each(datasource, function (index, registro) {
+            key = registro.SistemaPlantacion;
+            if ($.inArray(key, keys) == -1) {
+                var item = {};
+                item.SistemaPlantacion = registro.SistemaPlantacion;
+                item.Area_Ha = registro.Area_Ha;
+                item.Lineal_m2 = registro.Lineal_m2;                
+                dataSistemaPlantacion.push(item);
+                keys.push(key);
+            }
+            else {
+                index = $.inArray(key, keys);
+                dataSistemaPlantacion[index].Area_Ha += registro.Area_Ha;
+                dataSistemaPlantacion[index].Lineal_m2 += registro.Lineal_m2;                
+
+                dataSistemaPlantacion[index].Area_Ha = Math.round(dataSistemaPlantacion[index].Area_Ha * 100) / 100;
+                dataSistemaPlantacion[index].Lineal_m2 = Math.round(dataSistemaPlantacion[index].Lineal_m2 * 100) / 100;                
+            }
+        });
+        deferred.resolve();
+        return deferred.promise();
+    }
+    function getDataSede() {
+        var deferred = $.Deferred();
+        var key;
+        var keys = [];
+        dataSede = [];
+        $.each(datasource, function (index, registro) {
+            key = registro.ARFFS;
+            if ($.inArray(key, keys) == -1) {
+                var item = {};
+                item.ARFFS = registro.ARFFS;
+                if (registro.Estado == "R") {
+                    item.Area_Ha_R = registro.Area_Ha;
+                    item.Lineal_m2_R = registro.Lineal_m2;
+                    item.Area_Ha_S = 0;
+                    item.Lineal_m2_S = 0;                    
+                }
+                else {
+                    item.Area_Ha_R = 0;
+                    item.Lineal_m2_R = 0;                    
+                    item.Area_Ha_S = registro.Area_Ha;
+                    item.Lineal_m2_S = registro.Lineal_m2;                    
+                }
+                dataSede.push(item);
+                keys.push(key);
+            }
+            else {
+                index = $.inArray(key, keys);
+                if (registro.Estado == "R") {
+                    dataSede[index].Area_Ha_R += registro.Area_Ha;
+                    dataSede[index].Lineal_m2_R += registro.Lineal_m2;
+                    dataSede[index].Area_Ha_R = Math.round(dataSede[index].Area_Ha_R * 100) / 100;
+                    dataSede[index].Lineal_m2_R = Math.round(dataSede[index].Lineal_m2_R * 100) / 100;                    
+                }
+                else {
+                    dataSede[index].Area_Ha_S += registro.Area_Ha;
+                    dataSede[index].Lineal_m2_S += registro.Lineal_m;
+                    dataSede[index].Area_Ha_S = Math.round(dataSede[index].Area_Ha_S * 100) / 100;
+                    dataSede[index].Lineal_m2_S = Math.round(dataSede[index].Lineal_m2_S * 100) / 100;                    
+                }
+            }
+        });
+        deferred.resolve();
+        return deferred.promise();
+    }
+    function getDataTiempo() {
+        var deferred = $.Deferred();
+        var key;
+        var keys = [];
+        var keysAnios = [];
+        dataTiempo = [];
+        dataAnio = [];
+        $.each(datasource, function (index, registro) {
+            key = registro.AnioPlantacion.toString().substring(0, 3);
+            if ($.inArray(key, keys) == -1) {
+                var item = {};
+                item.Tiempo = registro.AnioPlantacion.toString().substring(0, 3) + '0 - ' + registro.AnioPlantacion.toString().substring(0, 3) + '9';
+
+                item.Area_Ha = registro.Area_Ha;
+                item.Lineal_m2 = registro.Lineal_m2;
+                item.detalle = [];
+                item.Keys = [];
+
+                var itemdetalle = {};
+                itemdetalle.Anio = registro.AnioPlantacion;
+                itemdetalle.Area_Ha = registro.Area_Ha;
+                itemdetalle.Lineal_m2 = registro.Lineal_m2;
+                item.detalle.push(itemdetalle);
+                item.Keys.push(registro.AnioPlantacion+"");
+
+                dataTiempo.push(item);
+                keys.push(key);
+            }
+            else {
+                index = $.inArray(key, keys);
+                dataTiempo[index].Area_Ha += registro.Area_Ha;
+                dataTiempo[index].Lineal_m2 += registro.Lineal_m2;
+                
+                dataTiempo[index].Area_Ha = Math.round(dataTiempo[index].Area_Ha * 100) / 100;
+                dataTiempo[index].Lineal_m2 = Math.round(dataTiempo[index].Lineal_m2 * 100) / 100;
+                
+                if ($.inArray(registro.AnioPlantacion + "", dataTiempo[index].Keys) == -1) {
+                    var itemdetalle = {};
+                    itemdetalle.Anio = registro.AnioPlantacion;
+                    itemdetalle.Area_Ha = registro.Area_Ha;
+                    itemdetalle.Lineal_m2 = registro.Lineal_m2;
+                    dataTiempo[index].detalle.push(itemdetalle);
+                    dataTiempo[index].Keys.push(registro.AnioPlantacion + "");
+                }
+                else {
+                    j = $.inArray(registro.AnioPlantacion + "", dataTiempo[index].Keys);
+                    dataTiempo[index].detalle[j].Area_Ha += registro.Area_Ha;
+                    dataTiempo[index].detalle[j].Lineal_m2 += registro.Lineal_m2;
+                    
+                    dataTiempo[index].detalle[j].Area_Ha = Math.round(dataTiempo[index].detalle[j].Area_Ha * 100) / 100;
+                    dataTiempo[index].detalle[j].Lineal_m2 = Math.round(dataTiempo[index].detalle[j].Lineal_m2 * 100) / 100;
+                    
+                }
+            }
+
+            /*keyAnio = registro.AnioPlantacion;
+            if ($.inArray(keyAnio, keysAnios) == -1) {
+                var item = {};
+                item.Tiempo = registro.AnioPlantacion.toString().substring(0, 3) + '0 - ' + registro.AnioPlantacion.toString().substring(0, 3) + '9';
+                item.Anio = registro.AnioPlantacion;
+                item.Area_Ha = registro.Area_Ha;
+                item.Lineal_m = registro.Lineal_m;
+                item.NroPlantado = registro.NroPlantado;
+                item.ProduccionEstimada = registro.ProduccionEstimada;
+                dataAnio.push(item);
+                keysAnios.push(keyAnio);
+            }
+            else {
+                index = $.inArray(keyAnio, keysAnios);
+                dataAnio[index].Area_Ha += registro.Area_Ha;
+                dataAnio[index].Lineal_m += registro.Lineal_m;
+                dataAnio[index].NroPlantado += registro.NroPlantado;
+                dataAnio[index].ProduccionEstimada += registro.ProduccionEstimada;
+
+                dataAnio[index].Area_Ha = Math.round(dataAnio[index].Area_Ha * 100) / 100;
+                dataAnio[index].Lineal_m = Math.round(dataAnio[index].Lineal_m * 100) / 100;
+                dataAnio[index].NroPlantado = Math.round(dataAnio[index].NroPlantado * 100) / 100;
+                dataAnio[index].ProduccionEstimada = Math.round(dataAnio[index].ProduccionEstimada * 100) / 100;
+            }*/
+        });
+        //console.log(dataTiempo);
+        deferred.resolve();
+        return deferred.promise();
+    }
+    function graficoDepartamentos() {
+
+        var datos = [];
+        var dataMapa = Highcharts.geojson(Highcharts.maps['countries/pe/pe-dpto']);
+        //$.each(dataDepartamentos, function (index, registro) {
+
+/*            switch (metrica) {
+                case 0: datos.push([registro.Codigo, registro.Codigo, registro.Area_Ha]); break;
+                case 1: datos.push([registro.Codigo, registro.Codigo, registro.Lineal_m]); break;
+                case 2: datos.push([registro.Codigo, registro.Codigo, registro.NroPlantado]); break;
+                case 3: datos.push([registro.Codigo, registro.Codigo, registro.ProduccionEstimada]); break;
+            }*/
+        //});
+
+        $.each(dataMapa, function (i) {
+            var me = this;
+            var array = $.grep(dataDepartamentos, function (n, i) {
+                return n.Codigo == me.properties['IDDPTO'];
+            });
+            this.name = me.properties['NOMBDEP'];
+            this.value = 0;
+            if (array.length > 0) {
+                this.drilldown = this.properties['IDDPTO'];
+                //this.name = this.properties['NOMBDEP'];
+                switch (metrica) {
+                    case 0: this.value = array[0].Area_Ha; break;
+                    case 1: this.value = array[0].Lineal_m; break;
+                    case 2: this.value = array[0].NroPlantado; break;
+                    case 3: this.value = array[0].ProduccionEstimada; break;
+                }
+            }
+        });
+
+
+        switch (metrica) {
+            case 0: texto = "Área Total (ha)"; sufijo = "ha"; break;
+            case 1: texto = "Longitud"; sufijo = "m2"; break;          
+        }        
+        Highcharts.mapChart('mapaDepartamento', {
+            chart: {
+                events: {
+                    drilldown: function (e) {                        
+                        if (!e.seriesOptions) {
+                            var chart = this,
+                                mapKey = 'countries/pe/' + e.point.drilldown + '-prov',
+                                fail = setTimeout(function () {
+                                    if (!Highcharts.maps[mapKey]) {
+                                        chart.showLoading('<i class="icon-frown"></i> Failed loading ' + e.point.properties.NOMBDEP);
+                                        fail = setTimeout(function () {
+                                            chart.hideLoading();
+                                        }, 1000);
+                                    }
+                                }, 3000);
+                            chart.showLoading('<i class="icon-spinner icon-spin icon-3x"></i>');
+                               
+                            datasource = $.grep(datasourceAll, function (n, i) {
+                                return n.Ubigeo.substring(0, 2) == e.point.drilldown;
+                            });
+                            
+                            var me = e;
+                            this.title.textStr = "Plantaciones de " + e.point.name
+                                getDataProvincias().then(function () {
+
+
+                                    
+                                    dataMapa2 = Highcharts.geojson(Highcharts.maps[mapKey]);
+                                    $.each(dataMapa2, function (i) {
+                                        var me = this;
+                                        var array = $.grep(dataProvincias, function (n, i) {
+                                            return n.Codigo == me.properties['IDPROV'];
+                                        });
+                                        this.name = me.properties['NOMBPROV'];
+                                        this.value = 0;
+                                        if (array.length > 0) {                                            
+                                            switch (metrica) {
+                                                case 0: this.value = array[0].Area_Ha; break;
+                                                case 1: this.value = array[0].Lineal_m2; break;
+                                            }
+                                        }
+                                    });     
+                                    
+                                    // Hide loading and add series
+                                    chart.hideLoading();
+                                    clearTimeout(fail);
+                                   
+                                    chart.addSeriesAsDrilldown(me.point, {
+                                        name: texto,
+                                        data: dataMapa2,
+                                        dataLabels: {
+                                            enabled: true,
+                                            format: '{point.properties.NOMBPROV}'
+                                        }
+                                    });
+
+                                });                                
+                                getDataFinalidad().then(function () {
+                                    graficoFinalidades();
+                                });
+                                getDataSistemaPlantacion().then(function () {
+                                    graficoSistemaPlantacion();
+                                });
+                                getDataSede().then(function () {
+                                    graficoSedes();
+                                });
+                                getDataTiempo().then(function () {
+                                    graficoTiempos();
+                                });
+
+
+                            
+
+                        }                        
+                        this.title.update({ text: 'PLANTACIONES POR PROVINCIAS DE '+ e.point.name });
+                    },
+                    drillup: function () {    
+                        datasource = datasourceAll;
+                        getDataFinalidad().then(function () {
+                            graficoFinalidades();
+                        });
+                        getDataSistemaPlantacion().then(function () {
+                            graficoSistemaPlantacion();
+                        });
+                        getDataSede().then(function () {
+                            graficoSedes();
+                        });
+                        getDataTiempo().then(function () {
+                            graficoTiempos();
+                        });
+                        this.title.update({ text: 'PLANTACIONES POR DEPARTAMENTOS' });
+                    }
+                }
+            },
+
+            title: {
+                text: 'PLANTACIONES POR DEPARTAMENTOS'
+            },
+            subtitle: {
+                text: texto
+            },
+            mapNavigation: {
+                enabled: true               
+            },
+
+            /*colorAxis: {
+                min: 0
+            },*/            
+            colorAxis: {
+                min: 0,
+                minColor: '#ffffff',
+                maxColor: '#005645',
+                /*dataClasses: [{
+                    to: 1
+                }, {
+                    from: 1,
+                    to: 500
+                    }, {
+                        from: 500,
+                        to: 1000
+                }, {
+                    from: 1000,
+                    to: 2000
+                }, {
+                    from: 2000,
+                    to: 4000
+                }, {
+                    from: 4000,
+                    to: 10000
+                }, {
+                    from: 10000
+                }]*/
+            },
+            legend: {
+                title: {
+                    //text: 'Rangos de ' + texto,
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
+                    }
+                },
+                align: 'left',
+                verticalAlign: 'bottom',
+                floating: true,
+                layout: 'vertical',
+                valueDecimals: 0,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || 'rgba(255, 255, 255, 0.85)',
+               // symbolRadius: 0,
+               // symbolHeight: 14
+            },
+            series: [{
+                data: dataMapa,
+                //keys: ['Codigo', 'drilldown', 'value'],
+                //joinBy: ['IDDPTO', 'Codigo'],
+                name: texto,  
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.properties.NOMBDEP}'
+                },               
+            }],
+            plotOptions: {
+                map: {
+                    states: {
+                        hover: {
+                            color: '#EEDD66'
+                        }
+                    },
+                    tooltip: {
+                        valueSuffix: " "+sufijo
+                    },
+                }
+            },
+            drilldown: {
+                activeDataLabelStyle: {
+                    color: '#FFFFFF',
+                    textDecoration: 'none',
+                    textOutline: '1px #000000'
+                },
+                drillUpButton: {
+                    relativeTo: 'spacingBox',
+                    position: {
+                        x: 0,
+                        y: 60
+                    }
+                }
+            }
+
+        });
+
+    }    
+
+        
+        function graficoFinalidades() {
+            var categorias = [];
+            var datosR = [], datosS = [];
+            dataFinalidades.sort(compareTotal);
+            var Otras = '', valorR = 0, valorS = 0;
+            $.each(dataFinalidades, function (index, registro) {
+                if (index < 9) {
+                    categorias.push(registro.Finalidad);
+                    switch (metrica) {
+                        case 0: datosR.push(registro.Area_Ha_R);
+                            datosS.push(registro.Area_Ha_S);
+                            break;
+                        case 1: datosR.push(registro.Lineal_m2_R);
+                            datosS.push(registro.Lineal_m2_S);
+                            break;
+                    }
+                }
+                else {
+                    Otras = "Otras finalidades";
+                    switch (metrica) {
+                        case 0: valorR += registro.Area_Ha_R;
+                            valorS += registro.Area_Ha_S;
+                            break;
+                        case 1: valorR += registro.Lineal_m2_R;
+                            valorS += registro.Lineal_m2_S;
+                            break;
+                    }
+                }
+            });
+            if (Otras != '') {
+                categorias.push(Otras);
+                datosR.push(valorR);
+                datosS.push(valorS);
+            }
+            switch (metrica) {
+                case 0: texto = "Área Total (ha)"; break;
+                case 1: texto = "Longitud (m2)"; break;
+            }
+            Highcharts.chart('grafFinalidad', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Plantaciones por Finalidad'
+                },
+                subtitle: {
+                    text: 'Métrica : ' + texto
+                },
+                xAxis: {
+                    categories: categorias
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: texto
+                    }
+                },
+                legend: {
+                    align: 'right',
+                    x: 0,
+                    verticalAlign: 'top',
+                    y: 25,
+                    floating: true,
+                    backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+                    borderColor: '#CCC',
+                    borderWidth: 1,
+                    shadow: false
+                },
+                plotOptions: {
+                    series: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true,
+                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                        }
+                    }
+                },
+                series: [{
+                    name: "RNP",
+                    data: datosR,
+                    dataLabels: {
+                        enabled: true,
+                        //rotation: -90,
+                        color: '#FFFFFF',
+                        align: 'right',
+                        format: '{point.y:.1f}', // one decimal
+                        //y: 60, // 10 pixels down from the top
+                        style: {
+                            fontSize: '11px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
+                },
+                {
+                    name: "Solic.",
+                    data: datosS,
+                    dataLabels: {
+                        enabled: true,
+                        //rotation: -90,
+                        color: '#FFFFFF',
+                        align: 'right',
+                        format: '{point.y:.1f}', // one decimal
+                        //y: 60, // 10 pixels down from the top
+                        style: {
+                            fontSize: '11px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
+                }]
+            });
+
+        }
+
+
+        function graficoSistemaPlantacion() {
+            var datos = [];
+            $.each(dataSistemaPlantacion, function (index, registro) {
+                switch (metrica) {
+                    case 0: datos.push([registro.SistemaPlantacion, registro.Area_Ha]); break;
+                    case 1: datos.push([registro.SistemaPlantacion,registro.Lineal_m2]); break;                    
+                    }
+            });
+            switch (metrica) {
+                case 0: texto = "Área Total (ha)"; break;
+                case 1: texto = "Longitud (m2)"; break;                
+            }
+        Highcharts.chart('grafSistPlantacion', {
+            chart: {
+                type: 'pie',
+            },
+            title: {
+                text: 'Plantaciones por Sistema de Plantación'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
+                        distance: -50,
+                        filter: {
+                            property: 'percentage',
+                            operator: '>',
+                            value: 4
+                        }
+                    }
+                }
+            },
+            series: [{
+                name: texto,
+                data: datos
+            }]
+        });
+    }
+        function graficoSedes() {
+            var categorias = [];
+            var datosR = [], datosS = [];
+            dataSede.sort(compareTotal);
+            var Otras = '', valorR = 0, valorS = 0;
+            $.each(dataSede, function (index, registro) {
+                if (index < 9) {
+                    categorias.push(registro.ARFFS);
+                    switch (metrica) {
+                        case 0: datosR.push(registro.Area_Ha_R);
+                            datosS.push(registro.Area_Ha_S);
+                            break;
+                        case 1: datosR.push(registro.Lineal_m2_R);
+                            datosS.push(registro.Lineal_m2_S);
+                            break;                      
+                    }
+                }
+                else {
+                    Otras = "Otras sedes";
+                    switch (metrica) {
+                        case 0: valorR += registro.Area_Ha_R;
+                            valorS += registro.Area_Ha_S;
+                            break;
+                        case 1: valorR += registro.Lineal_m2_R;
+                            valorS += registro.Lineal_m2_S;
+                            break;                        
+                    }
+                }
+            });
+            if (Otras != '') {
+                categorias.push(Otras);
+                datosR.push(valorR);
+                datosS.push(valorS);
+            }
+            switch (metrica) {
+                case 0: texto = "Área Total (ha)"; break;
+                case 1: texto = "Longitud (m2)"; break;                
+            }
+        Highcharts.chart('grafSede', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Plantaciones por ARFFS'
+            },
+            subtitle: {
+                text: 'Métrica : ' + texto
+            },
+            xAxis: {
+                categories: categorias
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: texto
+                }
+            },
+            legend: {
+                align: 'right',
+                x: 0,
+                verticalAlign: 'top',
+                y: 25,
+                floating: true,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+                borderColor: '#CCC',
+                borderWidth: 1,
+                shadow: false
+            },
+            plotOptions: {
+                series: {
+                    stacking: 'normal',
+                    dataLabels: {
+                        enabled: true,
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                    }
+                }
+            },
+            series: [{
+                name: "RNP",
+                data: datosR,
+                dataLabels: {
+                    enabled: true,
+                    //rotation: -90,
+                    color: '#FFFFFF',
+                    align: 'right',
+                    format: '{point.y:.1f}', // one decimal
+                    //y: 60, // 10 pixels down from the top
+                    style: {
+                        fontSize: '11px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            },
+            {
+                name: "Solic.",
+                data: datosS,
+                dataLabels: {
+                    enabled: true,
+                    //rotation: -90,
+                    color: '#FFFFFF',
+                    align: 'right',
+                    format: '{point.y:.1f}', // one decimal
+                    //y: 60, // 10 pixels down from the top
+                    style: {
+                        fontSize: '11px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            }]
+        });
+
+    }
+        function graficoTiempos() {
+            var datos = [];
+            var datosAnio = [];
+            //var categorias = [];
+            dataTiempo.sort(compareTiempo);
+            //dataAnio.sort(compareAnio);
+
+            var Otras = '', valor = 0;
+            $.each(dataTiempo, function (index, registro) {                
+                    var undato = {};
+                    undato.name = registro.Tiempo;
+                    undato.drilldown = registro.Tiempo;
+                    switch (metrica) {
+                        case 0: undato.y = registro.Area_Ha; break;
+                        case 1: undato.y = registro.Lineal_m2; break;                        
+                    }
+                    datos.push(undato);
+
+                    var undetalle = {};
+                    undetalle.name = registro.Tiempo;
+                    undetalle.id = registro.Tiempo;
+                    undetalle.data = [];
+                    registro.detalle.sort(compareAnio);
+                    $.each(registro.detalle, function (j, detalle) {
+                        switch (metrica) {
+                            case 0: undetalle.data.push([detalle.Anio+"", detalle.Area_Ha]); break;
+                            case 1: undetalle.data.push([detalle.Anio + "", detalle.Lineal_m2]); break;                            
+                        }
+                    });
+                    datosAnio.push(undetalle);
+                    //categorias.push(registro.Tiempo);
+                    /*switch (metrica) {
+                        case 0: datos.push(registro.Area_Ha); break;
+                        case 1: datos.push(registro.Lineal_m); break;
+                        case 2: datos.push(registro.NroPlantado); break;
+                        case 3: datos.push(registro.ProduccionEstimada); break;
+                    }*/
+            });
+            //anio
+           /* $.each(dataAnio, function (index, registro) {
+                var undato = {};
+                    undato.name = registro.Tiempo;
+                    undato.id = registro.Tiempo;
+                    switch (metrica) {
+                        case 0: undato.data = [registro.Anio,registro.Area_Ha]; break;
+                        case 1: undato.data = [registro.Anio,registro.Lineal_m]; break;
+                        case 2: undato.data = [registro.Anio,registro.NroPlantado]; break;
+                        case 3: undato.data = [registro.Anio,registro.ProduccionEstimada]; break;
+                    }
+                    datosAnio.push(undato);
+                    //categorias.push(registro.Tiempo);
+                    /*switch (metrica) {
+                        case 0: datos.push(registro.Area_Ha); break;
+                        case 1: datos.push(registro.Lineal_m); break;
+                        case 2: datos.push(registro.NroPlantado); break;
+                        case 3: datos.push(registro.ProduccionEstimada); break;
+                    }*/
+           // });
+
+
+
+            switch (metrica) {
+                case 0: texto = "Área Total (ha)"; break;
+                case 1: texto = "Longitud (m2)"; break;                
+            }
+
+            Highcharts.chart('grafTiempo', {
+                chart: {
+                    type: 'column',
+                    events: {
+                        drilldown: function (e) {
+                            if (e.seriesOptions) {
+                                var inicio = e.seriesOptions.id.substring(0, 4);
+                                var fin = e.seriesOptions.id.substring(7, 11);
+                                datasource = $.grep(datasourceAll, function (n, i) {
+                                    return n.AnioPlantacion >= inicio && n.AnioPlantacion <= fin;
+                                });
+                                getDataDepartamentos().then(function () {
+                                    graficoDepartamentos();
+                                });
+                                getDataFinalidad().then(function () {
+                                    graficoFinalidades();
+                                });
+                                getDataSistemaPlantacion().then(function () {
+                                    graficoSistemaPlantacion();
+                                });
+                                getDataSede().then(function () {
+                                    graficoSedes();
+                                });                                
+                            }
+                        },
+                        drillup: function () {
+                            datasource = datasourceAll;
+                            getDataDepartamentos().then(function () {
+                                graficoDepartamentos();
+                            });
+                            getDataFinalidad().then(function () {
+                                graficoFinalidades();
+                            });
+                            getDataSistemaPlantacion().then(function () {
+                                graficoSistemaPlantacion();
+                            });
+                            getDataSede().then(function () {
+                                graficoSedes();
+                            });
+                        }
+                    }
+                },
+                title: {
+                    text: 'Plantaciones por Año de instalación'
+                },
+                subtitle: {
+                    text: 'Métrica : ' + texto
+                },
+                xAxis: {
+                    //categories: categorias
+                    type: 'category'
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: texto
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                plotOptions: {
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.y:.1f}'
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> <br/>'
+                },
+                series: [{
+                    name: texto,
+                    data: datos,
+                    dataLabels: {
+                        enabled: true,
+                        //rotation: -90,
+                        color: '#FFFFFF',
+                        //align: 'right',
+                        format: '{point.y:.1f}',
+                        //y: 13, // 10 pixels down from the top
+                        style: {
+                            fontSize: '11px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
+
+
+
+
+                }],
+                drilldown: {
+                    series: datosAnio
+                }
+            });
+
+    }
+        function compareName(a, b) {
+            var rspta = 0;
+            switch (metrica) {
+                case 0:
+                    if (a.Area_Ha < b.Area_Ha) rspta= 1;
+                    if (a.Area_Ha > b.Area_Ha) rspta= -1;
+                    break;
+                case 1:
+                    if (a.Lineal_m2 < b.Lineal_m2) rspta= 1;
+                    if (a.Lineal_m2 > b.Lineal_m2) rspta= -1;
+                    break;               
+            }
+            return rspta;
+        }
+        function compareTotal(a, b) {
+            var rspta = 0;
+            var TotalA = TotalB = 0;
+            switch (metrica) {
+                case 0:
+                    TotalA = a.Area_Ha_R + a.Area_Ha_S;
+                    TotalB = b.Area_Ha_R + b.Area_Ha_S;
+                    break;
+                case 1:
+                    TotalA = a.Lineal_m2_R + a.Lineal_m2_S;
+                    TotalB = b.Lineal_m2_R + b.Lineal_m2_S;
+                    break;               
+            }
+            if (TotalA < TotalB) rspta = 1;
+            if (TotalA > TotalB) rspta = -1;
+            return rspta;
+        }
+        function compareTiempo(a, b) {
+            if (a.Tiempo < b.Tiempo) return -1;
+            if (a.Tiempo > b.Tiempo) return 1;
+            return 0;
+        }
+        function compareAnio(a, b) {
+            if (a.Anio < b.Anio) return -1;
+            if (a.Anio > b.Anio) return 1;
+            return 0;
+        }
+
+        function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
+            //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
+            var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
+
+            var CSV = '';
+            //Set Report title in first row or line
+
+            CSV += ReportTitle + '\r\n\n';
+
+            //This condition will generate the Label/Header
+            if (ShowLabel) {
+                var row = "";
+
+                //This loop will extract the label from 1st index of on array
+                for (var index in arrData[0]) {
+
+                    //Now convert each value to string and comma-seprated
+                    row += index + ',';
+                }
+
+                row = row.slice(0, -1);
+
+                //append Label row with line break
+                CSV += row + '\r\n';
+            }
+
+            //1st loop is to extract each row
+            for (var i = 0; i < arrData.length; i++) {
+                var row = "";
+
+                //2nd loop will extract each column and convert it in string comma-seprated
+                for (var index in arrData[i]) {
+                    row += '"' + arrData[i][index] + '",';
+                }
+
+                row.slice(0, row.length - 1);
+
+                //add a line break after each row
+                CSV += row + '\r\n';
+            }
+
+            if (CSV == '') {
+                alert("Invalid data");
+                return;
+            }
+
+            //Generate a file name
+            var fileName = "Reporte_";
+            //this will remove the blank-spaces from the title and replace it with an underscore
+            fileName += ReportTitle.replace(/ /g, "_");
+
+            //Initialize file format you want csv or xls
+            var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+
+            // Now the little tricky part.
+            // you can use either>> window.open(uri);
+            // but this will not work in some browsers
+            // or you will not get the correct file extension    
+
+            //this trick will generate a temp <a /> tag
+            var link = document.createElement("a");
+            link.href = uri;
+
+            //set the visibility hidden so it will not effect on your web-layout
+            link.style = "visibility:hidden";
+            link.download = fileName + ".csv";
+
+            //this part will append the anchor tag and remove it after automatic click
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+}

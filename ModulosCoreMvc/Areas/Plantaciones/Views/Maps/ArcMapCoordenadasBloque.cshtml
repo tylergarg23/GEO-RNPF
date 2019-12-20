@@ -1,0 +1,255 @@
+﻿@using System.Text
+@model SERFOR.Component.DTEntities.Plantaciones.BloqueTableRowDTe
+
+@{
+    ViewBag.Title = "ArcMapCoordenadasBloque";
+    Layout = "~/Views/Shared/_LayoutArcMaps.cshtml";
+}
+@section scripts_header{
+    <script type="text/javascript">
+        dojoConfig = {
+            async: true,
+            isDebug: true,
+            //locale: 'es-pe',
+            parseOnLoad: true,
+            //baseUrl: '.',
+            //    tlmSiblingOfDojo: false,
+            packages: [{
+                "name": "app-dojo",
+                "location": location.origin + '/Scripts/app-dojo'
+            },
+            { name: 'bootstrap-select', location: location.origin + '/Scripts', main: 'bootstrap-select.min' },
+            { name: 'jquery', location: '~/bundles/jquery' }
+            ]
+        };
+    </script>
+}
+@section style_header{
+    <style>
+        #canvas {
+            height: 750px;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+
+        .panel-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        #layerToggle {
+            top: 20px;
+            right: 20px;
+            position: absolute;
+            z-index: 99;
+            background-color: white;
+            border-radius: 8px;
+            padding: 10px;
+            opacity: 0.75;
+            width: 250px;
+        }
+
+
+        .panel-result {
+            cursor: pointer;
+            margin: 2px 0;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+            .panel-result:hover,
+            .panel-result:focus {
+                color: orange;
+                background-color: rgba(0, 0, 0, 0.75);
+            }
+        #resulEvaluacion {
+            text-align: left;
+        }
+
+        .verde {
+            color: forestgreen;
+        }
+
+        .rojo {
+            color: orangered;
+        }
+    </style>
+}
+<h3>@Model.Nombre <small>&nbsp;(<label id="numVerticesLabel">0</label> Coordenadas registradas</small>)</h3>
+<input type="hidden" id="BloqueId" value="@Model.Id" />
+
+<div class="row">
+    <div class="col-md-4 col-sm-6">
+        <div class="row">
+            <div class="col-md-12 col-xs-12 bhoechie-tab-container">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu" style="height:750px">
+                    <ul class="list-group">
+                        <a href="#" class="list-group-item active">
+                            <br /><i class="glyphicon glyphicon-info-sign" style="font-size:30px"></i><br />&nbsp;Sobre<br />el bloque/predio<br />
+                        </a>
+                        <a href="#" class="list-group-item ">
+                            <br /><i class="glyphicon glyphicon-map-marker" style="font-size:30px"></i>&nbsp;<br />Vértices<br /> o Coordenadas<br />
+                        </a>                        
+                        <a href="#" class="list-group-item " style="display:none">
+                            <br /><i class="glyphicon glyphicon-eye-open" style="font-size:30px"></i>&nbsp;<br />Evaluación<br /> Espacial<br />
+                        </a>
+                    </ul>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 bhoechie-tab">
+                    <div class="bhoechie-tab-content active">
+                        <center>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">Resumen</h4>
+                                </div>
+                                <div class="panel-body">
+
+                                    @{
+                var resumen = new StringBuilder("Este bloque ");
+                if (!string.IsNullOrEmpty(Model.SistemaPlantacionDescripcion))
+                {
+                    resumen.AppendFormat(" con sistema de plantacion {0}", Model.SistemaPlantacionDescripcion);
+                }
+                else
+                {
+                    resumen.Append(" sin sistema de plantacion registrado ");
+                }
+
+                if (Model.AreaPredio != null && Model.AreaPredio > 0)
+                {
+                    resumen.AppendFormat(" tiene un area de {0} m2 ", Model.AreaPredio);
+                }
+                else
+                {
+                    resumen.Append(" no tiene un area ingresada ");
+                }
+
+                resumen.AppendFormat(" esta ubicado en las coordenadas UTM {0} E y {1} N ", Model.CoordenadaEsteUTM, Model.CoordenadaNorteUTM);
+
+                
+
+                resumen.AppendLine(string.Format(" Fue registrado el {0} por el usuario {1}", Model.FechaCreacion.ToShortDateString(), Model.UsuarioCreacion));
+
+                        <p>@resumen .</p>
+                                    }
+
+                                    @if (!string.IsNullOrEmpty(Model.UriStorageFileName))
+            {<p>
+                            <a href="@Model.UriStorageFileName">Descargar el archivo subido</a>
+                        </p>
+}
+else
+{
+                        <p>
+                            Sin archivo subido
+                        </p>
+}
+
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">Detalles del bloque</h4>
+                                </div>
+                                <div class="panel-body">
+                                    <table class="table table-condensed">
+                                        <tbody>
+                                            <tr>
+                                                <th><strong>Año/mes</strong></th>
+                                                <td>@string.Format("{0}/{1}", Model.AnnioEstablecimiento, Model.MesEstablecimiento)</td>
+                                            </tr>
+                                            <tr>
+                                                <th><strong>Area</strong></th>
+                                                <td>@Model.AreaPredio</td>
+                                            </tr>
+                                            <tr>
+                                                <th><strong>Coord. UTM</strong></th>
+                                                <td>@string.Format("{0} E - {1} N", Model.CoordenadaEsteUTM, Model.CoordenadaNorteUTM)</td>
+                                            </tr>
+                                            <tr>
+                                                <th><strong>Finalidad</strong></th>
+                                                <td>@Model.FinalidadDescripcion</td>
+                                            </tr>
+                                            <tr>
+                                                <th><strong>Sistema</strong></th>
+                                                <td>@Model.SistemaPlantacionDescripcion</td>
+                                            </tr>                                                                                                                                    
+                                            <tr>
+                                                <th><strong>Superficie</strong></th>
+                                                <td>@Model.CantidadSuperficieHa Ha - @Model.CantidadSuperficieMl Ml</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            @*<div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">Especies</h4>
+                                </div>
+                                <div class="panel-body">
+                                    <table class="table table-condensed">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th scope="col">Especie</th>
+                                                <th scope="col"># individuos</th>
+                                                <th scope="col">Prod. Estimada</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (Model.Especies.Count > 0)
+    {
+        foreach (var especie in Model.Especies)
+        {
+                                        <tr>
+                                            <td>
+                                                @string.Format("{0}", especie.NombreComun)
+                                            </td>
+                                            <td>
+                                                @especie.TotalPlantado @especie.TipoPlantadoDesc
+                                            </td>
+                                            <td>
+                                                @especie.ProduccionEstimada @especie.UnidadMedidaSimbolo
+                                            </td>
+                                        </tr>
+}
+}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>*@
+                        </center>
+                    </div>
+                    <div class="bhoechie-tab-content">
+                        <center>
+                            <div class="panel panel-default" style="max-height:730px;overflow-y:scroll;">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">Vértices o coordenadas registradas</h4>
+                                </div>
+                                <div class="panel-body">
+                                    <table class="table table-condensed">
+                                        <tbody id="listVerticesBody"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8 col-sm-6 col-xs-12 bhoechie-tab-container">
+        <div id="ventana" class="panel-container">
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    url_serweb = location.origin + '@Url.Action("GetCoordenadasBloque", "Maps", new { area = "Plantaciones" })';
+    tipoVent = "bloque";
+        //var planId = $('#PlantacionId').val();
+</script>
+<script defer type="text/javascript" src="~/Scripts/app-dojo/init.js"></script>

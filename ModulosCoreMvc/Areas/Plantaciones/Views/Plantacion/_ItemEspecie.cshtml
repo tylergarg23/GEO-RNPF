@@ -1,0 +1,36 @@
+﻿@model SERFOR.Component.DTEntities.Plantaciones.EspecieItemListDTe
+
+<tr id="rowB-@Model.Id">
+    <td>
+        <H5 class="text-center">@Model.bloque.Nombre</H5>
+    </td>
+
+    <td>
+        <p class="text-center">
+            @Model.NombreComun.ToUpper()<br />
+            @Model.Especie_Id - @Model.EspecieNombre
+        </p>
+    </td>
+
+    <td>      
+        <p class="text-right">@string.Format("{0:N}", Model.TotalPlantado) <br />
+        @Model.TipoPlantadoDesc</p>
+    </td>
+    <td>
+        <p class="text-right">@string.Format("{0:N}", Model.ProduccionEstimada) @Model.UnidadMedidaSimbolo</p>
+    </td>
+
+    <td class="text-center">
+        <div class="btn-group btn-group-sm" role="group">
+            @if (ViewData["noEditable"] == null || !Convert.ToBoolean(ViewData["noEditable"]))
+    {
+        <button class="btn btn-danger deleteLink" onClick="deleteRowEspecie('@Model.Id')" value="left" type="button">
+            <i class="glyphicon glyphicon-trash"></i>
+        </button>
+        <button class="btn btn-info dropdown-toggle " onClick="modalEspecie('@Model.Id')" value="left" type="button">
+            <i class="glyphicon glyphicon-edit"></i>
+        </button>
+}
+        </div>
+</td>
+</tr>

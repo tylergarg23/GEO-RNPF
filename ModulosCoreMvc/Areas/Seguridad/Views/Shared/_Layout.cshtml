@@ -1,0 +1,22 @@
+﻿@using Modulos_Core_MVC.Helpers
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@RenderBody()
+
+@section menu{
+
+    <li><a href="@Url.Action("Create", "Usuarios", new { area= "Seguridad"})">ALTA DE <strong>USUARIO</strong></a></li>
+    <li><a href="@Url.Action("Index", "Usuarios", new { area= "Seguridad" })">GESTIÓN DE <strong>USUARIOS</strong></a></li>
+    <li>
+        <a id="helpButton" type="submit" target="_blank"
+           style="width:55px;height: 55px;padding:5px 5px;font-size:40px;line-height:1.33;border-radius:35px;"
+           href="//e.issuu.com/embed.html#30236279/50566019" class="btn btn-default btn-circle btn-xl"><i class="glyphicon glyphicon-question-sign"></i></a>
+    </li>
+}
+
+@section scripts{
+    @Html.RenderScripts()
+    @RenderSection("scripts", required: false)
+}

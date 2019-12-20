@@ -1,0 +1,29 @@
+﻿using SERFOR.Component.DTEntities.General;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SERFOR.Component.DTEntities.Plantaciones
+{
+    [DataContract]
+    public class CoordenadaTableRowDTe : EntidadBaseDTe<decimal>
+    {
+        [DataMember]
+        public int Bloque_Id { get; set; }
+
+        [DataMember]
+        public int NumeroSecuencia { get; set; }
+
+        [DataMember]
+        public string CoordenadaEsteUTM { get; set; }
+
+        [DataMember]
+        public string CoordenadaNorteUTM { get; set; }
+
+       
+
+    }
+}
